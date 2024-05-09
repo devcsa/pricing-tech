@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+   <body>
+      <h1>JavaScript Global Methods</h1>
+      <h2>The eval() Method</h2>
+
+      <p id="demo"></p>
+
+      <script>
+         let vl_encargo = 0.38;
+         let gsv = 14.76;
+         let vl_tmi_on = 4.21;
+
+         let price_list = 14.38;
+         let pct_encargo = 0.0261;
+         let pct_tmi_on = 0.285;
+         let expression = "gsv - vl_tmi_on";
+         let valor = eval(expression);
+
+         document.getElementById("demo").innerHTML = valor.toFixed(2);
+      </script>
+   </body>
+</html>

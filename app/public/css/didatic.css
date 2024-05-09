@@ -1,0 +1,324 @@
+form {
+   font-size: 0.8rem;
+   border: 1px solid #ddd;
+   font-weight: 400;
+}
+
+input,
+label {
+   height: 1.7rem;
+   padding: 3px !important;
+}
+
+input {
+   text-align: right;
+   font-size: 0.8rem !important;
+}
+
+.simulacao {
+   display: flex;
+   justify-content: space-between;
+   max-width: 388px;
+   align-items: center;
+   /* border: 1px red solid; */
+}
+
+.btn-filter {
+   margin-top: 20px;
+   margin-bottom: 0 !important;
+}
+
+.filter-btn:hover {
+   background-color: green !important;
+}
+
+.filter-simulador {
+   padding: 10px;
+   border: 1px #dfdfdf solid;
+   margin-bottom: 10px;
+}
+
+.filter-origem-destino {
+   width: 60%;
+   padding: 5px;
+}
+
+.output-ncm {
+   width: 25%;
+   padding: 5px;
+}
+
+.output-origem {
+   width: 15%;
+   padding: 5px;
+}
+
+.output-ncm input,
+.output-origem input {
+   width: 100%;
+   font-size: 0.7rem !important;
+   padding: 2px !important;
+   text-align: left;
+   height: 28px !important;
+}
+
+.simulation-filter {
+   display: flex;
+   flex-direction: column;
+   font-size: 0.7rem;
+   margin-bottom: 0;
+}
+
+.simulation-filter-1 {
+   display: flex;
+   flex-direction: row;
+}
+
+span ul li {
+   font-size: 0.7rem;
+}
+
+span span input[type="search"].select2-search__field {
+   text-align: left;
+   padding-left: 5px !important;
+}
+
+.simulation-filter-2 {
+   display: flex;
+   flex-direction: row;
+   align-items: flex-end;
+   margin-top: 5px;
+}
+
+.simulation-output {
+   display: flex;
+   flex-direction: row;
+   align-items: flex-end;
+   /* margin-left: 5px; */
+   margin-bottom: 10px;
+}
+
+.simulation-filter label {
+   font-weight: bold;
+   padding: 0 !important;
+   height: auto;
+}
+
+.filter-produto {
+   margin-right: 7px;
+}
+
+.filter-produto select {
+   width: 100%;
+}
+
+.filter-micro_regiao {
+   width: 35%;
+   margin-right: 5px;
+}
+
+.filter-micro_regiao select {
+   width: 120px;
+   font-size: 0.8rem;
+   padding: 0 !important;
+}
+
+.filter-segmento select {
+   width: 235px !important;
+   font-size: 0.8rem;
+   padding: 0 !important;
+}
+
+.filter-origem-destino select {
+   width: 225px !important;
+   font-size: 0.8rem;
+   padding: 0 !important;
+}
+
+.filter-produto select {
+   width: 330px !important;
+   font-size: 0.8rem;
+   padding: 0 !important;
+}
+
+.short-cut i {
+   cursor: pointer;
+   font-size: 1rem !important;
+}
+
+.filter-segmento {
+   width: 65%;
+}
+
+.filter-segmento select {
+   width: 100%;
+}
+
+.num-simulacao {
+   display: flex;
+   justify-content: space-between;
+   max-width: 388px;
+   align-items: center;
+   /* margin-bottom: 0.2rem; */
+}
+
+.simulacao h1,
+.title-h1 {
+   font-size: 1.2rem;
+}
+
+.simulacao i,
+.num-simulacao i {
+   cursor: pointer;
+   /* font-weight: bold; */
+   font-size: 1.5rem;
+}
+
+.simulacao h6 {
+   margin: 0;
+}
+
+/* .bases-update {
+   display: block;
+   flex-direction: column;
+} */
+
+/* .select-base {
+   display: flex;
+   height: 35px;
+   flex-direction: row;
+   align-items: center;
+   margin-top: 5px;
+} */
+
+/* .bases-update select {
+   font-size: 15px;
+   height: 35px;
+   padding: 0 5px;
+} */
+
+/* .loading {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   position: absolute;
+   width: 100%;
+   z-index: 10;
+   top: 30%;
+   left: 0;
+   right: 0;
+}
+
+.loading img {
+   width: 64px;
+   height: 64px;
+} */
+
+/* .list-bases {
+   margin-top: 40px;
+}
+
+.list-bases h4 {
+   margin-bottom: 10px;
+} */
+
+.tt-metric {
+   padding: 0 2px;
+}
+
+.total-metric {
+   background-color: #edf1f2;
+   font-weight: 500;
+   border-bottom: 1px #fff solid;
+}
+
+.title-metric {
+   background-color: #edf1f2;
+   font-weight: 500;
+   border-bottom: 1px #fff solid;
+   height: 1.7rem;
+   padding: 0 !important;
+}
+
+.total-strong {
+   background-color: #d6d6d6;
+   font-weight: 500;
+   align-items: center;
+}
+
+.total-strong input {
+   background-color: #d6d6d6;
+   border: none;
+   height: 1.7rem;
+}
+
+.total-metric input {
+   background-color: #edf1f2;
+   border: none;
+   border-radius: 0;
+   height: 1.7rem;
+}
+
+.metric {
+   width: 41.5% !important;
+   align-items: center;
+   height: 1.7rem;
+}
+
+.pct-metric {
+   width: 24% !important;
+   margin-right: 1%;
+}
+
+.vl-metric {
+   width: 30% !important;
+   cursor: help;
+}
+
+.tt-metric {
+   width: 57% !important;
+   font-weight: 500 !important;
+}
+
+.container-simulation {
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+}
+
+.section-didatico {
+   margin-right: 3rem;
+   max-width: 388px;
+}
+
+.container-didatico {
+   max-width: 388px;
+}
+
+.div-form {
+   max-width: 388px;
+   margin-right: 0 !important;
+}
+
+.input-value {
+   background-color: #fbfbbd !important;
+}
+
+@media screen and (max-width: 576px) {
+   .section-didatico {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 0 0 30px 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+   }
+
+   .container-didatico {
+      max-width: 403px;
+   }
+
+   .div-form {
+      width: 400px;
+   }
+}

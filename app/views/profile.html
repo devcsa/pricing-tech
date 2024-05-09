@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+   <head>
+      <meta charset="UTF-8" />
+      <title>Pricing Tech - Profile</title>
+      <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" />
+
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+      <link rel="stylesheet" href="./css/style.css" />
+
+      <link rel="stylesheet" href="./css/vendor/font-awesome.min.css" />
+      <link rel="stylesheet" href="./css/vendor/bootstrap.css" />
+
+      <link rel="stylesheet" href="./css/sidebar.css" />
+
+      <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css" />
+
+      <link rel="shortcut icon" href="./img/favicon.png" type="image/png" />
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <script src="./js/vendor/inputmask/jquery.inputmask.min.js"></script>
+   </head>
+   <body>
+      <div id="sidebar" class="sidebar close"></div>
+      <section class="home-section">
+         <header class="home-header">
+            <div class="text">
+               <img src="./img/logo_branco-azul.png" alt="logo-pt" />
+            </div>
+            <div class="header-notification">
+               <a href="#" class="notification">
+                  <i class="bx bxs-bell"></i>
+                  <span class="num">1</span>
+               </a>
+               <a href="#" class="profile" title="Minha Conta" onclick="editProfile()">
+                  <img id="fotoPerfil" src="./img/user.png" alt="" />
+               </a>
+            </div>
+            <div class="menu-mobile">
+               <i class="bx bx-menu" id="menu-mobile"></i>
+            </div>
+         </header>
+         <div class="container-title">
+            <h1>Perfil do Usuário</h1>
+         </div>
+         <main id="container" class="container-page">
+            <!-- Profile Edit -->
+            <section id="profile" style="min-height: 600px" class="mb-5 py-4">
+               <div class="container mt-1">
+                  <div class="row">
+                     <div class="col-md-9">
+                        <div class="card">
+                           <div class="card-header">
+                              <h4>Editar Cadastro</h4>
+                           </div>
+                        </div>
+                        <div class="card-body">
+                           <!-- <form id="profileForm" class="row" action="" method="put" onsubmit="updateProfile()"> -->
+                           <form id="profileForm" class="row" action="" method="put">
+                              <input type="hidden" id="password" name="password" value="" /> <input type="hidden" id="userId" name="userId" value="" />
+
+                              <div class="form-group col-md-6">
+                                 <label for="name">Nome</label>
+                                 <input type="text" id="name" name="name" class="form-control" value="" />
+                              </div>
+                              <div class="form-group col-md-6">
+                                 <label for="email">E-mail</label>
+                                 <input type="Email" id="email" name="email" class="form-control" value="" />
+                              </div>
+                              <div class="form-group col-md-4">
+                                 <label for="phone">Telefone</label>
+                                 <input type="text" id="phone" name="phone" class="form-control" value="" />
+                              </div>
+                              <div class="form-group col-md-4">
+                                 <label for="status_user">Status</label>
+                                 <select id="status_user" name="status_user" class="form-control"></select>
+                              </div>
+                              <div class="form-group col-md-4">
+                                 <label for="email">Perfil</label>
+                                 <select id="type_user" class="form-control" name="type_user"></select>
+                              </div>
+                              <div class="post-actions col-md-12 row">
+                                 <div class="d-flex col-md-3">
+                                    <button type="button" class="btn btn-secondary btn-block" data-toggle="modal" data-target="#passwordModal">
+                                       <i class="mr-1 fa fa-lock" aria-hidden="true"></i> Alterar senha
+                                    </button>
+                                 </div>
+                                 <div class="d-flex col-md-3">
+                                    <button type="submit" class="btn btn-success btn-block"><i class="mr-1 fa fa-save" aria-hidden="true"></i> Salvar</button>
+                                 </div>
+                              </div>
+                           </form>
+                           <input type="hidden" id="editMessage" valeue="" />
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <form id="updatePhoto" action="" style="height: 333px" method="POST" enctype="multipart/form-data">
+                           <input type="hidden" id="photoUserId" name="photoUserId" value="" />
+                           <img id="image-display" src="" alt="User Photo" class="image-display d-block img-fluid mb-3" />
+                           <div class="urlPhoto">
+                              <input type="text" id="photoURL" />
+                           </div>
+                           <div class="row justify-content-center">
+                              <input type="file" name="fileToUpload" accept="image/*" id="fileToUpload" />
+                              <span id="btnEditPhoto" class="btn btn-primary col-md-2 mr-1" title="Alterar Foto"> <i class="fa fa-edit" aria-hidden="true"></i></span>
+                              <span id="btnDeletePhoto" class="btn btn-danger col-md-2 mr-1" title="Excluir Foto"> <i class="fa fa-remove" aria-hidden="true"></i></span>
+
+                              <button type="submit" id="btnSavePhoto" class="btn btn-success col-md-2" title="Salvar Foto"><i class="fa fa-save" aria-hidden="true"></i></button>
+                           </div>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </section>
+         </main>
+      </section>
+
+      <!-- Password Modal -->
+      <div class="modal fade" id="passwordModal">
+         <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+               <div class="modal-header bg-primary text-white">
+                  <h5 class="modal-title">Alterar Senha</h5>
+                  <button class="close" data-dismiss="modal"><span>&times;</span></button>
+               </div>
+               <div class="modal-body">
+                  <form id="passwordForm" action="" method="put">
+                     <div class="form-group">
+                        <label for="new-password">Nova Senha</label>
+                        <input id="new-password" name="new-password" type="password" class="form-control" />
+                     </div>
+                     <div class="form-group">
+                        <label for="confirm-password">Confirmar Senha</label>
+                        <input type="password" name="confirm-password" id="confirm-password" class="form-control" />
+                     </div>
+
+                     <div class="modal-footer">
+                        <button class="btn btn-seconday btn-modal" data-dismiss="modal">Fechar</button>
+                        <button type="submit" class="btn btn-primary btn-modal">Salvar</button>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!-- Modal de Aviso -->
+      <div class="modal fade" id="modal-message" tabindex="-1" role="dialog" aria-labelledby="modal-message-label" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="modal-message-label">Aviso</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <p id="modal-message-text"></p>
+               </div>
+               <div class="modal-footer">
+                  <button id="btn-fechar" type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!-- Modal Confirm -->
+      <div class="modal fade" id="modal-confirm" tabindex="-1" role="dialog" aria-labelledby="modal-confirm-label" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="modal-confirm-label">Sair do site?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <p id="modal-confirm-message"></p>
+               </div>
+               <div class="modal-footer">
+                  <button id="cancel-confirm" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                  <button id="confirm-confirm" type="button" class="btn btn-danger">Deixar</button>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <script src="./js/popper.min.js"></script>
+      <script src="./js/bootstrap.min.js"></script>
+      <!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+
+      <script src="./js/sidebar.js"></script>
+      <script src="./js/script.js"></script>
+      <script src="./js/users/editUser.js"></script>
+      <script src="./js/users/uploadUserPhoto.js"></script>
+      <script src="https://unpkg.com/notie"></script>
+
+      <script>
+         $(document).ready(function () {
+            $("#phone").inputmask("(99) 99999-9999", {
+               clearMaskOnLostFocus: false,
+            });
+         });
+
+         const inputTypeUser = document.getElementById("type_user");
+         const inputStatusUser = document.getElementById("status_user");
+
+         if (typeUserId !== 1) {
+            inputTypeUser.setAttribute("disabled", "disabled");
+            inputStatusUser.setAttribute("disabled", "disabled");
+         }
+      </script>
+   </body>
+</html>

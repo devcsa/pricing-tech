@@ -1,0 +1,280 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat");
+
+html,
+body {
+   width: 100vw;
+   height: 100vh;
+}
+
+html {
+   background: url("../img/business_1.jpeg") right / contain no-repeat;
+}
+
+body {
+   background-color: rgba(0, 0, 0, 0.3);
+   font-family: "Poppins", sans-serif;
+   color: #242424;
+}
+
+button {
+   font-family: "Poppins", sans-serif;
+   font-size: 16px;
+   cursor: pointer;
+}
+
+label {
+   margin-bottom: 5px;
+}
+
+.page-container {
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   width: 100%;
+   height: 100vh;
+   background-color: rgba(255, 255, 255, 0.7);
+   overflow: hidden;
+   /* border: 1px red solid; */
+}
+
+.form-container {
+   position: relative;
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   width: max(85%);
+   height: 480px;
+   padding: 16px;
+   overflow: hidden;
+   background-image: linear-gradient(#005eff, #689cf8);
+   border-radius: 20px;
+}
+
+.logo-login {
+   display: flex;
+   justify-content: center;
+   margin: 5px 0 40px 0;
+}
+
+.logo-login img {
+   padding: 0;
+   height: 40px;
+}
+
+.auth-form {
+   position: absolute;
+   width: 100%;
+   max-width: 300px;
+   padding: 16px 30px !important;
+   opacity: 0;
+   pointer-events: none;
+   transition: opacity 300ms, transform 500ms;
+}
+
+.auth-form.active {
+   opacity: 1;
+   transform: translateY(0) !important;
+   pointer-events: all;
+}
+
+#login-form.auth-form {
+   transform: translateY(-100%);
+}
+
+#sign-up-form.auth-form,
+#forgot-pw-form.auth-form {
+   transform: translateY(100%);
+}
+
+.auth-form__header {
+   /* border: 1px red solid; */
+   margin-bottom: 2rem;
+}
+
+.auth-form__header h1 {
+   font-size: 20px;
+   font-weight: 500;
+   color: #fff;
+}
+
+.auth-form__footer {
+   display: flex;
+   justify-content: center;
+   margin-bottom: 10px;
+   margin-top: 10px;
+}
+
+.auth-form__header p,
+.auth-form__footer p {
+   margin: 8px 0 16px;
+   font-size: 14px;
+   color: #777;
+}
+
+.auth-form__footer p {
+   margin: 16px 0 0;
+}
+
+.centralize {
+   display: flex;
+   justify-content: right;
+   /* border: 1px #fff solid; */
+   margin-top: -5px;
+}
+
+.centralize a {
+   color: #fff;
+   text-decoration: none;
+   font-size: 0.8rem;
+}
+
+.auth-form button[type="button"] {
+   background-color: transparent;
+   border: none;
+   text-decoration: underline;
+   font-size: 14px;
+   font-weight: 600;
+   padding: 0;
+   transition: opacity 300ms ease-in-out;
+}
+
+.auth-form button[type="button"]:hover {
+   opacity: 0.8;
+}
+
+.auth-form button[type="submit"] {
+   background-color: #005eff;
+   color: #fff;
+   font-weight: 600;
+   border: none;
+   border-radius: 8px;
+   padding: 10px 35px;
+   font-size: 14px;
+   transition: background-color 300ms ease-in-out;
+}
+
+.auth-form button[type="submit"]:hover {
+   background-color: #92e4f7;
+   color: #000;
+}
+
+.form-group {
+   display: flex;
+   flex-direction: column;
+   gap: 8px;
+   margin-bottom: 16px;
+}
+
+.form-group--2-col {
+   row-gap: 0;
+   margin-bottom: 0;
+}
+
+.form-group--2-col > .form-group {
+   flex-basis: 50%;
+}
+
+.form-group label {
+   color: #fff;
+   font-size: 14px;
+}
+
+.form-group input {
+   background-color: #f9f9f9;
+   border: 1px solid #ccc;
+   border-radius: 8px;
+   padding: 8px 12px;
+   transition: background-color 300ms ease-in-out;
+   width: 340px;
+}
+
+.form-group input:hover,
+.form-group input:active {
+   background-color: #fff;
+}
+
+.form-group .error-msg {
+   display: none;
+   color: red;
+   font-size: 12px;
+   margin-top: 4px;
+}
+
+.btn-fixo {
+   background: #005eff;
+   border: 0;
+   border-radius: 10px;
+   box-shadow: rgba(0, 0, 0, 0.3) 0 5px 15px;
+   box-sizing: border-box;
+   color: #fff;
+   cursor: pointer;
+   font-family: Montserrat, sans-serif;
+   font-size: 0.9em;
+   margin: 5px;
+   padding: 12px 30px !important;
+   text-align: center;
+   user-select: none;
+   -webkit-user-select: none;
+   touch-action: manipulation;
+   transition: 0.25s ease-in-out;
+   margin-top: 1rem;
+}
+
+.btn-fixo:hover,
+.forgot-password:hover {
+   scale: 1.05;
+}
+
+/*
+  we're going to use new syntax here for media queries that is supported in most modern browsers now
+  old syntax for this would have been: @media (min-width: 450px) { ... }
+*/
+@media (width >= 450px) {
+   .auth-form {
+      padding: 15px;
+      max-width: 400px;
+   }
+
+   .form-container {
+      max-width: 450px;
+   }
+
+   .form-group--2-col {
+      flex-direction: row;
+   }
+}
+
+@media (width >= 1180px) {
+   .page-container {
+      max-width: 600px;
+      background-color: #fff;
+      box-shadow: 4px 0 10px 0 rgba(0, 0, 0, 0.1);
+   }
+
+   .form-container {
+      max-width: 460px;
+   }
+
+   .auth-form {
+      padding: 40px;
+   }
+}
+
+@media screen and (max-width: 1179px) {
+   html {
+      background: url("../img/business_1.jpeg") center / cover no-repeat;
+   }
+}
+
+@media screen and (max-width: 449px) {
+   .auth-form {
+      padding: 15px 5px !important;
+   }
+
+   .form-group input {
+      padding: 5px 8px;
+      width: 290px;
+   }
+}
