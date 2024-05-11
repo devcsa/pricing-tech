@@ -2,7 +2,7 @@ const con = require("../config/connection");
 
 const getAll = async () => {
    return new Promise((resolve, reject) => {
-      con.query("SELECT * FROM produtos ORDER BY produto ASC", (err, result) => {
+      con.query("SELECT * FROM produtos ORDER BY commodity, categoria, produto ASC", (err, result) => {
          if (err) {
             reject(`Erro ao recuperar os dados: ${err}`);
          } else {

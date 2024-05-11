@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+   <head>
+      <meta charset="UTF-8" />
+      <title>Pricing Tech - Impostos</title>
+      <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" />
+
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+      <link rel="stylesheet" href="./css/vendor/bootstrap.css" />
+      <link rel="stylesheet" href="./css/sidebar.css" />
+
+      <link rel="stylesheet" href="./css/style.css" />
+      <link rel="stylesheet" href="./css/table.css" />
+
+      <!-- <link rel="stylesheet" href="./css/vendor/font-awesome.min.css" /> -->
+
+      <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css" />
+
+      <link rel="shortcut icon" href="./img/favicon.png" type="image/png" />
+
+      <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" /> -->
+      <link rel="stylesheet" href="https://unpkg.com/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" />
+      <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.1.0/themes/reset-min.css" />
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.1.0/themes/algolia-min.css" /> -->
+      <link rel="stylesheet" href="https://unpkg.com/hover.css@2.3.2/css/hover.css" />
+
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.min.css" />
+      <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.css" />
+
+      <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.min.js"></script>
+      <script src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.22.5/dist/extensions/resizable/bootstrap-table-resizable.min.js"></script>
+      <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
+      <script src="https://unpkg.com/bootstrap-table@1.22.1/dist/extensions/export/bootstrap-table-export.min.js"></script>
+      <script src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table-locale-all.min.js"></script>
+   </head>
+   <body>
+      <div id="sidebar" class="sidebar close"></div>
+      <section class="home-section">
+         <header class="home-header">
+            <div class="text">
+               <img src="./img/logo_branco-azul.png" alt="logo-pt" />
+            </div>
+            <div class="header-notification">
+               <a href="#" class="notification">
+                  <i class="bx bxs-bell"></i>
+                  <span class="num">1</span>
+               </a>
+               <a href="#" class="profile" title="Minha Conta" onclick="editProfile()">
+                  <img id="fotoPerfil" src="./img/user.png" alt="" />
+               </a>
+            </div>
+            <div class="menu-mobile">
+               <i class="bx bx-menu" id="menu-mobile"></i>
+            </div>
+         </header>
+         <div class="container-title">
+            <h1>Lista de Impostos</h1>
+         </div>
+         <div id="table-impostos" class="table-container">
+            <table
+               id="table"
+               data-toolbar="#toolbar"
+               data-search="true"
+               data-show-refresh="true"
+               data-show-toggle="true"
+               data-show-fullscreen="true"
+               data-show-columns="true"
+               data-show-columns-toggle-all="true"
+               data-show-export="true"
+               data-detail-formatter="detailFormatter"
+               data-detail-view="true"
+               data-checkbox="true"
+               data-click-to-select="true"
+               data-minimum-count-columns="4"
+               data-show-pagination-switch="true"
+               data-pagination="true"
+               data-id-field="id"
+               data-page-size="20"
+               data-page-list="[20, 30, 50, 100, all]"
+               data-show-footer="false"
+               data-side-pagination="client"
+               data-resizable="true"
+               data-response-handler="responseHandler"></table>
+         </div>
+      </section>
+
+      <!-- Modal Message-->
+      <div class="modal fade" id="mensagem" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div id="tipoMsg" class="modal-header">
+                  <h5 id="tipoCap" class="modal-title"></h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true"></span>
+                  </button>
+               </div>
+               <div id="textoMsg" style="color: #000" class="modal-body"></div>
+               <div class="modal-footer">
+                  <button id="btnModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal"></button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- End Modal Message-->
+
+      <!-- Modal Confirm -->
+      <div class="modal fade" id="modal-confirm" tabindex="-1" role="dialog" aria-labelledby="modal-confirm-label" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div id="tipoMsg" class="modal-header">
+                  <h5 class="modal-title" id="modal-confirm-label">Sair do site?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <p id="modal-confirm-message"></p>
+               </div>
+               <div class="modal-footer">
+                  <button id="cancel-confirm" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                  <button id="confirm-confirm" type="button" class="btn btn-danger">Deixar</button>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <script
+         src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/6.0.0/bootbox.min.js"
+         integrity="sha512-oVbWSv2O4y1UzvExJMHaHcaib4wsBMS5tEP3/YkMP6GmkwRJAa79Jwsv+Y/w7w2Vb/98/Xhvck10LyJweB8Jsw=="
+         crossorigin="anonymous"
+         referrerpolicy="no-referrer"></script>
+
+      <!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
+      <script src="./js/popper.min.js"></script>
+      <script src="./js/bootstrap.min.js"></script>
+      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.min.js"></script> -->
+      <!-- <script src="./js/main.js"></script> -->
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+      <script src="https://cdn.datatables.net/2.0.7/js/dataTables.js"></script>
+      <script src="https://cdn.datatables.net/2.0.7/js/dataTables.bootstrap5.js"></script>
+
+      <script src="./js/sidebar.js"></script>
+      <script src="./js/impostos/listImpostos.js"></script>
+      <script src="./js/script.js"></script>
+
+      <!-- <script>
+         $(document).ready(function () {
+            // Seleciona todos os elementos da tabela com o atributo data-field
+            var elementosComDataField = document.querySelectorAll("#table-impostos [data-field]");
+
+            elementosComDataField.forEach(function (elemento) {
+               var valorDataField = elemento.getAttribute("data-field");
+               console.log("Valor do data-field:", valorDataField);
+            });
+         });
+      </script> -->
+   </body>
+</html>

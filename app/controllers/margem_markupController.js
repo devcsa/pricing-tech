@@ -10,8 +10,8 @@ const getAll = async (req, res) => {
       segmento: margem_markup.segmento,
       cod_produto: margem_markup.cod_produto,
       produto: margem_markup.produto,
-      pct_margem: margem_markup.pct_margem,
-      pct_markup: margem_markup.pct_markup,
+      pct_margem: margem_markup.pct_margem / 100,
+      pct_markup: margem_markup.pct_markup / 100,
    }));
 
    return res.status(200).json(data);

@@ -38,6 +38,8 @@ const routes = [
    require("./app/routes/origem_destinoRoutes"),
    require("./app/routes/impostosRoutes"),
    require("./app/routes/uploadUserPhotoRoutes"),
+   require("./app/routes/settingPriceRoutes"),
+   require("./app/routes/regimesRoutes"),
 ];
 
 // Loop para registrar as rotas

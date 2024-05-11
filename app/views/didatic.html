@@ -15,7 +15,8 @@
       <link rel="stylesheet" href="./css/didatic.css" />
       <link rel="stylesheet" href="./css/bootstrap.min.css" />
 
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
       <script
          src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
@@ -54,9 +55,83 @@
             <i id="add-simulation" title="Adicionar Simulação" class="bx bx-list-plus"></i>
          </div>
          <input id="qtde-simulation" type="hidden" value="0" />
-         <!-- <input id="search-produto" type="text" name="search-produto" /> -->
          <main id="container" class="container-simulation"></main>
       </section>
+
+      <!-- Filter Modal -->
+      <div class="modal fade" id="filterRotaModal">
+         <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+               <div class="modal-header bg-info text-white">
+                  <h5 class="modal-title">Selecionar Rota</h5>
+                  <button class="btn-close" data-dismiss="modal"></button>
+               </div>
+               <div class="modal-body ml-3 mr-3">
+                  <input id="simulation-number" type="hidden" />
+                  <form id="filterRotaForm" class="row g-3" action="" method="post">
+                     <div class="col-md-2">
+                        <label for="micro_regiao">Micro Região</label>
+                        <select class="form control select2-micro_regiao" name="micro_regiao" id="micro_regiao">
+                           <option value="0" selected></option>
+                        </select>
+                     </div>
+                     <div class="col-md-5">
+                        <label for="segmento">Segmento</label>
+                        <select class="select2-segmento" name="segmento" id="segmento">
+                           <option value="0" selected></option>
+                        </select>
+                     </div>
+
+                     <div class="col-md-5">
+                        <label for="produto">Produto</label>
+                        <select class="select2-produto" name="produto" id="produto">
+                           <option value="0" selected></option>
+                        </select>
+                     </div>
+
+                     <div class="">
+                        <h6 class="mt-3">Detalhes da busca</h6>
+                     </div>
+
+                     <div class="col-md-2">
+                        <label for="micro-regiao-filter">Micro Região</label>
+                        <input class="text-start" type="text" disabled name="micro-regiao-filter" id="micro-regiao-filter" />
+                     </div>
+                     <div class="col-md-5">
+                        <label for="segmento-filter">Segmento</label><br />
+                        <input class="text-start" type="text" disabled name="segmento-filter" id="segmento-filter" />
+                     </div>
+                     <div class="col-md-5">
+                        <label for="produto-filter">Produto</label>
+                        <input class="text-start" type="text" disabled name="produto-filter" id="produto-filter" />
+                     </div>
+
+                     <div class="col-md-5">
+                        <label for="origem-destino">Origem / Destino</label>
+                        <select class="select2-origem_destino" disabled name="origem-destino" id="origem-destino"></select>
+                     </div>
+                     <div class="col-md-3">
+                        <label for="ncm">NCM</label><br />
+                        <input class="text-start" type="text" disabled name="ncm" id="ncm" />
+                     </div>
+                     <div class="col-md-2">
+                        <label for="origem">Origem</label>
+                        <input class="text-start" type="text" disabled name="origem" id="origem" />
+                     </div>
+                     <div class="col-md-2">
+                        <label for="cesta-basica">Cesta Básica</label>
+                        <input class="text-start" type="text" disabled name="cesta-basica" id="cesta-basica" />
+                     </div>
+
+                     <div class="modal-footer mt-4 col-md-12">
+                        <button class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                        <button type="button" id="btn-filter" class="btn btn-primary">Buscar</button>
+                     </div>
+                  </form>
+               </div>
+            </div>
+         </div>
+      </div>
 
       <!-- Modal Confirm -->
       <div class="modal fade" id="modal-confirm" tabindex="-1" role="dialog" aria-labelledby="modal-confirm-label" aria-hidden="true">
@@ -64,8 +139,8 @@
             <div class="modal-content">
                <div class="modal-header">
                   <h5 class="modal-title" id="modal-confirm-label">Sair do site?</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                     <span aria-hidden="true">&times;</span>
+                  <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar">
+                     <span aria-hidden="true"></span>
                   </button>
                </div>
                <div class="modal-body">

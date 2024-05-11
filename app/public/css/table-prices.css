@@ -1,0 +1,148 @@
+.container {
+   width: 100%;
+   padding: 0 12px;
+   margin: 0 100px;
+}
+
+.table-container {
+   /* border: 1px red solid; */
+   display: flex;
+   justify-content: center;
+   margin-top: 30px;
+   width: 100%;
+}
+
+.bootstrap-table {
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   width: max(900px) !important;
+}
+
+.fixed-table-body {
+   display: flex;
+   justify-content: center;
+   width: max(900px);
+   /* margin-left: -150px; */
+}
+
+.fixed-table-pagination {
+   flex-direction: row;
+   margin-top: 1.2rem;
+   width: max(810px);
+}
+
+.pagination-info {
+   display: none;
+}
+
+.page-list {
+   font-size: 0.8rem;
+   margin-left: 100px;
+}
+
+.fixed-table-toolbar {
+   width: max(810px);
+   margin-bottom: 10px;
+}
+
+.fixed-table-toolbar button {
+   font-size: 13px;
+   line-height: 1rem;
+   height: 2.2rem;
+   background-color: #777676;
+}
+
+.fixed-table-toolbar input {
+   font-size: 14px;
+   line-height: 1rem;
+   height: 2.3rem;
+}
+
+#table th,
+.th-inner {
+   display: flexbox;
+   background-color: #6e6e6e;
+   color: #fff;
+   flex-wrap: wrap !important;
+   font-size: 0.7rem;
+   /* width: 100px !important; */
+   white-space: normal !important;
+   height: 40px !important;
+
+   /* font-weight: 600;
+   width: 100px !important;
+
+
+    */
+}
+
+th {
+   padding: 0 !important;
+   text-align: center !important;
+}
+
+.th-inner {
+   width: 100px;
+   display: flex;
+   padding: 5px !important;
+   vertical-align: middle !important;
+   text-align: center !important;
+   align-content: center;
+}
+
+.origem_destino .th-inner {
+   width: 170px;
+   padding: 5px !important;
+}
+
+.btn-action-delete .th-inner {
+   width: 50px;
+   text-align: center !important;
+   align-content: center;
+}
+
+.btn-action-delete i {
+   color: red !important;
+}
+
+.active > .page-link,
+.page-link.active {
+   z-index: 3;
+   color: var(--bs-pagination-active-color);
+   background-color: #4a8c9c !important;
+   border-color: #4a8c9c !important;
+   line-height: 1rem !important;
+}
+
+.page-item a {
+   color: #4a8c9c !important;
+}
+
+.page-item.active a {
+   color: #fff !important;
+}
+
+.dropdown-toggle {
+   line-height: 1.2rem;
+   background-color: #4a8c9c;
+   border-color: #4a8c9c;
+}
+
+.pagination ul {
+   flex-direction: row;
+   font-size: 0.8rem;
+}
+
+.pagination-detail {
+   font-size: 0.8rem;
+}
+
+.btn-group button {
+   background-color: #4a8c9c;
+   border-color: #4a8c9c;
+}
+
+.btn-group button:hover {
+   background-color: #1c546c;
+}

@@ -6,12 +6,12 @@ side_bar.innerHTML = `<div class="logo-details">
 </div>
 <ul class="nav-links">
 <li class="menu-1">
-<a href="home.html?menuActive=menu-1">
+<a href="home.html">
 <i class="bx bx-store"></i>
 <span class="link_name">Home</span>
 </a>
 <ul class="sub-menu blank">
-<li class="li-blank"><a class="link_name" href="home.html?menuActive=menu-1">Home</a></li>
+<li class="li-blank"><a class="link_name" href="home.html">Home</a></li>
 </ul>
 </li>
 <li class="menu-2">
@@ -40,18 +40,18 @@ side_bar.innerHTML = `<div class="logo-details">
 </div>
 <ul class="sub-menu">
 <span class="link_name">Simuladores</span>
-<li><a href="didatic.html?menuActive=menu-3">Didático</a></li>
+<li><a href="didatic.html">Didático</a></li>
 <li><a href="#">Horizontal</a></li>
 <li><a href="#">Multi-Region</a></li>
 </ul>
 </li>
 <li class="menu-4">
-<a href="users.html?menuActive=menu-4">
+<a href="users.html">
 <i class="bx bx-user"></i>
 <span class="link_name">Usuários</span>
 </a>
 <ul class="sub-menu blank">
-<li class="li-blank"><a class="link_name" href="users.html?menuActive=menu-4">Usuários</a></li>
+<li class="li-blank"><a class="link_name" href="users.html">Usuários</a></li>
 </ul>
 </li>
 <li class="mt-4 menu-5">
@@ -64,9 +64,9 @@ side_bar.innerHTML = `<div class="logo-details">
 </div>
 <ul class="sub-menu">
 <span class="link_name">Parametrizações</a></span>
-<li><a href="#">Preços</a></li>
-<li><a href="#">Impostos</a></li>
-<li><a href="#">Margens e Markups</a></li>
+<li><a href="settings-prices.html">Preços</a></li>
+<li><a href="impostos.html">Impostos</a></li>
+<li><a href="margens.html">Margens e Markups</a></li>
 <li><a href="#">Encargos Financeiros</a></li>
 <li><a href="#">Lista de Preços</a></li>
 <li><a href="#">Rotas</a></li>
@@ -84,19 +84,47 @@ side_bar.innerHTML = `<div class="logo-details">
 </ul>`;
 
 $(document).ready(function () {
-   const params = new URLSearchParams(window.location.search);
-   var menu_active = params.get("menuActive");
+   var pagePathName = window.location.pathname;
 
-   if (menu_active == null) {
-      menu_active = "menu-1";
+   switch (pagePathName) {
+      case "/home.html":
+         menu_active = "menu-1";
+         break;
+      case "/didatic.html":
+         menu_active = "menu-3";
+         break;
+      case "/users.html":
+         menu_active = "menu-4";
+         break;
+      case "/impostos.html":
+         menu_active = "menu-5";
+         break;
+      case "/margens.html":
+         menu_active = "menu-5";
+         break;
+      case "/settings-prices.html":
+         menu_active = "menu-5";
    }
-
    document.querySelector(`.${menu_active}`).classList.add("menu-active");
-
-   var url = window.location.href;
-   var cleanUrl = url.split("?")[0];
-   window.history.replaceState({}, document.title, cleanUrl);
 });
+
+// $(document).ready(function () {
+//    const params = new URLSearchParams(window.location.search);
+//    var menu_active = params.get("menuActive");
+
+//    if (menu_active == null) {
+//       if (window.location.pathname.includes("impostos")) {
+//          menu_active = "menu-5";
+//       }
+//       // menu_active = "menu-1";
+//    }
+
+//    document.querySelector(`.${menu_active}`).classList.add("menu-active");
+
+//    var url = window.location.href;
+//    var cleanUrl = url.split("?")[0];
+//    window.history.replaceState({}, document.title, cleanUrl);
+// });
 
 let arrow = document.querySelectorAll(".arrow");
 for (var i = 0; i < arrow.length; i++) {

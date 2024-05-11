@@ -20,7 +20,7 @@ const fetchSearchProduto = async (searchProduto, simulation) => {
       }, 1000);
    }
 
-   var produto = document.getElementById("produto");
+   var produto = document.getElementById("produto-" + simulation);
 
    produto.innerHTML = "";
    produto.textContent = searchProduto;
@@ -50,7 +50,7 @@ const fetchSearchProduto = async (searchProduto, simulation) => {
    });
 };
 
-const fetchMicroRegiao = async () => {
+const fetchMicroRegiao = async (simulation) => {
    const response = await fetch("/microRegiao_All", {
       method: "GET",
       headers: {
@@ -68,7 +68,7 @@ const fetchMicroRegiao = async () => {
       }, 1000);
    }
 
-   var micro_regiao = document.getElementById("micro_regiao");
+   var micro_regiao = document.getElementById("micro_regiao-" + simulation);
 
    result.forEach(function (rowData) {
       var option = document.createElement("option");
@@ -78,7 +78,7 @@ const fetchMicroRegiao = async () => {
    });
 };
 
-const fetchSegmento = async () => {
+const fetchSegmento = async (simulation) => {
    const response = await fetch("/segmento_All", {
       method: "GET",
       headers: {
@@ -96,7 +96,7 @@ const fetchSegmento = async () => {
       }, 1000);
    }
 
-   var segmento = document.getElementById("segmento");
+   var segmento = document.getElementById("segmento-" + simulation);
 
    result.forEach(function (rowData) {
       var option = document.createElement("option");
@@ -106,7 +106,7 @@ const fetchSegmento = async () => {
    });
 };
 
-const fetchProduto = async () => {
+const fetchProduto = async (simulation) => {
    const response = await fetch("/produto_All", {
       method: "GET",
       headers: {
@@ -124,25 +124,9 @@ const fetchProduto = async () => {
       }, 1000);
    }
 
-   var produto = document.getElementById("produto");
-   var optgroup = document.createElement("optgroup");
-
-   var group = "";
+   var produto = document.getElementById("produto-" + simulation);
 
    result.forEach(function (rowData) {
-      if (group == "") {
-         group = rowData.categoria;
-         optgroup.setAttribute("label", group);
-         produto.appendChild(optgroup);
-      } else {
-         if (group != rowData.categoria) {
-            group = rowData.categoria;
-            optgroup = document.createElement("optgroup");
-            optgroup.setAttribute("label", group);
-            produto.appendChild(optgroup);
-         }
-      }
-
       var option = document.createElement("option");
       option.setAttribute("value", rowData.id);
       option.setAttribute("data-product-group", rowData.product_group);
@@ -155,7 +139,7 @@ const fetchProduto = async () => {
       // Adicionar título com descrição completa
       option.setAttribute("title", fullText);
 
-      optgroup.appendChild(option);
+      produto.appendChild(option);
    });
 
    // Adicionar evento change para ajustar o textContent após a seleção
@@ -187,9 +171,6 @@ const fetchPriceList = async (id, simulation) => {
          window.location.href = "index.html";
       }, 1000);
    }
-
-   document.getElementById("ncm").value = result.ncm;
-   document.getElementById("origem").value = result.tipo_produto;
 
    document.getElementById(`${simulation}-price-list`).value = result.preco_unitario;
    document.getElementById(`ncm-${simulation}`).value = result.ncm;
@@ -301,8 +282,7 @@ const getOrigemDestino = async (rota, simulation) => {
       }, 1000);
    }
 
-   var origemDestino = document.getElementById("origem-destino");
-   var origemDestinoSimulacao = document.getElementById("origem-destino-" + simulation);
+   var origemDestino = document.getElementById("origem-destino-" + simulation);
 
    res.forEach(function (row) {
       var option = document.createElement("option");
@@ -315,11 +295,10 @@ const getOrigemDestino = async (rota, simulation) => {
          option.style.fontWeight = "bold";
          option.style.color = "green";
          origemDestinoId = row.id;
-         origemDestinoSimulacao.value = rota;
       }
    });
 
-   await fetchImpostos(origemDestinoId, simulation);
+   fetchImpostos(origemDestinoId, simulation);
 };
 
 const fetchImpostos = async (origemDestinoId, simulation) => {
@@ -356,8 +335,6 @@ const fetchImpostos = async (origemDestinoId, simulation) => {
       }, 1000);
    }
 
-   document.getElementById("cesta-basica").value = result.cesta_basica;
-
    document.getElementById(`${simulation}-pct-pis-cofins`).value = result.pct_pis_cofins * 100;
    document.getElementById(`${simulation}-pct-pis-cofins-at`).value = result.pct_pis_cofins * 100;
    document.getElementById(`${simulation}-pct-pis-cofins-pv`).value = result.pct_pis_cofins * 100;
@@ -365,50 +342,5 @@ const fetchImpostos = async (origemDestinoId, simulation) => {
    document.getElementById(`${simulation}-pct-ipi`).value = result.pct_ipi * 100;
    document.getElementById(`${simulation}-pct-icms-saida-pv`).value = result.pct_icms_interno * 100;
 
-   await fetchRegimesEspeciais(origemDestinoId, simulation);
-};
-
-const fetchRegimesEspeciais = async (origemDestinoId, simulation) => {
-   const tipo_produto = document.getElementById(`origem-${simulation}`);
-   const ncm = document.getElementById(`ncm-${simulation}`);
-   const cesta_basica = document.getElementById(`cesta-basica-${simulation}`);
-   const segmento_id = document.getElementById(`segmento-${simulation}`);
-
-   const queryFilter = {
-      tipo_produto: tipo_produto.value,
-      ncm: ncm.value,
-      cesta_basica: cesta_basica.value,
-      segmento_id: segmento_id.value,
-      origem_destino_id: origemDestinoId,
-   };
-
-   const filterString = new URLSearchParams(queryFilter).toString();
-
-   const response = await fetch(`/impostos?${filterString}`, {
-      method: "GET",
-      headers: {
-         "content-type": "application/json",
-         Authorization: `Bearer ${tokenUser}`,
-      },
-   });
-
-   const result = await response.json();
-
-   if (response.status == 404) {
-      notie.alert({ type: "error", text: "Impostos não encontrados!" });
-      return;
-   }
-
-   if (!response.ok) {
-      notie.alert({ type: "error", text: "Realize login para continuar!" });
-      setTimeout(() => {
-         window.location.href = "index.html";
-      }, 1000);
-   }
-
    calcForm(simulation);
 };
-
-fetchMicroRegiao();
-fetchSegmento();
-fetchProduto();

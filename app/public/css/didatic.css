@@ -15,6 +15,17 @@ input {
    font-size: 0.8rem !important;
 }
 
+span.select2-container {
+   font-size: 0.8rem;
+   width: 100% !important;
+   text-align: left !important;
+   /* z-index: 10050; */
+}
+
+#filterRotaForm input {
+   width: 100%;
+}
+
 .simulacao {
    display: flex;
    justify-content: space-between;
@@ -22,7 +33,7 @@ input {
    align-items: center;
    /* border: 1px red solid; */
 }
-
+/*
 .btn-filter {
    margin-top: 20px;
    margin-bottom: 0 !important;
@@ -60,7 +71,7 @@ input {
    padding: 2px !important;
    text-align: left;
    height: 28px !important;
-}
+} */
 
 .simulation-filter {
    display: flex;
@@ -76,6 +87,7 @@ input {
 
 span ul li {
    font-size: 0.7rem;
+   width: 100%;
 }
 
 span span input[type="search"].select2-search__field {

@@ -4771,7 +4771,7 @@ fieldset:disabled .btn {
 .modal-body {
    position: relative;
    flex: 1 1 auto;
-   padding: 1rem;
+   padding: 0.5rem;
 }
 .modal-footer {
    display: flex;

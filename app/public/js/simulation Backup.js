@@ -1,19 +1,6 @@
 const mainContainer = document.getElementById("container");
 const qtde_simulation = document.getElementById("qtde-simulation");
 const simulationAdd = document.getElementById("add-simulation");
-const simulationFilter = document.getElementById("simulation-number");
-
-const microRegiaoFilter = document.getElementById("micro-regiao-filter");
-const produtoFilter = document.getElementById("produto-filter");
-const segmentoFilter = document.getElementById("segmento-filter");
-const origemDestinoFilter = document.getElementById("origem-destino");
-const ncmFilter = document.getElementById("ncm");
-const origemFilter = document.getElementById("origem");
-const cestaBasicaFilter = document.getElementById("cesta-basica");
-
-var searching = 0;
-
-// $.fn.modal.Constructor.prototype.enforceFocus = function () {};
 
 // document.addEventListener("keypress", (event) => {
 //    const tecla = event.keyCode;
@@ -58,7 +45,6 @@ function saveValuesForm(numberSimulation) {
 }
 
 simulationAdd.addEventListener("click", () => {
-   searching = 0;
    let simulation = Number(qtde_simulation.value);
 
    if (simulation == 0) {
@@ -86,19 +72,59 @@ function addSimulation(simulation) {
       <div class="num-simulacao">
          <h6>Simulação ${simulation}</h6>
          <div class="short-cut">
-            <i value="${simulation}" title="Filtrar Rota" class="showFilter bx bx-filter-alt"></i>
+            <i id="show-filter-${simulation}" title="Filtrar Rota" class="bx bx-filter-alt"></i>
             <i id="export-pdf-${simulation}" title="Exportar PDF Rota" class="bx bxs-file-export"></i>
             <i id="del-simulation-${simulation}" title="Remover Simulação" class="bx bx-list-minus"></i>
          </div>
       </div>
 
-      <input type="hidden" name="micro_regiao-${simulation}" id="micro_regiao-${simulation}" />
-      <input type="hidden" name="segmento-${simulation}" id="segmento-${simulation}"/ >
-      <input type="hidden" name="produto-${simulation}" id="produto-${simulation}"/ >
-      <input type="hidden" name="origem-destino-${simulation}" id="origem-destino-${simulation}" />
-      <input type="hidden" name="ncm-${simulation}" id="ncm-${simulation}" />
-      <input type="hidden" name="origem-${simulation}" id="origem-${simulation}" />
-      <input type="hidden" name="cesta-basica-${simulation}" id="cesta-basica-${simulation}" />
+
+      <div id="filters-${simulation}" class="simulation-filter" style="display: none";>
+         <div class="filter-simulador">
+            <div class="simulation-filter-1">
+               <div class="filter-micro_regiao">
+                  <label for="micro_regiao-${simulation}">Micro Região</label></br>
+                  <select class="select2-micro_regiao" name="micro_regiao-${simulation}" id="micro_regiao-${simulation}">
+                     <option value="0" selected></option>
+                  </select>
+               </div>
+               <div class="filter-segmento">
+                  <label for="segmento-${simulation}">Segmento</label></br>
+                  <select class="select2-segmento" name="segmento-${simulation}" id="segmento-${simulation}">
+                     <option value="0" selected></option>
+                  </select>
+               </div>
+            </div>
+            <div class="simulation-filter-2">
+               <div class="filter-produto">
+                  <label for="produto-${simulation}">Produto</label></br>
+                  <select class="select2-produto" name="produto-${simulation}" id="produto-${simulation}">
+                     <option value="0" selected></option>
+                  </select>
+               </div>
+
+               <div class="btn-filter">
+                  <button id="btn-filter-${simulation}" type="button" title="Filtrar" class="btn filter-btn">OK</button>
+               </div>
+            </div>
+         </div>
+
+         <div class="simulation-output">
+            <div class="filter-origem-destino">
+               <label for="origem-destino-${simulation}">Origem / Destino</label></br>
+               <select class="select2-origem_destino" name="origem-destino-${simulation}" id="origem-destino-${simulation}"></select>
+            </div>
+            <div class="output-ncm">
+               <label for="ncm-${simulation}">NCM</label></br>
+               <input type="text" disabled name="ncm-${simulation}" id="ncm-${simulation}" />
+            </div>
+            <div class="output-origem">
+               <label for="origem-${simulation}">Origem</label></br>
+               <input type="text" disabled name="origem-${simulation}" id="origem-${simulation}" />
+            </div>
+         </div>
+      </div>
+
 
       <div class="container-didatico">
          <form id="calcForm-${simulation}" class="">
@@ -433,60 +459,7 @@ function addSimulation(simulation) {
       }
    });
 
-   function selectRoute(filterNumber) {
-      const dataFilter = JSON.stringify({
-         micro_regiao: document.getElementById(`micro_regiao-${filterNumber}`).value,
-         segmento: document.getElementById(`segmento-${filterNumber}`).value,
-         produto: document.getElementById(`produto-${filterNumber}`).value,
-         origem_destino: document.getElementById(`origem-destino-${filterNumber}`).value,
-         ncm: document.getElementById(`ncm-${filterNumber}`).value,
-         origem: document.getElementById(`origem-${filterNumber}`).value,
-         cesta_basica: document.getElementById(`cesta-basica-${filterNumber}`).value,
-      });
-
-      // document.getElementById("select2-micro_regiao-container").textContent = "";
-      // document.getElementById("select2-segmento-container").textContent = "";
-      // document.getElementById("select2-produto-container").textContent = "";
-
-      document.getElementById("select2-micro_regiao-container").textContent = dataFilter.micro_regiao;
-      document.getElementById("select2-segmento-container").textContent = dataFilter.segmento;
-      document.getElementById("select2-produto-container").textContent = dataFilter.produto;
-
-      console.log(dataFilter);
-
-      simulationFilter.value = filterNumber;
-
-      microRegiaoFilter.textContent = dataFilter.micro_regiao;
-      produtoFilter.textContent = dataFilter.produto;
-      segmentoFilter.textContent = dataFilter.segmento;
-      origemDestinoFilter.value = dataFilter.origem_destino;
-      ncmFilter.value = dataFilter.ncm;
-      origemFilter.value = dataFilter.origem;
-      cestaBasicaFilter.value = dataFilter.cesta_basica;
-
-      $("#filterRotaModal").modal("show");
-      searching = 0;
-   }
-
-   document.addEventListener("click", function (e) {
-      if (searching == 0) {
-         if (e.target.classList.contains("showFilter") && e.target.getAttribute("value") !== null) {
-            let simulationNumber = e.target.getAttribute("value");
-            console.log(simulationNumber);
-            selectRoute(simulationNumber);
-            searching = searching + 1;
-         }
-      }
-   });
-
-   // showFilter.addEventListener("click", () => {
-   //    let simulationNumber = showFilter.split("-")[2];
-   //    alert(simulationNumber);
-   //    return;
-   // });
-
-   // selectRoute(split(showFilter));
-
+   const showFilter = document.getElementById(`show-filter-${simulation}`);
    const exportPDF = document.getElementById(`export-pdf-${simulation}`);
 
    exportPDF.addEventListener("click", () => {
@@ -509,54 +482,28 @@ function addSimulation(simulation) {
       }).save();
    });
 
-   // showFilter.addEventListener("click", () => {
-   //    const filterNumber = parseInt(deleteIcon.id.split("-")[2]);
-   //    // const filter = document.getElementById(`filters-${filterNumber}`);
+   showFilter.addEventListener("click", () => {
+      const filterNumber = parseInt(deleteIcon.id.split("-")[2]);
+      const filter = document.getElementById(`filters-${filterNumber}`);
 
-   //    const dataFilter = JSON.stringify({
-   //       micro_regiao: document.getElementById(`micro_regiao-${filterNumber}`).value,
-   //       segmento: document.getElementById(`segmento-${filterNumber}`).value,
-   //       produto: document.getElementById(`produto-${filterNumber}`).value,
-   //       origem_destino: document.getElementById(`origem-destino-${filterNumber}`).value,
-   //       ncm: document.getElementById(`ncm-${filterNumber}`).value,
-   //       origem: document.getElementById(`origem-${filterNumber}`).value,
-   //       cesta_basica: document.getElementById(`cesta-basica-${filterNumber}`).value,
-   //    });
+      if (filter.style.display == "none") {
+         filter.style.display = "flex";
+      } else {
+         filter.style.display = "none";
+      }
+   });
 
-   //    console.log(dataFilter);
-
-   //    simulationFilter.value = filterNumber;
-
-   //    microRegiaoFilter.textContent = dataFilter.micro_regiao;
-   //    produtoFilter.textContent = dataFilter.produto;
-   //    segmentoFilter.textContent = dataFilter.segmento;
-   //    origemDestinoFilter.value = dataFilter.origem_destino;
-   //    ncmFilter.value = dataFilter.ncm;
-   //    origemFilter.value = dataFilter.origem;
-   //    cestaBasicaFilter.value = dataFilter.cesta_basica;
-
-   //    $("#filterRotaModal").modal("show");
-   // });
-
-   const btnFilter = document.getElementById("btn-filter");
+   const btnFilter = document.getElementById(`btn-filter-${simulation}`);
 
    btnFilter.addEventListener("click", () => {
-      searching = 0;
-      const selectElement = document.getElementById("produto");
+      const selectElement = document.getElementById(`produto-${simulation}`);
       const selectedOption = selectElement.options[selectElement.selectedIndex];
       const productGroup = selectedOption.getAttribute("data-product-group");
       const category = selectedOption.getAttribute("data-category");
 
-      const microRegiao = document.getElementById("micro_regiao");
-      const segmento = document.getElementById("segmento");
-      const produto = document.getElementById("produto");
-
-      let produtoSelected = selectElement.options[selectElement.selectedIndex].textContent;
-      let microRegiaoOption = microRegiao.options[microRegiao.selectedIndex].textContent;
-      let segmentoOption = segmento.options[segmento.selectedIndex].textContent;
-
-      console.log(microRegiaoOption);
-      console.log(segmentoOption);
+      const microRegiao = document.getElementById(`micro_regiao-${simulation}`);
+      const segmento = document.getElementById(`segmento-${simulation}`);
+      const produto = document.getElementById(`produto-${simulation}`);
 
       const filter = {
          micro_regiao_id: Number(microRegiao.value),
@@ -566,33 +513,23 @@ function addSimulation(simulation) {
          category: category,
       };
 
-      console.log(filter);
-
       const queryString = new URLSearchParams(filter).toString();
 
-      microRegiaoFilter.value = microRegiaoOption;
-      produtoFilter.value = produtoSelected;
-      segmentoFilter.value = segmentoOption;
-      // origemDestinoFilter.value = "";
-      // ncmFilter.value = "";
-      // origemFilter.value = "";
-      // cestaBasicaFilter.value = "";
-
-      fetchPriceList(Number(produto.value), simulationFilter.value);
-      fetchMargem_Markup(queryString, simulationFilter.value);
-      fetchEncargoFinanceiro(queryString, simulationFilter.value);
-      fetchRota(queryString, simulationFilter.value);
-
-      microRegiaoFilter.value = "";
-      produtoFilter.textContent = "";
-      segmentoFilter.text = "";
+      fetchPriceList(Number(produto.value), simulation);
+      fetchMargem_Markup(queryString, simulation);
+      fetchEncargoFinanceiro(queryString, simulation);
+      fetchRota(queryString, simulation);
    });
 
-   $("select:not(.normal)").each(function () {
-      $(this).select2({
-         dropdownParent: $(this).parent(),
-      });
-   });
+   // const searchProduto = document.getElementById("search-produto");
+
+   // searchProduto.addEventListener("input", () => {
+   //    fetchSearchProduto(searchProduto.value, simulation);
+   // });
+
+   fetchMicroRegiao(simulation);
+   fetchSegmento(simulation);
+   fetchProduto(simulation);
 
    initializeSections();
 }
