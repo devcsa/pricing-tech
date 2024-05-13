@@ -12,19 +12,18 @@
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
       <link rel="stylesheet" href="./css/style.css" />
+      <link rel="stylesheet" href="./css/dashboard.css" />
 
       <link rel="stylesheet" href="./css/vendor/font-awesome.min.css" />
       <link rel="stylesheet" href="./css/vendor/bootstrap.css" />
 
       <link rel="stylesheet" href="./css/sidebar.css" />
 
-      <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css" />
-
       <link rel="shortcut icon" href="./img/favicon.png" type="image/png" />
    </head>
    <body>
       <div id="sidebar" class="sidebar close"></div>
-      <section class="home-section">
+      <section class="home-section" style="background: #5f5f8e">
          <header class="home-header">
             <div class="text">
                <img src="./img/logo_branco-azul.png" alt="logo-pt" />
@@ -42,11 +41,83 @@
                <i class="bx bx-menu" id="menu-mobile"></i>
             </div>
          </header>
-         <div class="container-title">
+
+         <!-- <div class="container-title">
             <h1>Home</h1>
-         </div>
+         </div> -->
          <main id="container" class="container-page">
-            <section id="list-users" class="section-users"></section>
+            <div id="wrapper" class="mt-5">
+               <div class="content-area">
+                  <div class="container-fluid">
+                     <div class="main">
+                        <div class="row sparkboxes mt-5 py-4">
+                           <div class="col-md-3">
+                              <div class="box box1">
+                                 <div class="details">
+                                    <h3>Top 10</h3>
+                                    <h4>PPAs</h4>
+                                 </div>
+                                 <div id="spark1"></div>
+                              </div>
+                           </div>
+                           <div class="col-md-3">
+                              <div class="box box2">
+                                 <div class="details">
+                                    <h3>Top 10</h3>
+                                    <h4>Clientes</h4>
+                                 </div>
+                                 <div id="spark2"></div>
+                              </div>
+                           </div>
+                           <div class="col-md-3">
+                              <div class="box box3">
+                                 <div class="details">
+                                    <h3>Régua</h3>
+                                    <h4>Canais</h4>
+                                 </div>
+                                 <div id="spark3"></div>
+                              </div>
+                           </div>
+                           <div class="col-md-3">
+                              <div class="box box4">
+                                 <div class="details">
+                                    <h3>Preços</h3>
+                                    <h4>Dispersão</h4>
+                                 </div>
+                                 <div id="spark4"></div>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div class="row mt-4">
+                           <div class="col-md-5">
+                              <div class="box shadow mt-4">
+                                 <div id="radialBarBottom"></div>
+                              </div>
+                           </div>
+                           <div class="col-md-7">
+                              <div class="box shadow mt-4">
+                                 <div id="line-adwords" class=""></div>
+                              </div>
+                           </div>
+                        </div>
+
+                        <div class="row mt-4">
+                           <div class="col-md-5">
+                              <div class="box shadow mt-4">
+                                 <div id="barchart"></div>
+                              </div>
+                           </div>
+                           <div class="col-md-7">
+                              <div class="box shadow mt-4">
+                                 <div id="areachart"></div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
          </main>
       </section>
 
@@ -56,8 +127,8 @@
             <div class="modal-content">
                <div class="modal-header">
                   <h5 class="modal-title" id="modal-confirm-label">Sair do site?</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
-                     <span aria-hidden="true">&times;</span>
+                  <button type="button" class="btn-close" data-dismiss="modal" aria-label="Fechar">
+                     <span aria-hidden="true"></span>
                   </button>
                </div>
                <div class="modal-body">
@@ -71,12 +142,20 @@
          </div>
       </div>
 
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+      <script src="./js/dashboard/dashboard.js"></script>
+
+      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.slim.min.js"></script> -->
+      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.2/moment.min.js"></script> -->
+      <!-- <script src="../../../../dist/apexcharts.js"></script> -->
+
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
       <script src="./js/bootstrap.min.js"></script>
 
       <script src="./js/sidebar.js"></script>
       <script src="./js/script.js"></script>
-      <script src="https://unpkg.com/notie"></script>
    </body>
 </html>

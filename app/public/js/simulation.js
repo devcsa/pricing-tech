@@ -204,7 +204,7 @@ function addSimulation(simulation) {
 
             <div class="row div-form ms-0">
                <label for="${simulation}-pct-tmi-off" class="metric ms-1 col-form-label">TMI OFF</label>
-               <input type="text" onkeypress="return checkInput(event)" class="pct-metric mx-1 form-control input-value" id="${simulation}-pct-tmi-off" name="${simulation}-pct-tmi-off" value="0,000%" />
+               <input type="text" onkeypress="return checkInput(event)" class="pct-metric mx-1 form-control input-value" id="${simulation}-pct-tmi-off" name="${simulation}-pct-tmi-off" value="1,100%" />
                <input type="text" class="vl-metric form-control" id="${simulation}-vl-tmi-off" name="${simulation}-vl-tmi-off" disabled value="0,00" />
             </div>
 

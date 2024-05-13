@@ -406,19 +406,16 @@ const fetchRegimesEspeciais = async (simulation) => {
 
    console.log(result);
 
+   // if (!response.ok) {
+   //    notie.alert({ type: "error", text: "Realize login para continuar!" });
+   //    setTimeout(() => {
+   //       window.location.href = "index.html";
+   //    }, 1000);
+   // }
+
    if (response.status == 404) {
       console.log({ type: "error", text: "Regimes especiais não encontrados!" });
-      return;
-   }
-
-   if (!response.ok) {
-      notie.alert({ type: "error", text: "Realize login para continuar!" });
-      setTimeout(() => {
-         window.location.href = "index.html";
-      }, 1000);
-   }
-
-   if (response.ok) {
+   } else {
       const infoRegimes = {
          incentivized_area: result.incentivized_area,
          bc_credito_presumido_st_cliente: result.bc_credito_presumido_st_cliente,
@@ -429,7 +426,8 @@ const fetchRegimesEspeciais = async (simulation) => {
       if (result.capturar_beneficio_fiscal_cliente == "SIM") {
          document.getElementById(`${simulation}-pct-credito-presumido`).value = result.pct_credito_presumido * 100;
       }
-
       calcForm(simulation, infoRegimes);
    }
+
+   calcForm(simulation);
 };

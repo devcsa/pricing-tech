@@ -181,9 +181,13 @@ function calcForm(numberSimulation, infoRegimes) {
    cred_pis_cofins.value = vl_pis_cofins.value;
    let vlRegime = parseFloat(vl_regime.value.replace(".", "").replace(",", "."));
 
+   let pctCreditoPresumido = parseFloat(pct_credito_presumido.value.replace(",", ".").replace("%", "")) / 100;
+
    // Crédito Presumido
-   if (infoRegimes.bc_credito_presumido_st_cliente == "NÃO") {
-      cred_presumido.value = formatNumber.format(vlNfTotal * (1 + pctRegime) * 0.25 - 0.65 - vlRegime);
+   if (!infoRegimes == undefined) {
+      if (infoRegimes.bc_credito_presumido_st_cliente == "NÃO") {
+         cred_presumido.value = formatNumber.format(vlNfTotal * (1 + pctCreditoPresumido) * 0.25 - 0.65 - vlRegime);
+      }
    }
    //
 
