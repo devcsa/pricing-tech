@@ -7,11 +7,12 @@ const getAll = async (req, res) => {
       cod_micro_regiao: margem_markup.cod_micro_regiao,
       micro_regiao: margem_markup.micro_regiao,
       cod_segmento: margem_markup.cod_segmento,
+      segmento_id: margem_markup.segmento_id,
       segmento: margem_markup.segmento,
       cod_produto: margem_markup.cod_produto,
       produto: margem_markup.produto,
-      pct_margem: margem_markup.pct_margem / 100,
-      pct_markup: margem_markup.pct_markup / 100,
+      pct_margem: margem_markup.pct_margem,
+      pct_markup: margem_markup.pct_markup,
    }));
 
    return res.status(200).json(data);

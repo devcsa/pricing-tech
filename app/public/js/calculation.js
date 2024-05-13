@@ -35,7 +35,7 @@ function getValuesForm(numberSimulation) {
    }
 }
 
-function calcForm(numberSimulation) {
+function calcForm(numberSimulation, infoRegimes) {
    const price_list = document.getElementById(numberSimulation + "-price-list");
    const vl_encargo = document.getElementById(numberSimulation + "-vl-encargo");
    const gsv = document.getElementById(numberSimulation + "-gsv");
@@ -65,6 +65,7 @@ function calcForm(numberSimulation) {
    const pct_tmi_off = document.getElementById(numberSimulation + "-pct-tmi-off");
    const vl_tmi_off = document.getElementById(numberSimulation + "-vl-tmi-off");
    const cred_pis_cofins = document.getElementById(numberSimulation + "-cred-pis-cofins");
+   const pct_credito_presumido = document.getElementById(numberSimulation + "-pct-credito-presumido");
    const cred_presumido = document.getElementById(numberSimulation + "-cred-presumido");
    const cred_icms = document.getElementById(numberSimulation + "-cred-icms");
    const custo_antes_st = document.getElementById(numberSimulation + "-custo-antes-st");
@@ -178,9 +179,13 @@ function calcForm(numberSimulation) {
 
    // Crédito Pis/Cofins
    cred_pis_cofins.value = vl_pis_cofins.value;
+   let vlRegime = parseFloat(vl_regime.value.replace(".", "").replace(",", "."));
 
    // Crédito Presumido
-   // cred_presumido.value = ;
+   if (infoRegimes.bc_credito_presumido_st_cliente == "NÃO") {
+      cred_presumido.value = formatNumber.format(vlNfTotal * (1 + pctRegime) * 0.25 - 0.65 - vlRegime);
+   }
+   //
 
    // Crédito ICMS
    if (pctMva == 0) {
@@ -190,7 +195,7 @@ function calcForm(numberSimulation) {
    }
 
    // Custo Antes da ST
-   let vlRegime = parseFloat(vl_regime.value.replace(".", "").replace(",", "."));
+
    let vlTmiOff = parseFloat(vl_tmi_off.value.replace(".", "").replace(",", "."));
    let credPisCofins = parseFloat(cred_pis_cofins.value.replace(".", "").replace(",", "."));
    let credPresumido = parseFloat(cred_presumido.value.replace(".", "").replace(",", "."));
@@ -302,6 +307,7 @@ function calcForm(numberSimulation) {
       pct_pis_cofins.value = formatarPercentual(pct_pis_cofins.value);
       pct_pis_cofins_at.value = formatarPercentual(pct_pis_cofins_at.value);
       pct_pis_cofins_pv.value = formatarPercentual(pct_pis_cofins_pv.value);
+      pct_credito_presumido.value = formatarPercentual(pct_credito_presumido.value);
       pct_icms.value = formatMargem(pct_icms.value);
       pct_icms_saida.value = formatMargem(pct_icms_saida.value);
       pct_icms_saida_pv.value = formatMargem(pct_icms_saida_pv.value);

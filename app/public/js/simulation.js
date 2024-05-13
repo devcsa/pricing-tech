@@ -216,8 +216,8 @@ function addSimulation(simulation) {
 
             <div class="row div-form ms-0">
                <label for="${simulation}-cred-presumido" class="metric ms-1 col-form-label">Crédito Presumido</label>
-               <div class="pct-metric"></div>
-               <input type="text" class="vl-metric mx-1 form-control" id="${simulation}-cred-presumido" name="${simulation}-cred-presumido" value="0,00" disabled />
+               <input type="text" onkeypress="return checkInput(event)" class="pct-metric mx-1 form-control input-value" id="${simulation}-pct-credito-presumido" name="${simulation}-pct-credito-presumido" value="0,000%" />
+               <input type="text" class="vl-metric form-control" id="${simulation}-cred-presumido" name="${simulation}-cred-presumido" value="0,00" disabled />
             </div>
 
             <div class="row div-form ms-0">

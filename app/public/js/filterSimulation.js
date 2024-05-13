@@ -1,54 +1,10 @@
 const tokenUser = localStorage.getItem("tokenPT");
+var ncmProduto;
+var origemProduto;
+var cestaBasica;
+var segmento_id;
 
 var origemDestinoId;
-
-const fetchSearchProduto = async (searchProduto, simulation) => {
-   const response = await fetch(`/produto_filter/${searchProduto}`, {
-      method: "GET",
-      headers: {
-         "content-type": "application/json",
-         Authorization: `Bearer ${tokenUser}`,
-      },
-   });
-
-   const result = await response.json();
-
-   if (!response.ok) {
-      notie.alert({ type: "error", text: "Realize login para continuar!" });
-      setTimeout(() => {
-         window.location.href = "index.html";
-      }, 1000);
-   }
-
-   var produto = document.getElementById("produto");
-
-   produto.innerHTML = "";
-   produto.textContent = searchProduto;
-   var event = new MouseEvent("mousedown");
-   produto.dispatchEvent(event);
-
-   result.forEach(function (rowData) {
-      var option = document.createElement("option");
-      option.setAttribute("value", rowData.id);
-      option.setAttribute("data-product-group", rowData.product_group);
-      option.setAttribute("data-category", rowData.categoria);
-
-      // Configurar o textContent com a descrição completa
-      var fullText = rowData.cod_produto + "-" + rowData.produto;
-      option.textContent = fullText;
-
-      // Adicionar título com descrição completa
-      option.setAttribute("title", fullText);
-
-      produto.appendChild(option);
-   });
-
-   // Adicionar evento change para ajustar o textContent após a seleção
-   produto.addEventListener("change", function () {
-      var selectedOption = this.options[this.selectedIndex];
-      selectedOption.textContent = selectedOption.getAttribute("title").substring(0, 40) + "...";
-   });
-};
 
 const fetchMicroRegiao = async () => {
    const response = await fetch("/microRegiao_All", {
@@ -165,6 +121,58 @@ const fetchProduto = async () => {
    });
 };
 
+fetchMicroRegiao();
+fetchSegmento();
+fetchProduto();
+
+const fetchSearchProduto = async (searchProduto, simulation) => {
+   const response = await fetch(`/produto_filter/${searchProduto}`, {
+      method: "GET",
+      headers: {
+         "content-type": "application/json",
+         Authorization: `Bearer ${tokenUser}`,
+      },
+   });
+
+   const result = await response.json();
+
+   if (!response.ok) {
+      notie.alert({ type: "error", text: "Realize login para continuar!" });
+      setTimeout(() => {
+         window.location.href = "index.html";
+      }, 1000);
+   }
+
+   var produto = document.getElementById("produto");
+
+   produto.innerHTML = "";
+   produto.textContent = searchProduto;
+   var event = new MouseEvent("mousedown");
+   produto.dispatchEvent(event);
+
+   result.forEach(function (rowData) {
+      var option = document.createElement("option");
+      option.setAttribute("value", rowData.id);
+      option.setAttribute("data-product-group", rowData.product_group);
+      option.setAttribute("data-category", rowData.categoria);
+
+      // Configurar o textContent com a descrição completa
+      var fullText = rowData.cod_produto + "-" + rowData.produto;
+      option.textContent = fullText;
+
+      // Adicionar título com descrição completa
+      option.setAttribute("title", fullText);
+
+      produto.appendChild(option);
+   });
+
+   // Adicionar evento change para ajustar o textContent após a seleção
+   produto.addEventListener("change", function () {
+      var selectedOption = this.options[this.selectedIndex];
+      selectedOption.textContent = selectedOption.getAttribute("title").substring(0, 40) + "...";
+   });
+};
+
 const fetchPriceList = async (id, simulation) => {
    const response = await fetch(`/price_list/${id}`, {
       method: "GET",
@@ -195,7 +203,10 @@ const fetchPriceList = async (id, simulation) => {
    document.getElementById(`ncm-${simulation}`).value = result.ncm;
    document.getElementById(`origem-${simulation}`).value = result.tipo_produto;
 
-   calcForm(simulation);
+   ncmProduto = result.ncm;
+   origemProduto = result.tipo_produto;
+
+   // calcForm(simulation);
 };
 
 const fetchMargem_Markup = async (queryString, simulation) => {
@@ -221,10 +232,12 @@ const fetchMargem_Markup = async (queryString, simulation) => {
       }, 1000);
    }
 
-   document.getElementById(`${simulation}-pct-margem-at`).value = result.pct_margem;
-   document.getElementById(`${simulation}-pct-markup-pv`).value = result.pct_markup;
+   document.getElementById(`${simulation}-pct-margem-at`).value = result.pct_margem * 100;
+   document.getElementById(`${simulation}-pct-markup-pv`).value = result.pct_markup * 100;
 
-   calcForm(simulation);
+   segmento_id = result.segmento_id;
+
+   // calcForm(simulation);
 };
 
 const fetchEncargoFinanceiro = async (queryString, simulation) => {
@@ -252,7 +265,7 @@ const fetchEncargoFinanceiro = async (queryString, simulation) => {
 
    document.getElementById(`${simulation}-pct-encargo`).value = result.pct_encargo * 100;
 
-   calcForm(simulation);
+   // calcForm(simulation);
 };
 
 const fetchRota = async (queryString, simulation) => {
@@ -365,26 +378,23 @@ const fetchImpostos = async (origemDestinoId, simulation) => {
    document.getElementById(`${simulation}-pct-ipi`).value = result.pct_ipi * 100;
    document.getElementById(`${simulation}-pct-icms-saida-pv`).value = result.pct_icms_interno * 100;
 
-   await fetchRegimesEspeciais(origemDestinoId, simulation);
+   cestaBasica = result.cesta_basica;
+
+   await fetchRegimesEspeciais(simulation);
 };
 
-const fetchRegimesEspeciais = async (origemDestinoId, simulation) => {
-   const tipo_produto = document.getElementById(`origem-${simulation}`);
-   const ncm = document.getElementById(`ncm-${simulation}`);
-   const cesta_basica = document.getElementById(`cesta-basica-${simulation}`);
-   const segmento_id = document.getElementById(`segmento-${simulation}`);
-
+const fetchRegimesEspeciais = async (simulation) => {
    const queryFilter = {
-      tipo_produto: tipo_produto.value,
-      ncm: ncm.value,
-      cesta_basica: cesta_basica.value,
-      segmento_id: segmento_id.value,
+      tipo_produto: origemProduto,
+      ncm: ncmProduto,
+      cesta_basica: cestaBasica,
+      segmento_id: segmento_id,
       origem_destino_id: origemDestinoId,
    };
 
    const filterString = new URLSearchParams(queryFilter).toString();
 
-   const response = await fetch(`/impostos?${filterString}`, {
+   const response = await fetch(`/regimes?${filterString}`, {
       method: "GET",
       headers: {
          "content-type": "application/json",
@@ -394,8 +404,10 @@ const fetchRegimesEspeciais = async (origemDestinoId, simulation) => {
 
    const result = await response.json();
 
+   console.log(result);
+
    if (response.status == 404) {
-      notie.alert({ type: "error", text: "Impostos não encontrados!" });
+      console.log({ type: "error", text: "Regimes especiais não encontrados!" });
       return;
    }
 
@@ -406,9 +418,18 @@ const fetchRegimesEspeciais = async (origemDestinoId, simulation) => {
       }, 1000);
    }
 
-   calcForm(simulation);
-};
+   if (response.ok) {
+      const infoRegimes = {
+         incentivized_area: result.incentivized_area,
+         bc_credito_presumido_st_cliente: result.bc_credito_presumido_st_cliente,
+      };
 
-fetchMicroRegiao();
-fetchSegmento();
-fetchProduto();
+      document.getElementById(`${simulation}-pct-regime`).value = result.pct_antecipacao * 100;
+
+      if (result.capturar_beneficio_fiscal_cliente == "SIM") {
+         document.getElementById(`${simulation}-pct-credito-presumido`).value = result.pct_credito_presumido * 100;
+      }
+
+      calcForm(simulation, infoRegimes);
+   }
+};
