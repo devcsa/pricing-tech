@@ -10,6 +10,7 @@ function formatarPercentual(percentual) {
 }
 
 const fetchMargens = async () => {
+   showLoading();
    const response = await fetch("/margem_markup_All", {
       method: "GET",
       headers: {
@@ -115,6 +116,7 @@ async function initTable(margens) {
             ],
          ],
       });
+   hideLoading();
 }
 
 function operateFormatter(value, row, index) {

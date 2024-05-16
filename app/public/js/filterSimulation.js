@@ -3,6 +3,7 @@ var ncmProduto;
 var origemProduto;
 var cestaBasica;
 var segmento_id;
+var markup;
 
 var origemDestinoId;
 
@@ -185,8 +186,7 @@ const fetchPriceList = async (id, simulation) => {
    const result = await response.json();
 
    if (response.status == 404) {
-      notie.alert({ type: "error", text: "Preço de lista não encontrado!" });
-      return;
+      return { status: response.status };
    }
 
    if (!response.ok) {
@@ -203,8 +203,13 @@ const fetchPriceList = async (id, simulation) => {
    document.getElementById(`ncm-${simulation}`).value = result.ncm;
    document.getElementById(`origem-${simulation}`).value = result.tipo_produto;
 
+   // document.getElementById(`produto-${simulation}`).value = result.produto;
+
    ncmProduto = result.ncm;
    origemProduto = result.tipo_produto;
+
+   let data = { ncm: ncmProduto, origem: origemProduto, status: response.status };
+   return data;
 
    // calcForm(simulation);
 };
@@ -221,8 +226,7 @@ const fetchMargem_Markup = async (queryString, simulation) => {
    const result = await response.json();
 
    if (response.status == 404) {
-      notie.alert({ type: "error", text: "Rota não encontrada!" });
-      return;
+      return { status: response.status };
    }
 
    if (!response.ok) {
@@ -232,10 +236,15 @@ const fetchMargem_Markup = async (queryString, simulation) => {
       }, 1000);
    }
 
+   markup = result.pct_markup * 100;
+
    document.getElementById(`${simulation}-pct-margem-at`).value = result.pct_margem * 100;
-   document.getElementById(`${simulation}-pct-markup-pv`).value = result.pct_markup * 100;
+   document.getElementById(`${simulation}-pct-markup-pv`).value = markup;
 
    segmento_id = result.segmento_id;
+
+   let data = { segmento_id: segmento_id, status: response.status };
+   return data;
 
    // calcForm(simulation);
 };
@@ -279,9 +288,17 @@ const fetchRota = async (queryString, simulation) => {
 
    const result = await response.json();
 
+   // if (response.status == 404) {
+   //    $("#filterRotaModal").modal("hide");
+   //    notie.alert({ type: "error", text: "Origem Destino não encontrada!" });
+   //    setTimeout(() => {
+   //       $("#filterRotaModal").modal("show");
+   //    }, 1000);
+   //    return;
+   // }
+
    if (response.status == 404) {
-      notie.alert({ type: "error", text: "Origem Destino não encontrada!" });
-      return;
+      return { status: response.status };
    }
 
    if (!response.ok) {
@@ -293,7 +310,12 @@ const fetchRota = async (queryString, simulation) => {
 
    var rota = result.origem + " / " + result.destino;
 
-   await getOrigemDestino(rota, simulation);
+   document.getElementById("origem-destino").value = rota;
+
+   let data = { rota: rota, simulation: simulation, status: response.status };
+   return data;
+
+   //await getOrigemDestino(rota, simulation);
 };
 
 const getOrigemDestino = async (rota, simulation) => {
@@ -318,15 +340,15 @@ const getOrigemDestino = async (rota, simulation) => {
    var origemDestinoSimulacao = document.getElementById("origem-destino-" + simulation);
 
    res.forEach(function (row) {
-      var option = document.createElement("option");
-      option.setAttribute("value", row.id);
-      option.textContent = row.origem_destino;
-      origemDestino.appendChild(option);
+      // var option = document.createElement("option");
+      // option.setAttribute("value", row.id);
+      // option.textContent = row.origem_destino;
+      // origemDestino.appendChild(option);
 
       if (row.origem_destino === rota) {
-         option.selected = true;
-         option.style.fontWeight = "bold";
-         option.style.color = "green";
+         // option.selected = true;
+         // option.style.fontWeight = "bold";
+         // option.style.color = "green";
          origemDestinoId = row.id;
          origemDestinoSimulacao.value = rota;
       }
@@ -369,14 +391,21 @@ const fetchImpostos = async (origemDestinoId, simulation) => {
       }, 1000);
    }
 
+   console.log(result);
+
+   document.getElementById(`cesta-basica-${simulation}`).value = result.cesta_basica;
+
    document.getElementById("cesta-basica").value = result.cesta_basica;
 
    document.getElementById(`${simulation}-pct-pis-cofins`).value = result.pct_pis_cofins * 100;
    document.getElementById(`${simulation}-pct-pis-cofins-at`).value = result.pct_pis_cofins * 100;
-   document.getElementById(`${simulation}-pct-pis-cofins-pv`).value = result.pct_pis_cofins * 100;
    document.getElementById(`${simulation}-pct-icms`).value = result.pct_icms_operacao * 100;
    document.getElementById(`${simulation}-pct-ipi`).value = result.pct_ipi * 100;
-   document.getElementById(`${simulation}-pct-icms-saida-pv`).value = result.pct_icms_interno * 100;
+
+   if (markup != 0) {
+      document.getElementById(`${simulation}-pct-pis-cofins-pv`).value = result.pct_pis_cofins * 100;
+      document.getElementById(`${simulation}-pct-icms-saida-pv`).value = result.pct_icms_interno * 100;
+   }
 
    cestaBasica = result.cesta_basica;
 
@@ -415,11 +444,17 @@ const fetchRegimesEspeciais = async (simulation) => {
 
    if (response.status == 404) {
       console.log({ type: "error", text: "Regimes especiais não encontrados!" });
+      calcForm(simulation);
    } else {
       const infoRegimes = {
          incentivized_area: result.incentivized_area,
          bc_credito_presumido_st_cliente: result.bc_credito_presumido_st_cliente,
+         pct_limite_credito_icms: result.pct_limite_credito_icms,
+         reducao_icms_interno_va_at: result.reducao_icms_interno_va_at,
+         credito_icms: result.credito_icms,
       };
+
+      console.log(infoRegimes);
 
       document.getElementById(`${simulation}-pct-regime`).value = result.pct_antecipacao * 100;
 
@@ -429,5 +464,5 @@ const fetchRegimesEspeciais = async (simulation) => {
       calcForm(simulation, infoRegimes);
    }
 
-   calcForm(simulation);
+   // calcForm(simulation);
 };

@@ -106,9 +106,13 @@
                         <input class="text-start" type="text" disabled name="produto-filter" id="produto-filter" />
                      </div>
 
-                     <div class="col-md-5">
+                     <!-- <div class="col-md-5">
                         <label for="origem-destino">Origem / Destino</label>
                         <select class="select2-origem_destino" disabled name="origem-destino" id="origem-destino"></select>
+                     </div> -->
+                     <div class="col-md-5">
+                        <label for="origem-destino">Origem / Destino</label>
+                        <input class="text-start" type="text" disabled name="origem-destino" id="origem-destino" />
                      </div>
                      <div class="col-md-3">
                         <label for="ncm">NCM</label><br />
@@ -163,6 +167,12 @@
       <script src="./js/calculation/calculation.js"></script>
       <script src="./js/filterSimulation.js"></script>
       <script src="./js/script.js"></script>
+
+      <script>
+         function getNumberSimulation(simulationNumber) {
+            selectRoute(simulationNumber);
+         }
+      </script>
 
       <script src="./js/vendor/html2pdf.bundle.min.js"></script>
       <link

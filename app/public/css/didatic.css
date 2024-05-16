@@ -296,6 +296,8 @@ span span input[type="search"].select2-search__field {
    display: flex;
    flex-direction: row;
    flex-wrap: wrap;
+   /* border: 1px red solid; */
+   padding-bottom: 2rem;
 }
 
 .section-didatico {
@@ -305,6 +307,8 @@ span span input[type="search"].select2-search__field {
 
 .container-didatico {
    max-width: 388px;
+   margin-bottom: 2rem;
+   /* border: 1px red solid; */
 }
 
 .div-form {

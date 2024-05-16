@@ -23,13 +23,13 @@ const getOne = async (req, res) => {
 
    if (price_list == undefined) return res.status(404).json({ error: "Preço de lista não encontrado!" });
 
-   const { preco_caixa, dun_14, ean_13, ncm, origem_produto, tipo_produto, unidades_caixa } = price_list;
+   const { preco_caixa, dun_14, ean_13, ncm, origem_produto, tipo_produto, unidades_caixa, produto } = price_list;
 
    const options = { minimumFractionDigits: 3, maximumFractionDigits: 3 };
    const format = new Intl.NumberFormat("pt-BR", options);
 
    const preco_unitario = format.format(preco_caixa / unidades_caixa);
-   const priceData = { preco_caixa, dun_14, ean_13, ncm, origem_produto, tipo_produto, unidades_caixa, preco_unitario };
+   const priceData = { preco_caixa, dun_14, ean_13, ncm, origem_produto, tipo_produto, unidades_caixa, preco_unitario, produto };
 
    return res.status(200).json(priceData);
 };

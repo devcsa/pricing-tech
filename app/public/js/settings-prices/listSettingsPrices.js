@@ -60,6 +60,7 @@ async function initTable(prices) {
                   valign: "middle",
                   width: "100",
                   visible: true,
+                  // class: "price_name",
                },
 
                {
@@ -70,7 +71,7 @@ async function initTable(prices) {
                   valign: "middle",
                   width: "200",
                   visible: true,
-                  // class: "segmento-margem",
+                  // class: "discount_name",
                },
 
                {
@@ -91,6 +92,7 @@ async function initTable(prices) {
                   valign: "middle",
                   width: "50",
                   visible: true,
+                  // class: "status_price",
                },
                {
                   field: "operate",

@@ -29,18 +29,21 @@
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.1.0/themes/algolia-min.css" /> -->
       <link rel="stylesheet" href="https://unpkg.com/hover.css@2.3.2/css/hover.css" />
 
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.min.css" />
       <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.css" />
 
       <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/jquery-resizable-columns@0.2.3/dist/jquery.resizableColumns.min.js"></script>
       <script src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.22.5/dist/extensions/resizable/bootstrap-table-resizable.min.js"></script>
       <script src="https://unpkg.com/tableexport.jquery.plugin/tableExport.min.js"></script>
       <script src="https://unpkg.com/bootstrap-table@1.22.1/dist/extensions/export/bootstrap-table-export.min.js"></script>
       <script src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table-locale-all.min.js"></script>
+
+      <script
+         src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
+         integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
+         crossorigin="anonymous"
+         referrerpolicy="no-referrer"></script>
    </head>
    <body>
       <div id="sidebar" class="sidebar close"></div>
@@ -65,11 +68,11 @@
          <div class="container-title">
             <h1>Lista de Impostos</h1>
          </div>
+         <div class="filtros-impostos filter-container"></div>
          <div id="table-impostos" class="table-container">
             <table
                id="table"
                data-toolbar="#toolbar"
-               data-search="true"
                data-show-refresh="true"
                data-show-toggle="true"
                data-show-fullscreen="true"
@@ -88,7 +91,6 @@
                data-page-list="[20, 30, 50, 100, all]"
                data-show-footer="false"
                data-side-pagination="client"
-               data-resizable="true"
                data-response-handler="responseHandler"></table>
          </div>
       </section>
@@ -153,16 +155,11 @@
       <script src="./js/impostos/listImpostos.js"></script>
       <script src="./js/script.js"></script>
 
-      <!-- <script>
-         $(document).ready(function () {
-            // Seleciona todos os elementos da tabela com o atributo data-field
-            var elementosComDataField = document.querySelectorAll("#table-impostos [data-field]");
-
-            elementosComDataField.forEach(function (elemento) {
-               var valorDataField = elemento.getAttribute("data-field");
-               console.log("Valor do data-field:", valorDataField);
-            });
-         });
-      </script> -->
+      <link
+         rel="stylesheet"
+         href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+         integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw=="
+         crossorigin="anonymous"
+         referrerpolicy="no-referrer" />
    </body>
 </html>

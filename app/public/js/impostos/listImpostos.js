@@ -1,5 +1,7 @@
 const tokenID = localStorage.getItem("tokenPT");
 
+var filter = "";
+
 const options = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
 const formatNumber = new Intl.NumberFormat("pt-BR", options);
 
@@ -28,7 +30,7 @@ const fetchImpostos = async () => {
    }
 
    await initTable(result);
-   // tableFields();
+   addFiltersTable();
 };
 
 async function initTable(impostos) {
@@ -70,14 +72,6 @@ async function initTable(impostos) {
             };
          }),
          columns: [
-            // [
-            //    {
-            //       title: "Dados do Produto/Serviço",
-            //       colspan: 6,
-            //       align: "center",
-            //    },
-            // ],
-            // [
             [
                {
                   field: "id",
@@ -104,7 +98,7 @@ async function initTable(impostos) {
                   align: "left",
                   sortable: true,
                   valign: "middle",
-                  width: "50",
+                  width: "40",
                   visible: true,
                },
 
@@ -226,12 +220,6 @@ async function initTable(impostos) {
                },
             ],
          ],
-         columnDefs: [
-            {
-               targets: [0],
-               orderData: [0, 1],
-            },
-         ],
       });
 }
 
@@ -347,20 +335,64 @@ $("#table-impostos").on("click", 'button[name="refresh"]', () => {
    fetchImpostos();
 });
 
-// function tableFields() {
-//    var elementosComDataField = document.querySelectorAll("#table-impostos [data-field]");
+function addFiltersTable() {
+   const filterOrigemDestino = document.querySelector(".filtros-impostos");
 
-//    var dataFields = [];
+   filterOrigemDestino.innerHTML = `
+   <div class="d-flex flex-column col-md-12 px-5 mt-5">
+   <h6 class="h6-filtros mb-3">Filtros</h6>
+   <div class="d-flex flex-row col-md-3 px-0">
+   <div class="d-flex flex-column col-md-12 px-0">
+   <label class="label-filtros mb-1" for="origem-destino">Origem / Destino</label>
+   <select class="filter-origem-destino" name="filterOrigem" id="filterOrigem">
+   <option value="0" selected></option>
+   </select>
+   </div>
+   <div class="d-flex mx-2 align-items-end">
+   <button class="btn btn-filter-header" onclick="filtrarOrigem()") type="button" id="filtrar">OK</button>
+   </div>
+   </div>
+   </div>`;
 
-//    elementosComDataField.forEach(function (elemento) {
-//       var valorDataField = elemento.getAttribute("data-field");
-//       dataFields.push(valorDataField);
-//    });
-//    console.log(dataFields);
+   selectOrigemDestino();
+}
 
-//    var descncm = document.querySelectorAll("#table-impostos [data-field=origem_destino]");
-//    descncm.forEach(function (elemento) {
-//       // elemento.style.width = "200px";
-//       elemento.classList.add("col-ajuste");
-//    });
-// }
+const selectOrigemDestino = async () => {
+   const resp = await fetch("/origem_destino_All", {
+      method: "GET",
+      headers: {
+         "content-type": "application/json",
+         Authorization: `Bearer ${tokenID}`,
+      },
+   });
+
+   const res = await resp.json();
+
+   const filterOrigemDestino = document.getElementById("filterOrigem");
+
+   res.forEach(function (row) {
+      var option = document.createElement("option");
+      option.setAttribute("value", row.id);
+      option.textContent = row.origem_destino;
+      filterOrigemDestino.appendChild(option);
+   });
+
+   $("select").select2({
+      placeholder: "",
+      selectOnClose: true,
+   });
+
+   $(document).on("select2:open", () => {
+      document.querySelector(".select2-container--open .select2-search__field").focus();
+   });
+};
+
+function filtrarOrigem() {
+   const filter = document.getElementById("select2-filterOrigem-container");
+
+   let select = filter.getAttribute("title");
+
+   $("#table").bootstrapTable("filterBy", {
+      origem_destino: [select],
+   });
+}

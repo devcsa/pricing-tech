@@ -17,6 +17,8 @@
       <link rel="stylesheet" href="./css/style.css" />
       <link rel="stylesheet" href="./css/table-margens.css" />
 
+      <link rel="stylesheet" href="./css/loader.css" />
+
       <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css" />
 
       <link rel="shortcut icon" href="./img/favicon.png" type="image/png" />
@@ -28,6 +30,9 @@
       <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.css" />
 
       <script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+
+      <script src="./js/loading.js"></script>
+
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
       <script src="https://unpkg.com/bootstrap-table@1.22.1/dist/bootstrap-table.min.js"></script>
@@ -37,6 +42,14 @@
    </head>
    <body>
       <div id="sidebar" class="sidebar close"></div>
+      <div id="loader-produtos">
+         <div class="loader-wrapper-remove" id="loader_bg">
+            <div id="loader">
+               <img src="./img/loader.gif" />
+            </div>
+         </div>
+      </div>
+
       <section class="home-section">
          <header class="home-header">
             <div class="text">

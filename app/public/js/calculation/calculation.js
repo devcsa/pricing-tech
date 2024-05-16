@@ -30,7 +30,8 @@ function getValuesForm(numberSimulation) {
             const field = form.elements[i];
             simulation[field.name] = field.value;
          }
-         calcForm(numberSimulation);
+         fetchRegimesEspeciais(numberSimulation);
+         // calcForm(numberSimulation);
       });
    }
 }
@@ -103,7 +104,7 @@ function calcForm(numberSimulation, infoRegimes) {
    let price = parseFloat(price_list.value.replace(".", "").replace(",", "."));
    let encargo = parseFloat(pct_encargo.value.replace(",", ".").replace("%", "")) / 100;
 
-   // Valor do Encarto
+   // Valor do Encargo
    vl_encargo.value = formatNumber.format(price * encargo);
 
    // GSV
@@ -165,6 +166,7 @@ function calcForm(numberSimulation, infoRegimes) {
    let vlIcmsSt = Number(vl_icms_st.value.replace(".", "").replace(",", "."));
    vl_nf_total.value = formatNumber.format(nfSemIcmsSt + vlIcmsSt);
 
+   //
    // calcular Valores Distribuidor
 
    // Regime Estado
@@ -189,7 +191,6 @@ function calcForm(numberSimulation, infoRegimes) {
          cred_presumido.value = formatNumber.format(vlNfTotal * (1 + pctCreditoPresumido) * 0.25 - 0.65 - vlRegime);
       }
    }
-   //
 
    // Crédito ICMS
    if (pctMva == 0) {
@@ -199,7 +200,6 @@ function calcForm(numberSimulation, infoRegimes) {
    }
 
    // Custo Antes da ST
-
    let vlTmiOff = parseFloat(vl_tmi_off.value.replace(".", "").replace(",", "."));
    let credPisCofins = parseFloat(cred_pis_cofins.value.replace(".", "").replace(",", "."));
    let credPresumido = parseFloat(cred_presumido.value.replace(".", "").replace(",", "."));
@@ -230,7 +230,21 @@ function calcForm(numberSimulation, infoRegimes) {
    }
 
    // Estorno
-   // estorno.value = ;
+   if (infoRegimes == undefined) {
+      estorno.value = "0,00";
+   } else {
+      if (infoRegimes.reducao_icms_interno_va_at == "SIM") {
+         if (pctMva == 0 && pct_ICMS > infoRegimes.pct_limite_credito_icms) {
+            estorno.value = formatNumber.format(vlIcms - baseIcms * infoRegimes.pct_limite_credito_icms);
+         } else {
+            estorno.value = "0,00";
+         }
+      } else {
+         if (infoRegimes.credito_icms == "NÃO") {
+            estorno.value = "0,00";
+         }
+      }
+   }
 
    let pctMvaAt = parseFloat(pct_mva_at.value.replace(",", ".").replace("%", "")) / 100;
    let pctIcmsStAt = parseFloat(pct_icms_st_at.value.replace(",", ".").replace("%", "")) / 100;
@@ -261,45 +275,52 @@ function calcForm(numberSimulation, infoRegimes) {
 
    pct_markup_at.value = (precoVendaAt / vlNfTotal - 1) * 100;
 
-   if (pctMva == 0 && pctMvaAt == 0) {
-      cred_tributario.value = formatNumber.format(vlIcmsSaida + vlPisCofinsAt);
-   } else {
-      cred_tributario.value = formatNumber.format(vlPisCofinsAt);
-   }
-
-   let credito = Number(cred_tributario.value.replace(".", "").replace(",", "."));
-   let pctIcmsSaidaPv = parseFloat(pct_icms_saida_pv.value.replace(",", ".").replace("%", "")) / 100;
-
-   custo_cliente.value = formatNumber.format(precoVendaAt - credito);
-
-   vl_pis_cofins_pv.value = formatNumber.format(precoVendaAt - credito);
+   //
+   // Calcular Valores Pequeno Varejo
 
    let mkupVa = parseFloat(pct_markup_pv.value.replace(",", ".").replace("%", "")) / 100;
-   preco_venda_pv.value = formatNumber.format(precoVendaAt * (1 + mkupVa));
 
-   let precoVendaVa = Number(preco_venda_pv.value.replace(".", "").replace(",", "."));
+   if (mkupVa != 0) {
+      if (pctMva == 0 && pctMvaAt == 0) {
+         cred_tributario.value = formatNumber.format(vlIcmsSaida + vlPisCofinsAt);
+      } else {
+         cred_tributario.value = formatNumber.format(vlPisCofinsAt);
+      }
 
-   if (pctMva == 0 && pctMvaAt == 0) {
-      vl_icms_saida_pv.value = formatNumber.format(precoVendaVa * pctIcmsSaidaPv);
-   } else {
-      vl_icms_saida_pv.value = "0,00";
+      let credito = Number(cred_tributario.value.replace(".", "").replace(",", "."));
+      let pctIcmsSaidaPv = parseFloat(pct_icms_saida_pv.value.replace(",", ".").replace("%", "")) / 100;
+
+      custo_cliente.value = formatNumber.format(precoVendaAt - credito);
+
+      vl_pis_cofins_pv.value = formatNumber.format(precoVendaAt - credito);
+
+      // let mkupVa = parseFloat(pct_markup_pv.value.replace(",", ".").replace("%", "")) / 100;
+      preco_venda_pv.value = formatNumber.format(precoVendaAt * (1 + mkupVa));
+
+      let precoVendaVa = Number(preco_venda_pv.value.replace(".", "").replace(",", "."));
+
+      if (pctMva == 0 && pctMvaAt == 0) {
+         vl_icms_saida_pv.value = formatNumber.format(precoVendaVa * pctIcmsSaidaPv);
+      } else {
+         vl_icms_saida_pv.value = "0,00";
+      }
+
+      let pctPisCofinsPv = parseFloat(pct_pis_cofins_pv.value.replace(",", ".").replace("%", "")) / 100;
+      vl_pis_cofins_pv.value = formatNumber.format(pctPisCofinsPv * precoVendaVa);
+
+      let vlPisCofinsPv = Number(vl_pis_cofins_pv.value.replace(".", "").replace(",", "."));
+      let vlIcmsSaidaPv = Number(vl_icms_saida_pv.value.replace(".", "").replace(",", "."));
+
+      receita_liquida_pv.value = formatNumber.format(precoVendaVa - vlIcmsSaidaPv - vlPisCofinsPv);
+
+      let receita_pv = Number(receita_liquida_pv.value.replace(".", "").replace(",", "."));
+      let custo_pv = Number(custo_cliente.value.replace(".", "").replace(",", "."));
+
+      vl_margem_pv.value = formatNumber.format(receita_pv - custo_pv);
+
+      let margem_pv = Number(vl_margem_pv.value.replace(".", "").replace(",", "."));
+      pct_margem_pv.value = format_margem.format((margem_pv / receita_pv) * 100);
    }
-
-   let pctPisCofinsPv = parseFloat(pct_pis_cofins_pv.value.replace(",", ".").replace("%", "")) / 100;
-   vl_pis_cofins_pv.value = formatNumber.format(pctPisCofinsPv * precoVendaVa);
-
-   let vlPisCofinsPv = Number(vl_pis_cofins_pv.value.replace(".", "").replace(",", "."));
-   let vlIcmsSaidaPv = Number(vl_icms_saida_pv.value.replace(".", "").replace(",", "."));
-
-   receita_liquida_pv.value = formatNumber.format(precoVendaVa - vlIcmsSaidaPv - vlPisCofinsPv);
-
-   let receita_pv = Number(receita_liquida_pv.value.replace(".", "").replace(",", "."));
-   let custo_pv = Number(custo_cliente.value.replace(".", "").replace(",", "."));
-
-   vl_margem_pv.value = formatNumber.format(receita_pv - custo_pv);
-
-   let margem_pv = Number(vl_margem_pv.value.replace(".", "").replace(",", "."));
-   pct_margem_pv.value = format_margem.format((margem_pv / receita_pv) * 100);
 
    //Formatar Valores dos Inputs
    formatValues();
@@ -393,5 +414,6 @@ function addValuesSimulation(values, numberSimulation, valuesSimulation) {
    pct_icms_saida_pv.value = values[valuesSimulation + "-pct-icms-saida-pv"];
    pct_markup_pv.value = values[valuesSimulation + "-pct-markup-pv"];
 
-   calcForm(numberSimulation);
+   fetchRegimesEspeciais(numberSimulation);
+   // calcForm(numberSimulation);
 }

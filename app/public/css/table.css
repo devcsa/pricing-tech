@@ -13,7 +13,7 @@
 }
 
 .fixed-table-body {
-   width: max(1260px);
+   width: max(1300px);
 }
 
 .fixed-table-toolbar {
@@ -57,7 +57,7 @@ th {
 }
 
 .th-inner {
-   width: 100px;
+   width: 95px;
    display: flex;
    padding: 5px !important;
    vertical-align: middle !important;
@@ -66,7 +66,7 @@ th {
 }
 
 .origem_destino .th-inner {
-   width: 170px;
+   width: 260px;
    padding: 5px !important;
 }
 
@@ -96,7 +96,7 @@ th {
 
 .pagination-info,
 .page-list {
-   font-size: 0.8rem;
+   font-size: 12px;
 }
 
 .page-item a {
@@ -115,11 +115,11 @@ th {
 
 .pagination ul {
    flex-direction: row;
-   font-size: 0.8rem;
+   font-size: 12px !important;
 }
 
 .pagination-detail {
-   font-size: 0.8rem;
+   font-size: 12px !important;
 }
 
 .btn-group button {
@@ -129,4 +129,26 @@ th {
 
 .btn-group button:hover {
    background-color: #1c546c;
+}
+
+.editable-submit {
+   border: 1px #32b178 solid;
+   font-weight: bold;
+   width: 70px;
+   padding: 5px 10px;
+   border-radius: 4px;
+   color: #ffffff;
+   background-color: #32b178 !important;
+   transition: background-color 0.8s;
+}
+
+ul .select2-choices {
+   font-size: 12px;
+
+   height: 35px;
+}
+
+.select2-result-label {
+   font-size: 12px;
+   text-align: left;
 }

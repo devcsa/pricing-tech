@@ -77,22 +77,24 @@ simulationAdd.addEventListener("click", () => {
    }
 });
 
-function addSimulation(simulation) {
+async function addSimulation(simulation) {
    var newSection = document.createElement("section");
    newSection.setAttribute("id", `simulation-${simulation}`);
    newSection.setAttribute("class", "section-didatico");
+
+   // <i value="${simulation}" onclick="getNumberSimulation(this)" title="Filtrar Rota" class="showFilter bx bx-filter-alt"></i>;
 
    newSection.innerHTML = `
       <div class="num-simulacao">
          <h6>Simulação ${simulation}</h6>
          <div class="short-cut">
-            <i value="${simulation}" title="Filtrar Rota" class="showFilter bx bx-filter-alt"></i>
+         <i value="${simulation}" onclick="getNumberSimulation(${Number(simulation)})" title="Filtrar Rota" class="showFilter bx bx-filter-alt"></i>
             <i id="export-pdf-${simulation}" title="Exportar PDF Rota" class="bx bxs-file-export"></i>
             <i id="del-simulation-${simulation}" title="Remover Simulação" class="bx bx-list-minus"></i>
          </div>
       </div>
 
-      <input type="hidden" name="micro_regiao-${simulation}" id="micro_regiao-${simulation}" />
+      <input type="hidden" name="micro-regiao-${simulation}" id="micro-regiao-${simulation}" />
       <input type="hidden" name="segmento-${simulation}" id="segmento-${simulation}"/ >
       <input type="hidden" name="produto-${simulation}" id="produto-${simulation}"/ >
       <input type="hidden" name="origem-destino-${simulation}" id="origem-destino-${simulation}" />
@@ -204,7 +206,7 @@ function addSimulation(simulation) {
 
             <div class="row div-form ms-0">
                <label for="${simulation}-pct-tmi-off" class="metric ms-1 col-form-label">TMI OFF</label>
-               <input type="text" onkeypress="return checkInput(event)" class="pct-metric mx-1 form-control input-value" id="${simulation}-pct-tmi-off" name="${simulation}-pct-tmi-off" value="1,100%" />
+               <input type="text" onkeypress="return checkInput(event)" class="pct-metric mx-1 form-control input-value" id="${simulation}-pct-tmi-off" name="${simulation}-pct-tmi-off" value="0,000%" />
                <input type="text" class="vl-metric form-control" id="${simulation}-vl-tmi-off" name="${simulation}-vl-tmi-off" disabled value="0,00" />
             </div>
 
@@ -354,6 +356,14 @@ function addSimulation(simulation) {
       document.querySelector(".select2-container--open .select2-search__field").focus();
    });
 
+   // Função para resetar os campos do formulário
+   async function resetForm(simulation) {
+      const form = document.getElementById(`calcForm-${simulation}`);
+      if (form) {
+         form.reset();
+      }
+   }
+
    // Adicionando evento de clique para o ícone de exclusão
    const deleteIcon = document.getElementById(`del-simulation-${simulation}`);
 
@@ -433,60 +443,6 @@ function addSimulation(simulation) {
       }
    });
 
-   function selectRoute(filterNumber) {
-      const dataFilter = JSON.stringify({
-         micro_regiao: document.getElementById(`micro_regiao-${filterNumber}`).value,
-         segmento: document.getElementById(`segmento-${filterNumber}`).value,
-         produto: document.getElementById(`produto-${filterNumber}`).value,
-         origem_destino: document.getElementById(`origem-destino-${filterNumber}`).value,
-         ncm: document.getElementById(`ncm-${filterNumber}`).value,
-         origem: document.getElementById(`origem-${filterNumber}`).value,
-         cesta_basica: document.getElementById(`cesta-basica-${filterNumber}`).value,
-      });
-
-      // document.getElementById("select2-micro_regiao-container").textContent = "";
-      // document.getElementById("select2-segmento-container").textContent = "";
-      // document.getElementById("select2-produto-container").textContent = "";
-
-      document.getElementById("select2-micro_regiao-container").textContent = dataFilter.micro_regiao;
-      document.getElementById("select2-segmento-container").textContent = dataFilter.segmento;
-      document.getElementById("select2-produto-container").textContent = dataFilter.produto;
-
-      console.log(dataFilter);
-
-      simulationFilter.value = filterNumber;
-
-      microRegiaoFilter.textContent = dataFilter.micro_regiao;
-      produtoFilter.textContent = dataFilter.produto;
-      segmentoFilter.textContent = dataFilter.segmento;
-      origemDestinoFilter.value = dataFilter.origem_destino;
-      ncmFilter.value = dataFilter.ncm;
-      origemFilter.value = dataFilter.origem;
-      cestaBasicaFilter.value = dataFilter.cesta_basica;
-
-      $("#filterRotaModal").modal("show");
-      searching = 0;
-   }
-
-   document.addEventListener("click", function (e) {
-      if (searching == 0) {
-         if (e.target.classList.contains("showFilter") && e.target.getAttribute("value") !== null) {
-            let simulationNumber = e.target.getAttribute("value");
-            console.log(simulationNumber);
-            selectRoute(simulationNumber);
-            searching = searching + 1;
-         }
-      }
-   });
-
-   // showFilter.addEventListener("click", () => {
-   //    let simulationNumber = showFilter.split("-")[2];
-   //    alert(simulationNumber);
-   //    return;
-   // });
-
-   // selectRoute(split(showFilter));
-
    const exportPDF = document.getElementById(`export-pdf-${simulation}`);
 
    exportPDF.addEventListener("click", () => {
@@ -509,39 +465,9 @@ function addSimulation(simulation) {
       }).save();
    });
 
-   // showFilter.addEventListener("click", () => {
-   //    const filterNumber = parseInt(deleteIcon.id.split("-")[2]);
-   //    // const filter = document.getElementById(`filters-${filterNumber}`);
-
-   //    const dataFilter = JSON.stringify({
-   //       micro_regiao: document.getElementById(`micro_regiao-${filterNumber}`).value,
-   //       segmento: document.getElementById(`segmento-${filterNumber}`).value,
-   //       produto: document.getElementById(`produto-${filterNumber}`).value,
-   //       origem_destino: document.getElementById(`origem-destino-${filterNumber}`).value,
-   //       ncm: document.getElementById(`ncm-${filterNumber}`).value,
-   //       origem: document.getElementById(`origem-${filterNumber}`).value,
-   //       cesta_basica: document.getElementById(`cesta-basica-${filterNumber}`).value,
-   //    });
-
-   //    console.log(dataFilter);
-
-   //    simulationFilter.value = filterNumber;
-
-   //    microRegiaoFilter.textContent = dataFilter.micro_regiao;
-   //    produtoFilter.textContent = dataFilter.produto;
-   //    segmentoFilter.textContent = dataFilter.segmento;
-   //    origemDestinoFilter.value = dataFilter.origem_destino;
-   //    ncmFilter.value = dataFilter.ncm;
-   //    origemFilter.value = dataFilter.origem;
-   //    cestaBasicaFilter.value = dataFilter.cesta_basica;
-
-   //    $("#filterRotaModal").modal("show");
-   // });
-
    const btnFilter = document.getElementById("btn-filter");
 
    btnFilter.addEventListener("click", () => {
-      searching = 0;
       const selectElement = document.getElementById("produto");
       const selectedOption = selectElement.options[selectElement.selectedIndex];
       const productGroup = selectedOption.getAttribute("data-product-group");
@@ -555,8 +481,11 @@ function addSimulation(simulation) {
       let microRegiaoOption = microRegiao.options[microRegiao.selectedIndex].textContent;
       let segmentoOption = segmento.options[segmento.selectedIndex].textContent;
 
-      console.log(microRegiaoOption);
-      console.log(segmentoOption);
+      let simulation = simulationFilter.value;
+
+      document.getElementById(`micro-regiao-${simulation}`).value = microRegiaoOption;
+      document.getElementById(`segmento-${simulation}`).value = segmentoOption;
+      document.getElementById(`produto-${simulation}`).value = produtoSelected;
 
       const filter = {
          micro_regiao_id: Number(microRegiao.value),
@@ -566,26 +495,69 @@ function addSimulation(simulation) {
          category: category,
       };
 
-      console.log(filter);
+      // console.log(filter);
 
       const queryString = new URLSearchParams(filter).toString();
 
       microRegiaoFilter.value = microRegiaoOption;
       produtoFilter.value = produtoSelected;
       segmentoFilter.value = segmentoOption;
-      // origemDestinoFilter.value = "";
-      // ncmFilter.value = "";
-      // origemFilter.value = "";
-      // cestaBasicaFilter.value = "";
 
-      fetchPriceList(Number(produto.value), simulationFilter.value);
-      fetchMargem_Markup(queryString, simulationFilter.value);
-      fetchEncargoFinanceiro(queryString, simulationFilter.value);
-      fetchRota(queryString, simulationFilter.value);
+      const getData = async () => {
+         await resetForm(simulation);
 
-      microRegiaoFilter.value = "";
-      produtoFilter.textContent = "";
-      segmentoFilter.text = "";
+         const data = await fetchRota(queryString, simulationFilter.value);
+         console.log(data);
+         // if (data == undefined) return;
+
+         if (data.status == 404) {
+            $("#filterRotaModal").modal("hide");
+            notie.alert({ type: "error", text: "Não há rota cadastrada para essa seleção!" });
+            setTimeout(() => {
+               $("#filterRotaModal").modal("show");
+            }, 1000);
+            return;
+         }
+         try {
+            const margens = await fetchMargem_Markup(queryString, simulationFilter.value);
+            console.log(margens);
+
+            if (margens.status == 404) {
+               $("#filterRotaModal").modal("hide");
+               notie.alert({ type: "error", text: "Não há margen/markup cadastrado para essa rota!" });
+               setTimeout(() => {
+                  $("#filterRotaModal").modal("show");
+               }, 2000);
+               return;
+            }
+            try {
+               const price = await fetchPriceList(Number(produto.value), simulationFilter.value);
+               if (price.status == 404) {
+                  await resetForm(simulationFilter.value);
+                  $("#filterRotaModal").modal("hide");
+                  notie.alert({ type: "error", text: "Não há preço de lista para esse produto!" });
+                  setTimeout(() => {
+                     $("#filterRotaModal").modal("show");
+                  }, 2000);
+                  return;
+               }
+
+               await fetchEncargoFinanceiro(queryString, simulationFilter.value);
+               await getOrigemDestino(data.rota, data.simulation);
+
+               $("#filterRotaModal").modal("hide");
+               notie.alert({ type: "success", text: `Simulação ${data.simulation} atualizada com sucesso!` });
+            } catch (error) {
+               console.error("Erro ao atualizar dados: " + error);
+               return;
+            }
+         } catch (error) {
+            console.error("Erro ao atualizar dados: " + error);
+            return;
+         }
+      };
+
+      getData();
    });
 
    $("select:not(.normal)").each(function () {
@@ -595,4 +567,30 @@ function addSimulation(simulation) {
    });
 
    initializeSections();
+}
+
+function selectRoute(filterNumber) {
+   let microRegiao = document.getElementById(`micro-regiao-${filterNumber}`);
+   let segmento = document.getElementById(`segmento-${filterNumber}`);
+   let produto = document.getElementById(`produto-${filterNumber}`);
+   let origemDestino = document.getElementById(`origem-destino-${filterNumber}`);
+   let ncm = document.getElementById(`ncm-${filterNumber}`);
+   let origemProduto = document.getElementById(`origem-${filterNumber}`);
+   let cestaBasica = document.getElementById(`cesta-basica-${filterNumber}`);
+
+   document.getElementById("select2-micro_regiao-container").textContent = microRegiao.value;
+   document.getElementById("select2-segmento-container").textContent = segmento.value;
+   document.getElementById("select2-produto-container").textContent = produto.value;
+
+   simulationFilter.value = filterNumber;
+
+   microRegiaoFilter.value = microRegiao.value;
+   segmentoFilter.value = segmento.value;
+   produtoFilter.value = produto.value;
+   origemDestinoFilter.value = origemDestino.value;
+   ncmFilter.value = ncm.value;
+   origemFilter.value = origemProduto.value;
+   cestaBasicaFilter.value = cestaBasica.value;
+
+   $("#filterRotaModal").modal("show");
 }

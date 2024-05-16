@@ -1,0 +1,105 @@
+.loader-wrapper {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   position: absolute;
+   z-index: 99999;
+   background: #fff;
+   width: 100%;
+   height: 100%;
+}
+
+.loader-wrapper #loader img {
+   width: 100px;
+   margin-top: 5%;
+   transform: scale(1);
+   /* animation: appear 2s linear forwards alternate, rotate 0.8s 0.5s linear forwards infinite alternate; */
+}
+
+@-webkit-keyframes appear {
+   from {
+      opacity: 0;
+   }
+   to {
+      opacity: 1;
+   }
+}
+
+@-moz-keyframes appear {
+   from {
+      opacity: 0;
+   }
+   to {
+      opacity: 1;
+   }
+}
+
+@-o-keyframes appear {
+   from {
+      opacity: 0;
+   }
+   to {
+      opacity: 1;
+   }
+}
+
+@keyframes appear {
+   from {
+      opacity: 0;
+   }
+   to {
+      opacity: 1;
+   }
+}
+
+@-webkit-keyframes rotate {
+   from {
+      transform: scale(1) rotateY(0deg);
+   }
+   to {
+      transform: scale(1) rotateY(360deg);
+   }
+}
+
+@-moz-keyframes rotate {
+   from {
+      transform: scale(1) rotateY(0deg);
+   }
+   to {
+      transform: scale(1) rotateY(360deg);
+   }
+}
+
+@-o-keyframes rotate {
+   from {
+      transform: scale(1) rotateY(0deg);
+   }
+   to {
+      transform: scale(1) rotateY(360deg);
+   }
+}
+
+@keyframes rotate {
+   from {
+      transform: scale(1) rotateY(0deg);
+   }
+   to {
+      transform: scale(1) rotateY(360deg);
+   }
+}
+
+.image-loader {
+   display: none;
+}
+
+.body-loader {
+   overflow-y: hidden;
+}
+
+.body-loader-Overflow {
+   overflow: auto !important;
+}
+
+.loader-wrapper-remove {
+   display: none !important;
+}

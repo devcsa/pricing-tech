@@ -12,6 +12,8 @@ const getAll = async () => {
             }
          }
       );
+   }).catch((error) => {
+      throw new Error(`Erro ao localizar margem e markup: ${error}`);
    });
 };
 
