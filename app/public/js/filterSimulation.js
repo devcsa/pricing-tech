@@ -4,6 +4,7 @@ var origemProduto;
 var cestaBasica;
 var segmento_id;
 var markup;
+var infosEstaduais;
 
 var origemDestinoId;
 
@@ -391,7 +392,9 @@ const fetchImpostos = async (origemDestinoId, simulation) => {
       }, 1000);
    }
 
-   console.log(result);
+   const infoImpostos = result;
+
+   console.log(infoImpostos);
 
    document.getElementById(`cesta-basica-${simulation}`).value = result.cesta_basica;
 
@@ -409,10 +412,10 @@ const fetchImpostos = async (origemDestinoId, simulation) => {
 
    cestaBasica = result.cesta_basica;
 
-   await fetchRegimesEspeciais(simulation);
+   await fetchRegimesEspeciais(simulation, infoImpostos);
 };
 
-const fetchRegimesEspeciais = async (simulation) => {
+const fetchRegimesEspeciais = async (simulation, infoImpostos) => {
    const queryFilter = {
       tipo_produto: origemProduto,
       ncm: ncmProduto,
@@ -433,36 +436,60 @@ const fetchRegimesEspeciais = async (simulation) => {
 
    const result = await response.json();
 
-   console.log(result);
-
-   // if (!response.ok) {
-   //    notie.alert({ type: "error", text: "Realize login para continuar!" });
-   //    setTimeout(() => {
-   //       window.location.href = "index.html";
-   //    }, 1000);
-   // }
-
    if (response.status == 404) {
-      console.log({ type: "error", text: "Regimes especiais não encontrados!" });
-      calcForm(simulation);
-   } else {
-      const infoRegimes = {
-         incentivized_area: result.incentivized_area,
-         bc_credito_presumido_st_cliente: result.bc_credito_presumido_st_cliente,
-         pct_limite_credito_icms: result.pct_limite_credito_icms,
-         reducao_icms_interno_va_at: result.reducao_icms_interno_va_at,
-         credito_icms: result.credito_icms,
-      };
-
-      console.log(infoRegimes);
-
-      document.getElementById(`${simulation}-pct-regime`).value = result.pct_antecipacao * 100;
-
-      if (result.capturar_beneficio_fiscal_cliente == "SIM") {
-         document.getElementById(`${simulation}-pct-credito-presumido`).value = result.pct_credito_presumido * 100;
-      }
-      calcForm(simulation, infoRegimes);
+      console.log("Regimes especiais não encontrados!");
+      calcForm(simulation, undefined, infoImpostos, undefined, "yes");
+      return { status: response.status };
+      // notie.alert({ type: "error", text: "Não há regimes especiais!" });
+      // return;
    }
 
-   // calcForm(simulation);
+   if (result.mva_estadual == "SIM") {
+      const queryEstadual = {
+         origem_destino_id: result.origem_destino_estadual_id,
+         tipo_produto: infoImpostos.tipo_produto,
+         ncm: infoImpostos.ncm,
+      };
+
+      const filterEstadual = new URLSearchParams(queryEstadual).toString();
+
+      const res = await fetch(`/impostos?${filterEstadual}`, {
+         method: "GET",
+         headers: {
+            "content-type": "application/json",
+            Authorization: `Bearer ${tokenUser}`,
+         },
+      });
+
+      const req = await res.json();
+
+      if (req.status == 404) {
+         console.log("Impostos estaduais não encontrados!");
+      } else {
+         infosEstaduais = req;
+         console.log(infosEstaduais);
+      }
+
+      // if (!response.ok) {
+      //    notie.alert({ type: "error", text: "Realize login para continuar!" });
+      //    setTimeout(() => {
+      //       window.location.href = "index.html";
+      //    }, 1000);
+      // }
+
+      if (response.status == 404) {
+         console.log("Regimes especiais não encontrados!");
+      } else {
+         const infoRegimes = result;
+
+         console.log(infoRegimes);
+
+         document.getElementById(`${simulation}-pct-regime`).value = result.pct_antecipacao * 100;
+
+         if (result.capturar_beneficio_fiscal_cliente == "SIM") {
+            document.getElementById(`${simulation}-pct-credito-presumido`).value = result.pct_credito_presumido * 100;
+         }
+         calcForm(simulation, infoRegimes, infoImpostos, infosEstaduais, "no");
+      }
+   }
 };

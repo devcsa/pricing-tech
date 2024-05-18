@@ -1,5 +1,7 @@
 var simulation = {};
 
+var vlEstorno = 0;
+
 const options = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
 const formatNumber = new Intl.NumberFormat("pt-BR", options);
 
@@ -21,6 +23,7 @@ function initializeSections() {
 }
 
 function getValuesForm(numberSimulation) {
+   var orgiem_destino = document.getElementById("origem-destino-" + numberSimulation);
    var form = document.getElementById("calcForm-" + numberSimulation);
    var inputs = form.getElementsByTagName("input");
 
@@ -30,13 +33,14 @@ function getValuesForm(numberSimulation) {
             const field = form.elements[i];
             simulation[field.name] = field.value;
          }
-         fetchRegimesEspeciais(numberSimulation);
+         getOrigemDestino(orgiem_destino.value, numberSimulation);
+         // fetchRegimesEspeciais(numberSimulation);
          // calcForm(numberSimulation);
       });
    }
 }
 
-function calcForm(numberSimulation, infoRegimes) {
+function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais, formatOnly) {
    const price_list = document.getElementById(numberSimulation + "-price-list");
    const vl_encargo = document.getElementById(numberSimulation + "-vl-encargo");
    const gsv = document.getElementById(numberSimulation + "-gsv");
@@ -69,6 +73,8 @@ function calcForm(numberSimulation, infoRegimes) {
    const pct_credito_presumido = document.getElementById(numberSimulation + "-pct-credito-presumido");
    const cred_presumido = document.getElementById(numberSimulation + "-cred-presumido");
    const cred_icms = document.getElementById(numberSimulation + "-cred-icms");
+   const total_cred_icms = document.getElementById(numberSimulation + "-total-cred-icms");
+
    const custo_antes_st = document.getElementById(numberSimulation + "-custo-antes-st");
    const pct_margem_at = document.getElementById(numberSimulation + "-pct-margem-at");
    const vl_margem_at = document.getElementById(numberSimulation + "-vl-margem-at");
@@ -100,6 +106,11 @@ function calcForm(numberSimulation, infoRegimes) {
    const vl_pis_cofins_pv = document.getElementById(numberSimulation + "-vl-pis-cofins-pv");
    const preco_venda_pv = document.getElementById(numberSimulation + "-preco-venda-pv");
    const pct_markup_pv = document.getElementById(numberSimulation + "-pct-markup-pv");
+
+   // if (formatOnly == "yes") {
+   //    formatValues();
+   //    return;
+   // }
 
    let price = parseFloat(price_list.value.replace(".", "").replace(",", "."));
    let encargo = parseFloat(pct_encargo.value.replace(",", ".").replace("%", "")) / 100;
@@ -149,6 +160,45 @@ function calcForm(numberSimulation, infoRegimes) {
    vl_nf_s_st.value = formatNumber.format(t_Mercadoria + vlIpi);
 
    // calcular NF
+
+   // % MVA
+   if (infoRegimes !== undefined) {
+      if (infoRegimes.substituto === "SIM" || infoImpostos.st_nf === "CLIENTE") {
+         pct_mva.value = "0,00%";
+      } else {
+         pct_mva.value = infoImpostos.pct_mva * 100;
+      }
+   } else {
+      let pauta = 0; // Posteriormente, ajustar valor da Pauta de acordo com Banco de Dados
+      if (pauta == 0) pct_mva.value = infoImpostos.pct_mva * 100;
+   }
+
+   // % ICMS ST
+   if (infoRegimes !== undefined) {
+      if (infoRegimes.reducao_icms_interno_va_at === "SIM") {
+         if (infoImpostos.pct_icms_interno_efetivo > infoImpostos.pct_icms_interno_original) {
+            pct_icms_st.value = infoImpostos.pct_icms_interno_original * 100;
+         } else {
+            pct_icms_st.value = infoImpostos.pct_icms_interno_efetivo * 100;
+         }
+      } else {
+         pct_icms_st.value = infoImpostos.pct_icms_interno_original * 100;
+      }
+   } else {
+      pct_icms_st.value = infoImpostos.pct_icms_interno_original * 100;
+   }
+
+   // % ICMS Saída VA
+   if (infoRegimes !== undefined) {
+      if (infoRegimes.reducao_icms_saida_va_at == "NÃO") {
+         pct_icms_saida.value = infoImpostos.pct_icms_interno_original * 100;
+      } else {
+         pct_icms_saida.value = infoImpostos.pct_icms_interno_efetivo * 100;
+      }
+   } else {
+      pct_icms_saida.value = infoImpostos.pct_icms_interno_efetivo * 100;
+   }
+
    let pctMva = parseFloat(pct_mva.value.replace(",", ".").replace("%", "")) / 100;
    let pctIcmsSt = parseFloat(pct_icms_st.value.replace(",", ".").replace("%", "")) / 100;
    let nfSemIcmsSt = parseFloat(vl_nf_s_st.value.replace(".", "").replace(",", "."));
@@ -185,10 +235,18 @@ function calcForm(numberSimulation, infoRegimes) {
 
    let pctCreditoPresumido = parseFloat(pct_credito_presumido.value.replace(",", ".").replace("%", "")) / 100;
 
+   let baseIcmsStAt = Number(base_icms_st_at.value.replace(".", "").replace(",", "."));
+
    // Crédito Presumido
-   if (!infoRegimes == undefined) {
-      if (infoRegimes.bc_credito_presumido_st_cliente == "NÃO") {
-         cred_presumido.value = formatNumber.format(vlNfTotal * (1 + pctCreditoPresumido) * 0.25 - 0.65 - vlRegime);
+   if (infoRegimes != undefined) {
+      if (infoRegimes.bc_credito_presumido_st_cliente == "SIM") {
+         cred_presumido.value = pctCreditoPresumido * baseIcmsStAt;
+      } else {
+         if (pctCreditoPresumido == 0 || pctIcmsSt == 0) {
+            cred_presumido.value = "0,00";
+         } else {
+            cred_presumido.value = formatNumber.format(vlNfTotal * (1 + pctCreditoPresumido) * pctIcmsSt - vlIcms - vlRegime);
+         }
       }
    }
 
@@ -199,13 +257,51 @@ function calcForm(numberSimulation, infoRegimes) {
       cred_icms.value = "0,00";
    }
 
+   // % MVA AT
+   let pauta = 0;
+   if (pauta !== 0 || pctMva !== 0) {
+      pct_mva_at.value = "0,00";
+   }
+
+   if (infoRegimes !== undefined) {
+      if (infoImpostos.st_nf === "CLIENTE" || infoRegimes.substituto === "SIM") {
+         if (infoRegimes.ajustar_mva === "SIM") {
+            pct_mva_at.value = infoImpostos.pct_mva_original * 100;
+         } else if (infoRegimes.mva_exclusivo === "SIM") {
+            pct_mva_at.value = infoImpostos.pct_mva_exclusivo * 100;
+         } else {
+            if (infoRegimes.mva_estadual == "SIM") {
+               pct_mva_at.value = infosEstaduais.pct_mva * 100;
+            } else {
+               pct_mva_at.value = infoImpostos.pct_mva * 100;
+            }
+         }
+      }
+      // } else {
+      //    pct_mva_at.value = infoImpostos.pct_mva * 100;
+   }
+
    // Custo Antes da ST
    let vlTmiOff = parseFloat(vl_tmi_off.value.replace(".", "").replace(",", "."));
    let credPisCofins = parseFloat(cred_pis_cofins.value.replace(".", "").replace(",", "."));
    let credPresumido = parseFloat(cred_presumido.value.replace(".", "").replace(",", "."));
    let credIcms = parseFloat(cred_icms.value.replace(".", "").replace(",", "."));
 
-   custo_antes_st.value = formatNumber.format(vlNfTotal + vlRegime - vlTmiOff - credPisCofins - credPresumido - credIcms);
+   let totalCreditoIcms = 0;
+
+   if (infoRegimes !== undefined) {
+      if (infoRegimes.vira_custo == "NÃO") {
+         total_cred_icms.value = formatNumber.format(vlRegime + credPresumido + credIcms - vlEstorno);
+      } else {
+         total_cred_icms.value = formatNumber.format(credPresumido + credIcms - vlEstorno);
+      }
+   } else {
+      total_cred_icms.value = formatNumber.format(credPresumido + credIcms - vlEstorno);
+   }
+
+   totalCreditoIcms = parseFloat(total_cred_icms.value.replace(".", "").replace(",", "."));
+
+   custo_antes_st.value = formatNumber.format(vlNfTotal - totalCreditoIcms - vlTmiOff - credPisCofins);
 
    // Margem Atacado
    let pctMgAt = parseFloat(pct_margem_at.value.replace(",", ".").replace("%", "")) / 100;
@@ -250,20 +346,42 @@ function calcForm(numberSimulation, infoRegimes) {
    let pctIcmsStAt = parseFloat(pct_icms_st_at.value.replace(",", ".").replace("%", "")) / 100;
    let vlIcmsSaida = parseFloat(vl_icms_saida.value.replace(".", "").replace(",", "."));
    let vlPisCofinsAt = parseFloat(vl_pis_cofins_at.value.replace(".", "").replace(",", "."));
-   let vlEstorno = parseFloat(estorno.value.replace(".", "").replace(",", "."));
+   vlEstorno = parseFloat(estorno.value.replace(".", "").replace(",", "."));
 
    // Base ICMS ST Cliente
    if (pctMvaAt == 0) {
       base_icms_st_at.value = "0,00";
    } else {
-      base_icms_st_at.value = formatNumber.format((receitaLiqAt / (1 - pctPisCofinsAt) / (1 - pctIcmsSaida)) * (1 + pctMvaAt));
+      if (infoRegimes !== undefined) {
+         if (infoRegimes.mva_receita_liquida == "SIM") {
+            if (pctMvaAt == 0) {
+               base_icms_st_at.value = "0,00";
+               base_icms_st_at.value = formatNumber.format((receitaLiqAt + vlPisCofinsAt + vlIcmsSaida) * (1 + pct_icms_saida.value));
+            }
+         }
+      }
+   }
+
+   // Base ICMS ST Cliente
+   if (pctMvaAt == 0) {
+      pct_icms_st_at.value = "0,00%";
+   } else {
+      if (infoRegimes !== undefined) {
+         if (infoRegimes.reducao_bc_st_cliente == "SIM") {
+            pct_icms_st_at.value = infoImpostos.pct_icms_interno_efetivo * 100;
+         } else {
+            pct_icms_st_at.value = infoImpostos.pct_icms_interno_original * 100;
+         }
+      } else {
+         pct_icms_st_at.value = infoImpostos.pct_icms_interno_original * 100;
+      }
    }
 
    // ICMS ST Cliente
    if (pctMvaAt == 0) {
       vl_icms_st_at.value = "0,00";
    } else {
-      let baseIcmsStAt = Number(base_icms_st_at.value.replace(".", "").replace(",", "."));
+      // let baseIcmsStAt = Number(base_icms_st_at.value.replace(".", "").replace(",", "."));
       vl_icms_st_at.value = formatNumber.format(pctIcmsStAt * baseIcmsStAt - vlIcmsSaida);
    }
 
@@ -395,6 +513,8 @@ function addValuesSimulation(values, numberSimulation, valuesSimulation) {
    const pct_icms_saida_pv = document.getElementById(numberSimulation + "-pct-icms-saida-pv");
    const pct_markup_pv = document.getElementById(numberSimulation + "-pct-markup-pv");
 
+   const orgiem_destino = document.getElementById("origem-destino-" + numberSimulation);
+
    price_list.value = values[valuesSimulation + "-price-list"];
    pct_encargo.value = values[valuesSimulation + "-pct-encargo"];
    pct_tmi_on.value = values[valuesSimulation + "-pct-tmi-on"];
@@ -414,6 +534,7 @@ function addValuesSimulation(values, numberSimulation, valuesSimulation) {
    pct_icms_saida_pv.value = values[valuesSimulation + "-pct-icms-saida-pv"];
    pct_markup_pv.value = values[valuesSimulation + "-pct-markup-pv"];
 
-   fetchRegimesEspeciais(numberSimulation);
+   // fetchRegimesEspeciais(numberSimulation);
+   fetchImpostos(orgiem_destino.value, numberSimulation);
    // calcForm(numberSimulation);
 }

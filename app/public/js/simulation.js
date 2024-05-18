@@ -98,6 +98,7 @@ async function addSimulation(simulation) {
       <input type="hidden" name="segmento-${simulation}" id="segmento-${simulation}"/ >
       <input type="hidden" name="produto-${simulation}" id="produto-${simulation}"/ >
       <input type="hidden" name="origem-destino-${simulation}" id="origem-destino-${simulation}" />
+      <input type="hidden" name="origem-destino-estadual-${simulation}" id="origem-destino-estadual${simulation}" />
       <input type="hidden" name="ncm-${simulation}" id="ncm-${simulation}" />
       <input type="hidden" name="origem-${simulation}" id="origem-${simulation}" />
       <input type="hidden" name="cesta-basica-${simulation}" id="cesta-basica-${simulation}" />
@@ -223,9 +224,15 @@ async function addSimulation(simulation) {
             </div>
 
             <div class="row div-form ms-0">
-               <label for="${simulation}-cred-icms" class="metric ms-1 col-form-label">Total Crédito ICMS</label>
+               <label for="${simulation}-cred-icms" class="metric ms-1 col-form-label">Crédito ICMS</label>
                <div class="pct-metric"></div>
                <input type="text" class="vl-metric mx-1 form-control" id="${simulation}-cred-icms" name="${simulation}-cred-icms" value="0,00" disabled />
+            </div>
+
+            <div class="row div-form ms-0">
+               <label for="${simulation}-total-cred-icms" class="metric ms-1 col-form-label">Total Crédito ICMS</label>
+               <div class="pct-metric"></div>
+               <input type="text" class="vl-metric mx-1 form-control" id="${simulation}-total-cred-icms" name="${simulation}-total-cred-icms" value="0,00" disabled />
             </div>
 
             <div class="row div-form ms-0">
@@ -507,7 +514,7 @@ async function addSimulation(simulation) {
          await resetForm(simulation);
 
          const data = await fetchRota(queryString, simulationFilter.value);
-         console.log(data);
+         // console.log(data);
          // if (data == undefined) return;
 
          if (data.status == 404) {
@@ -520,7 +527,7 @@ async function addSimulation(simulation) {
          }
          try {
             const margens = await fetchMargem_Markup(queryString, simulationFilter.value);
-            console.log(margens);
+            // console.log(margens);
 
             if (margens.status == 404) {
                $("#filterRotaModal").modal("hide");

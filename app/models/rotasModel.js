@@ -77,6 +77,7 @@ const getOne = async (filter) => {
 
       return queryResult[0];
    } catch (error) {
+      console.log(error);
       throw new Error(`Erro ao localizar rota: ${error}`);
    }
 };
