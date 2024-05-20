@@ -119,22 +119,22 @@ async function addSimulation(simulation) {
             <div class="row div-form ms-0">
                <label for="${simulation}-pct-encargo" class="metric ms-1 col-form-label">Encargos</label>
                <input type="text" onkeypress="return checkInput(event)" class="pct-metric mx-1 form-control input-value" id="${simulation}-pct-encargo" name="${simulation}-pct-encargo" value="0,00%" />
-               <input type="text" title="Preço Lista * % Encargo" class="vl-metric form-control font-bold" id="${simulation}-vl-encargo" name="${simulation}-vl-encargo" value="0,00" disabled />
+               <input type="text" title="Preço Lista * % Encargo" class="info-metric vl-metric form-control font-bold" id="${simulation}-vl-encargo" name="${simulation}-vl-encargo" value="0,00" disabled />
             </div>
             <div class="row div-form ms-0">
                <label for="${simulation}-gsv" class="metric ms-1 col-form-label">GSV</label>
                <div class="pct-metric"></div>
-               <input type="text" title="GSV = Preço Lista + Valor Encargo" class="vl-metric mx-1 form-control font-bold" id="${simulation}-gsv" name="${simulation}-gsv" value="0,00" disabled />
+               <input type="text" title="GSV = Preço Lista + Valor Encargo" class="info-metric vl-metric mx-1 form-control font-bold" id="${simulation}-gsv" name="${simulation}-gsv" value="0,00" disabled />
             </div>
             <div class="row div-form ms-0">
                <label for="${simulation}-pct-tmi-on" class="metric ms-1 col-form-label">% TMI ON</label>
                <input type="text" onkeypress="return checkInput(event)" class="pct-metric mx-1 form-control input-value" id="${simulation}-pct-tmi-on" name="${simulation}-pct-tmi-on" value="0,000%" />
-               <input type="text" title="R$ TMI ON = GSV * % TMI ON" class="vl-metric form-control" id="${simulation}-vl-tmi-on" name="${simulation}-vl-tmi-on" value="0,00" disabled />
+               <input type="text" title="R$ TMI ON = GSV * % TMI ON" class="info-metric vl-metric form-control" id="${simulation}-vl-tmi-on" name="${simulation}-vl-tmi-on" value="0,00" disabled />
             </div>
             <div class="row div-form ms-0">
                <span class="total-metric px-1 mx-0 row">
                   <label for="${simulation}-niv" class="metric col-form-label">NIV</label>
-                  <input type="text" title="NIV = GSV (-) Valor TMI ON" class="tt-metric form-control" id="${simulation}-niv" name="${simulation}-niv" value="0,00" disabled />
+                  <input type="text" title="NIV = GSV (-) Valor TMI ON" class="info-metric tt-metric form-control" id="${simulation}-niv" name="${simulation}-niv" value="0,00" disabled />
                </span>
             </div>
             <div class="row div-form ms-0">
@@ -200,9 +200,9 @@ async function addSimulation(simulation) {
             </div>
 
             <div class="row div-form ms-0">
-               <label for="${simulation}-pct-regime" class="metric ms-1 col-form-label">Regime Estado</label>
+               <label for="${simulation}-pct-regime" class="metric ms-1 col-form-label">Regime Estado<sup><i class="fa fa-info-circle"></i></sup></label>
                <input type="text" onkeypress="return checkInput(event)" class="pct-metric mx-1 form-control input-value" id="${simulation}-pct-regime" name="${simulation}-pct-regime" value="0,00%" />
-               <input type="text" class="vl-metric form-control" id="${simulation}-vl-regime" name="${simulation}-vl-regime" value="0,00" disabled />
+               <input type="text" class="info-metric vl-metric form-control" id="${simulation}-vl-regime" name="${simulation}-vl-regime" value="0,00" disabled />
             </div>
 
             <div class="row div-form ms-0">
@@ -218,7 +218,7 @@ async function addSimulation(simulation) {
             </div>
 
             <div class="row div-form ms-0">
-               <label for="${simulation}-cred-presumido" class="metric ms-1 col-form-label">Crédito Presumido</label>
+               <label for="${simulation}-cred-presumido" class="metric ms-1 col-form-label">Crédito Presumido<sup><i class="fa fa-info-circle"></i></sup></label>
                <input type="text" onkeypress="return checkInput(event)" class="pct-metric mx-1 form-control input-value" id="${simulation}-pct-credito-presumido" name="${simulation}-pct-credito-presumido" value="0,000%" />
                <input type="text" class="vl-metric form-control" id="${simulation}-cred-presumido" name="${simulation}-cred-presumido" value="0,00" disabled />
             </div>
@@ -232,7 +232,7 @@ async function addSimulation(simulation) {
             <div class="row div-form ms-0">
                <label for="${simulation}-total-cred-icms" class="metric ms-1 col-form-label">Total Crédito ICMS</label>
                <div class="pct-metric"></div>
-               <input type="text" class="vl-metric mx-1 form-control" id="${simulation}-total-cred-icms" name="${simulation}-total-cred-icms" value="0,00" disabled />
+               <input type="text" class="font-bold vl-metric mx-1 form-control" id="${simulation}-total-cred-icms" name="${simulation}-total-cred-icms" value="0,00" disabled />
             </div>
 
             <div class="row div-form ms-0">
@@ -266,7 +266,7 @@ async function addSimulation(simulation) {
             </div>
 
             <div class="row div-form ms-0">
-               <label for="${simulation}-estorno" class="metric ms-1 col-form-label">Estorno</label>
+               <label for="${simulation}-estorno" class="metric ms-1 col-form-label">Estorno<sup><i class="fa fa-info-circle"></i></sup></label>
                <div class="pct-metric"></div>
                <input type="text" class="vl-metric mx-1 form-control" id="${simulation}-estorno" name="${simulation}-estorno" value="0,00" disabled />
             </div>

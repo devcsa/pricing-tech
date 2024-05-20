@@ -1,0 +1,164 @@
+.container {
+   width: 100%;
+   padding: 0 12px;
+   margin: 0 100px;
+}
+
+.table-container {
+   /* border: 1px red solid; */
+   display: flex;
+   justify-content: center;
+   margin-top: 30px;
+   width: 100%;
+}
+
+.fixed-table-body {
+   width: max(1300px);
+}
+
+.fixed-table-toolbar {
+   margin-bottom: 10px;
+}
+
+.fixed-table-toolbar button {
+   font-size: 13px;
+   line-height: 1rem;
+   height: 2.2rem;
+   background-color: #777676;
+}
+
+.fixed-table-toolbar input {
+   font-size: 14px;
+   line-height: 1rem;
+   height: 2.3rem;
+}
+
+#table th,
+.th-inner {
+   display: flexbox;
+   background-color: #6e6e6e;
+   color: #fff;
+   flex-wrap: wrap !important;
+   font-size: 0.7rem;
+   /* width: 100px !important; */
+   white-space: normal !important;
+   height: 40px !important;
+
+   /* font-weight: 600;
+   width: 100px !important;
+
+
+    */
+}
+
+th {
+   padding: 0 !important;
+   text-align: center !important;
+}
+
+.th-inner {
+   width: 95px;
+   display: flex;
+   padding: 5px !important;
+   vertical-align: middle !important;
+   text-align: center !important;
+   align-content: center;
+}
+
+.segmento-regime .th-inner {
+   width: 260px;
+   padding: 5px !important;
+}
+
+.origem-destino .th-inner {
+   width: 260px;
+   padding: 5px !important;
+}
+
+.ajustar-coluna .th-inner {
+   width: 150px;
+   padding: 5px !important;
+}
+
+.btn-action-delete .th-inner {
+   width: 50px;
+   text-align: center !important;
+   align-content: center;
+}
+
+.btn-action-delete i {
+   color: red !important;
+}
+
+.active > .page-link,
+.page-link.active {
+   z-index: 3;
+   color: var(--bs-pagination-active-color);
+   background-color: #4a8c9c !important;
+   border-color: #4a8c9c !important;
+   line-height: 1rem !important;
+}
+
+.fixed-table-pagination {
+   flex-direction: row;
+   margin-top: 1.2rem;
+}
+
+.pagination-info,
+.page-list {
+   font-size: 12px;
+}
+
+.page-item a {
+   color: #4a8c9c !important;
+}
+
+.page-item.active a {
+   color: #fff !important;
+}
+
+.dropdown-toggle {
+   line-height: 1.2rem;
+   background-color: #4a8c9c;
+   border-color: #4a8c9c;
+}
+
+.pagination ul {
+   flex-direction: row;
+   font-size: 12px !important;
+}
+
+.pagination-detail {
+   font-size: 12px !important;
+}
+
+.btn-group button {
+   background-color: #4a8c9c;
+   border-color: #4a8c9c;
+}
+
+.btn-group button:hover {
+   background-color: #1c546c;
+}
+
+.editable-submit {
+   border: 1px #32b178 solid;
+   font-weight: bold;
+   width: 70px;
+   padding: 5px 10px;
+   border-radius: 4px;
+   color: #ffffff;
+   background-color: #32b178 !important;
+   transition: background-color 0.8s;
+}
+
+ul .select2-choices {
+   font-size: 12px;
+
+   height: 35px;
+}
+
+.select2-result-label {
+   font-size: 12px;
+   text-align: left;
+}

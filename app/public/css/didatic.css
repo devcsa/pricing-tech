@@ -284,7 +284,13 @@ span span input[type="search"].select2-search__field {
 
 .vl-metric {
    width: 30% !important;
-   cursor: help;
+}
+
+sup {
+   color: red;
+   font-weight: bold;
+   font-size: 12px !important;
+   margin-left: 3px;
 }
 
 .tt-metric {

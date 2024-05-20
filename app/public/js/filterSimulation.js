@@ -438,7 +438,7 @@ const fetchRegimesEspeciais = async (simulation, infoImpostos) => {
 
    if (response.status == 404) {
       console.log("Regimes especiais não encontrados!");
-      calcForm(simulation, undefined, infoImpostos, undefined, "yes");
+      calcForm(simulation, undefined, infoImpostos, undefined);
       return { status: response.status };
       // notie.alert({ type: "error", text: "Não há regimes especiais!" });
       // return;
@@ -469,27 +469,27 @@ const fetchRegimesEspeciais = async (simulation, infoImpostos) => {
          infosEstaduais = req;
          console.log(infosEstaduais);
       }
+   }
 
-      // if (!response.ok) {
-      //    notie.alert({ type: "error", text: "Realize login para continuar!" });
-      //    setTimeout(() => {
-      //       window.location.href = "index.html";
-      //    }, 1000);
-      // }
+   // if (!response.ok) {
+   //    notie.alert({ type: "error", text: "Realize login para continuar!" });
+   //    setTimeout(() => {
+   //       window.location.href = "index.html";
+   //    }, 1000);
+   // }
 
-      if (response.status == 404) {
-         console.log("Regimes especiais não encontrados!");
-      } else {
-         const infoRegimes = result;
+   if (response.status == 404) {
+      console.log("Regimes especiais não encontrados!");
+   } else {
+      const infoRegimes = result;
 
-         console.log(infoRegimes);
+      console.log(infoRegimes);
 
-         document.getElementById(`${simulation}-pct-regime`).value = result.pct_antecipacao * 100;
+      document.getElementById(`${simulation}-pct-regime`).value = result.pct_antecipacao * 100;
 
-         if (result.capturar_beneficio_fiscal_cliente == "SIM") {
-            document.getElementById(`${simulation}-pct-credito-presumido`).value = result.pct_credito_presumido * 100;
-         }
-         calcForm(simulation, infoRegimes, infoImpostos, infosEstaduais, "no");
+      if (result.capturar_beneficio_fiscal_cliente == "SIM") {
+         document.getElementById(`${simulation}-pct-credito-presumido`).value = result.pct_credito_presumido * 100;
       }
+      calcForm(simulation, infoRegimes, infoImpostos, infosEstaduais);
    }
 };

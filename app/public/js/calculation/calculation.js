@@ -1,5 +1,5 @@
 var simulation = {};
-
+var estornoCreditoIcms = 0;
 var vlEstorno = 0;
 
 const options = { minimumFractionDigits: 2, maximumFractionDigits: 2 };
@@ -40,7 +40,7 @@ function getValuesForm(numberSimulation) {
    }
 }
 
-function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais, formatOnly) {
+function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais) {
    const price_list = document.getElementById(numberSimulation + "-price-list");
    const vl_encargo = document.getElementById(numberSimulation + "-vl-encargo");
    const gsv = document.getElementById(numberSimulation + "-gsv");
@@ -107,11 +107,6 @@ function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais, f
    const preco_venda_pv = document.getElementById(numberSimulation + "-preco-venda-pv");
    const pct_markup_pv = document.getElementById(numberSimulation + "-pct-markup-pv");
 
-   // if (formatOnly == "yes") {
-   //    formatValues();
-   //    return;
-   // }
-
    let price = parseFloat(price_list.value.replace(".", "").replace(",", "."));
    let encargo = parseFloat(pct_encargo.value.replace(",", ".").replace("%", "")) / 100;
 
@@ -162,15 +157,18 @@ function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais, f
    // calcular NF
 
    // % MVA
-   if (infoRegimes !== undefined) {
-      if (infoRegimes.substituto === "SIM" || infoImpostos.st_nf === "CLIENTE") {
+
+   if (infoRegimes != undefined) {
+      if (infoRegimes.substituto == "SIM") {
          pct_mva.value = "0,00%";
-      } else {
-         pct_mva.value = infoImpostos.pct_mva * 100;
       }
    } else {
-      let pauta = 0; // Posteriormente, ajustar valor da Pauta de acordo com Banco de Dados
-      if (pauta == 0) pct_mva.value = infoImpostos.pct_mva * 100;
+      if (infoImpostos.st_nf == "CLIENTE") {
+         pct_mva.value = "0,00%";
+      } else {
+         let pauta = 0; // Posteriormente, ajustar valor da Pauta de acordo com Banco de Dados
+         if (pauta == 0) pct_mva.value = infoImpostos.pct_mva * 100;
+      }
    }
 
    // % ICMS ST
@@ -203,7 +201,11 @@ function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais, f
    let pctIcmsSt = parseFloat(pct_icms_st.value.replace(",", ".").replace("%", "")) / 100;
    let nfSemIcmsSt = parseFloat(vl_nf_s_st.value.replace(".", "").replace(",", "."));
 
-   base_icms_st.value = formatNumber.format(nfSemIcmsSt * (1 + pctMva));
+   if (pctMva == 0) {
+      base_icms_st.value = "0,00";
+   } else {
+      base_icms_st.value = formatNumber.format(nfSemIcmsSt * (1 + pctMva));
+   }
 
    let baseIcmsSt = Number(base_icms_st.value.replace(".", "").replace(",", "."));
 
@@ -239,6 +241,8 @@ function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais, f
 
    // Crédito Presumido
    if (infoRegimes != undefined) {
+      vl_regime.setAttribute("title", `Vira Custo: ${infoRegimes.vira_custo}`);
+      cred_presumido.setAttribute("title", `Capturar Benefício Fiscal Cliente?: ${infoRegimes.capturar_beneficio_fiscal_cliente}`);
       if (infoRegimes.bc_credito_presumido_st_cliente == "SIM") {
          cred_presumido.value = pctCreditoPresumido * baseIcmsStAt;
       } else {
@@ -264,8 +268,8 @@ function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais, f
    }
 
    if (infoRegimes !== undefined) {
-      if (infoImpostos.st_nf === "CLIENTE" || infoRegimes.substituto === "SIM") {
-         if (infoRegimes.ajustar_mva === "SIM") {
+      if (infoRegimes.substituto == "SIM") {
+         if (infoRegimes.ajustar_mva == "SIM") {
             pct_mva_at.value = infoImpostos.pct_mva_original * 100;
          } else if (infoRegimes.mva_exclusivo === "SIM") {
             pct_mva_at.value = infoImpostos.pct_mva_exclusivo * 100;
@@ -277,8 +281,10 @@ function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais, f
             }
          }
       }
-      // } else {
-      //    pct_mva_at.value = infoImpostos.pct_mva * 100;
+   } else {
+      if (infoImpostos.st_nf === "CLIENTE") {
+         pct_mva_at.value = infoImpostos.pct_mva * 100;
+      }
    }
 
    // Custo Antes da ST
@@ -289,19 +295,36 @@ function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais, f
 
    let totalCreditoIcms = 0;
 
+   // Estorno Crédito ICMS
+   if (infoRegimes == undefined) {
+      estornoCreditoIcms = 0;
+   } else {
+      if (infoRegimes.reducao_icms_interno_va_at == "SIM") {
+         if (pctMva == 0 && pct_ICMS > infoRegimes.pct_limite_credito_icms) {
+            estornoCreditoIcms = vlIcms - baseIcms * infoRegimes.pct_limite_credito_icms;
+         } else {
+            estornoCreditoIcms = 0;
+         }
+      } else {
+         if (infoRegimes.credito_icms == "NÃO") {
+            estornoCreditoIcms = 0;
+         }
+      }
+   }
+
    if (infoRegimes !== undefined) {
       if (infoRegimes.vira_custo == "NÃO") {
-         total_cred_icms.value = formatNumber.format(vlRegime + credPresumido + credIcms - vlEstorno);
+         total_cred_icms.value = formatNumber.format(vlRegime + credPresumido + credIcms - estornoCreditoIcms);
       } else {
-         total_cred_icms.value = formatNumber.format(credPresumido + credIcms - vlEstorno);
+         total_cred_icms.value = formatNumber.format(credPresumido + credIcms - estornoCreditoIcms);
       }
    } else {
-      total_cred_icms.value = formatNumber.format(credPresumido + credIcms - vlEstorno);
+      total_cred_icms.value = formatNumber.format(credPresumido + credIcms - estornoCreditoIcms);
    }
 
    totalCreditoIcms = parseFloat(total_cred_icms.value.replace(".", "").replace(",", "."));
 
-   custo_antes_st.value = formatNumber.format(vlNfTotal - totalCreditoIcms - vlTmiOff - credPisCofins);
+   custo_antes_st.value = formatNumber.format(vlNfTotal + vlRegime - totalCreditoIcms - vlTmiOff - credPisCofins);
 
    // Margem Atacado
    let pctMgAt = parseFloat(pct_margem_at.value.replace(",", ".").replace("%", "")) / 100;
@@ -325,40 +348,55 @@ function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais, f
       vl_icms_saida.value = "0,00";
    }
 
-   // Estorno
-   if (infoRegimes == undefined) {
-      estorno.value = "0,00";
-   } else {
-      if (infoRegimes.reducao_icms_interno_va_at == "SIM") {
-         if (pctMva == 0 && pct_ICMS > infoRegimes.pct_limite_credito_icms) {
-            estorno.value = formatNumber.format(vlIcms - baseIcms * infoRegimes.pct_limite_credito_icms);
-         } else {
-            estorno.value = "0,00";
-         }
-      } else {
-         if (infoRegimes.credito_icms == "NÃO") {
-            estorno.value = "0,00";
-         }
-      }
-   }
-
    let pctMvaAt = parseFloat(pct_mva_at.value.replace(",", ".").replace("%", "")) / 100;
    let pctIcmsStAt = parseFloat(pct_icms_st_at.value.replace(",", ".").replace("%", "")) / 100;
    let vlIcmsSaida = parseFloat(vl_icms_saida.value.replace(".", "").replace(",", "."));
    let vlPisCofinsAt = parseFloat(vl_pis_cofins_at.value.replace(".", "").replace(",", "."));
+
+   // Estorno
+   if (infoRegimes == undefined) {
+      estorno.value = "0,00";
+   } else {
+      if (vlIcmsSaida == 0) {
+         estorno.value = "0,00";
+      } else {
+         estorno.setAttribute("title", `Estorno ICMS?: ${infoRegimes.estorno_icms_va_at}`);
+         if (infoRegimes.estorno_icms_va_at == "Sim - Calculado" || infoRegimes.estorno_icms_va_at == "Sim - Base Impostos") {
+            estorno.value = formatNumber.format(vlIcmsSaida - (receitaLiqAt / (1 - pctPisCofinsAt) / (1 - pctIcmsSaida)) * infoRegimes.pct_estorno_icms_va_at);
+         } else {
+            if (infoRegimes.estorno_icms_va_at == "Sim - Percentual") {
+               estorno.value = formatNumber.format(vlIcmsSaida * infoRegimes.pct_estorno_icms_va_at);
+            } else {
+               if (credPresumido == 0) {
+                  estorno.value = "0,00";
+               } else {
+                  if (infoRegimes.substituto == "NÃO") {
+                     estorno.value = "0,00";
+                  } else {
+                     estorno.value = formatNumber.format(totalCreditoIcms - vlIcmsSaida);
+                  }
+               }
+            }
+         }
+      }
+   }
+
    vlEstorno = parseFloat(estorno.value.replace(".", "").replace(",", "."));
 
    // Base ICMS ST Cliente
    if (pctMvaAt == 0) {
       base_icms_st_at.value = "0,00";
    } else {
-      if (infoRegimes !== undefined) {
+      if (infoRegimes != undefined) {
          if (infoRegimes.mva_receita_liquida == "SIM") {
             if (pctMvaAt == 0) {
                base_icms_st_at.value = "0,00";
-               base_icms_st_at.value = formatNumber.format((receitaLiqAt + vlPisCofinsAt + vlIcmsSaida) * (1 + pct_icms_saida.value));
+            } else {
+               base_icms_st_at.value = formatNumber.format((receitaLiqAt + vlPisCofinsAt + vlIcmsSaida) * (1 + pctIcmsSaida));
             }
          }
+      } else {
+         base_icms_st_at.value = formatNumber.format(nfSemIcmsSt * (1 + pctMvaAt));
       }
    }
 
@@ -387,7 +425,20 @@ function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais, f
 
    let vlIcmsStAt = Number(vl_icms_st_at.value.replace(".", "").replace(",", "."));
 
-   preco_venda_at.value = formatNumber.format(receitaLiqAt + vlPisCofinsAt + vlIcmsSaida - vlEstorno + vlIcmsStAt);
+   // Preço Venda Atacado
+   if (infoRegimes == undefined) {
+      preco_venda_at.value = formatNumber.format(receitaLiqAt + vlPisCofinsAt + vlIcmsSaida - vlEstorno);
+   } else {
+      if (infoRegimes.substituto == "SIM" && infoRegimes.estorno_icms_va_at == "NÃO") {
+         preco_venda_at.value = formatNumber.format(vlIcmsStAt + receitaLiqAt + vlPisCofinsAt + vlIcmsSaida + vlEstorno);
+      } else {
+         if (infoRegimes.substituto == "SIM") {
+            preco_venda_at.value = formatNumber.format(vlIcmsStAt + receitaLiqAt + vlPisCofinsAt + vlIcmsSaida - vlEstorno);
+         } else {
+            preco_venda_at.value = formatNumber.format(receitaLiqAt + vlPisCofinsAt + vlIcmsSaida - vlEstorno);
+         }
+      }
+   }
 
    let precoVendaAt = Number(preco_venda_at.value.replace(".", "").replace(",", "."));
 
