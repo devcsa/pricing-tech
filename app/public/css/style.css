@@ -396,7 +396,8 @@ input[type="file"] {
    box-shadow: #0e56ae 0 3px 8px;
 }
 
-.fa-user-plus {
+.fa-user-plus,
+.fa-plus {
    margin-right: 5px;
 }
 
@@ -462,4 +463,43 @@ span span input[type="search"].select2-search__field {
    height: 35px;
    font-size: 0.9rem;
    font-weight: 500;
+}
+
+#formRegimes {
+   margin: 0;
+   border: 1px #c6c6c6 solid;
+   margin-bottom: 30px;
+   padding: 10px;
+}
+
+.group-line {
+   margin: 0 !important;
+}
+
+.container-regimes {
+   display: flex;
+   width: 95%;
+}
+
+#formRegimes label {
+   font-size: 12px;
+   margin-bottom: 0;
+}
+
+#formRegimes input,
+#formRegimes select {
+   padding: 5px;
+   font-size: 0.8rem;
+   height: 2rem;
+}
+
+#formRegimes .values {
+   text-align: right;
+}
+
+#formRegimes fieldset {
+   margin: 0 5px;
+   padding: 7px 5px 0 5px;
+   line-height: 1rem;
+   height: 70px;
 }

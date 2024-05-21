@@ -220,7 +220,7 @@ async function addSimulation(simulation) {
             <div class="row div-form ms-0">
                <label for="${simulation}-cred-presumido" class="metric ms-1 col-form-label">Crédito Presumido<sup><i class="fa fa-info-circle"></i></sup></label>
                <input type="text" onkeypress="return checkInput(event)" class="pct-metric mx-1 form-control input-value" id="${simulation}-pct-credito-presumido" name="${simulation}-pct-credito-presumido" value="0,000%" />
-               <input type="text" class="vl-metric form-control" id="${simulation}-cred-presumido" name="${simulation}-cred-presumido" value="0,00" disabled />
+               <input type="text" class="info-metric vl-metric form-control" id="${simulation}-cred-presumido" name="${simulation}-cred-presumido" value="0,00" disabled />
             </div>
 
             <div class="row div-form ms-0">
@@ -268,7 +268,7 @@ async function addSimulation(simulation) {
             <div class="row div-form ms-0">
                <label for="${simulation}-estorno" class="metric ms-1 col-form-label">Estorno<sup><i class="fa fa-info-circle"></i></sup></label>
                <div class="pct-metric"></div>
-               <input type="text" class="vl-metric mx-1 form-control" id="${simulation}-estorno" name="${simulation}-estorno" value="0,00" disabled />
+               <input type="text" class="info-metric vl-metric mx-1 form-control" id="${simulation}-estorno" name="${simulation}-estorno" value="0,00" disabled />
             </div>
 
             <div class="row div-form ms-0">

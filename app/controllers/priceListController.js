@@ -1,21 +1,10 @@
 const priceListModel = require("../../app/models/priceListModel");
 
-// const getAll = async (req, res) => {
-//    const price_list = await priceListModel.getAll();
+const getAll = async (req, res) => {
+   const price_list = await priceListModel.getAll();
 
-//    const data = price_list.map((price_list) => ({
-//       cod_micro_regiao: price_list.cod_micro_regiao,
-//       micro_regiao: price_list.micro_regiao,
-//       cod_segmento: price_list.cod_segmento,
-//       segmento: price_list.segmento,
-//       cod_produto: price_list.cod_produto,
-//       produto: price_list.produto,
-//       pct_margem: price_list.pct_margem,
-//       pct_markup: price_list.pct_markup,
-//    }));
-
-//    return res.status(200).json(data);
-// };
+   return res.status(200).json(price_list);
+};
 
 const getOne = async (req, res) => {
    const { id } = req.params;
@@ -34,4 +23,4 @@ const getOne = async (req, res) => {
    return res.status(200).json(priceData);
 };
 
-module.exports = { getOne };
+module.exports = { getAll, getOne };

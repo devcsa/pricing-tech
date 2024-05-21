@@ -293,6 +293,10 @@ sup {
    margin-left: 3px;
 }
 
+.info-metric {
+   cursor: pointer;
+}
+
 .tt-metric {
    width: 57% !important;
    font-weight: 500 !important;

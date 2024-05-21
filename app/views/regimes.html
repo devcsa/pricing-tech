@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+   <head>
+      <meta charset="UTF-8" />
+      <title>Pricing Tech - Regimes Especiais</title>
+      <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" />
+
+      <link rel="preconnect" href="https://fonts.googleapis.com" />
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+      <link rel="stylesheet" href="./css/style.css" />
+
+      <link rel="stylesheet" href="./css/vendor/font-awesome.min.css" />
+
+      <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" /> -->
+      <link rel="stylesheet" href="./css/vendor/bootstrap.css" />
+
+      <link rel="stylesheet" href="./css/sidebar.css" />
+
+      <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css" />
+
+      <link rel="shortcut icon" href="./img/favicon.png" type="image/png" />
+   </head>
+   <body>
+      <div id="sidebar" class="sidebar close"></div>
+      <section class="home-section">
+         <header class="home-header">
+            <div class="text">
+               <img src="./img/logo_branco-azul.png" alt="logo-pt" />
+            </div>
+            <div class="header-notification">
+               <a href="#" class="notification">
+                  <i class="bx bxs-bell"></i>
+                  <span class="num">1</span>
+               </a>
+               <a href="#" class="profile" title="Minha Conta" onclick="editProfile()">
+                  <img id="fotoPerfil" src="./img/user.png" alt="" />
+               </a>
+            </div>
+            <div class="menu-mobile">
+               <i class="bx bx-menu" id="menu-mobile"></i>
+            </div>
+         </header>
+         <div class="container-title">
+            <h1>Cadastro Regime Especial</h1>
+         </div>
+         <main id="container" class="d-flex justify-content-center container-page">
+            <div class="container-regimes">
+               <form id="formRegimes" class="d-flex row formRegimes" action="" method="put">
+                  <div class="group-line row mb-3 col-md-12 justify-content-between">
+                     <div class="form-group col-md-2-5">
+                        <label for="origem-destino">Origem Destino</label>
+                        <select class="form-control" id="origem-destino" name="origem-destino">
+                           <!-- Add options here -->
+                        </select>
+                     </div>
+                     <div class="form-group col-md-2">
+                        <label for="micro-regiao">Micro Região</label>
+                        <select class="form-control" id="micro-regiao" name="micro-regiao">
+                           <!-- Add options here -->
+                        </select>
+                     </div>
+                     <div class="form-group col-md-4">
+                        <label for="segmento">Segmento</label>
+                        <select class="form-control" id="segmento" name="segmento">
+                           <!-- Add options here -->
+                        </select>
+                     </div>
+                     <div class="form-group col-md-1-5">
+                        <label for="commodity">Commodity</label>
+                        <select class="form-control" id="commodity" name="commodity">
+                           <option value="TODAS" selected>TODAS</option>
+                           <option value="BEAUTY">BEAUTY</option>
+                           <option value="HC">HC</option>
+                           <option value="PC">PC</option>
+                           <option value="FR">FR</option>
+                        </select>
+                     </div>
+
+                     <div class="form-group col-md-2">
+                        <label for="ncm">NCM</label>
+                        <select class="form-control" id="ncm" name="ncm">
+                           <option value="TODOS" selected>TODOS</option>
+                        </select>
+                     </div>
+                  </div>
+
+                  <div class="group-line row mb-3 col-md-12 justify-content-between">
+                     <div class="form-group col-md-1-5">
+                        <label for="tipo-produto">Tipo Produto</label>
+                        <select class="form-control" id="tipo-produto" name="tipo-produto">
+                           <option value="TODOS" selected>TODOS</option>
+                           <option value="N">N</option>
+                           <option value="I">I</option>
+                        </select>
+                     </div>
+                     <div class="form-group col-md-1-5">
+                        <label for="cesta-basica">Cesta Básica</label>
+                        <select class="form-control" id="cesta-basica" name="cesta-basica">
+                           <option value="TODOS" selected>TODOS</option>
+                           <option value="SIM">SIM</option>
+                           <option value="NÃO">NÃO</option>
+                        </select>
+                     </div>
+                     <fieldset class="form-control d-flex row col-md-3">
+                        <div class="col-md-6">
+                           <label for="pct-antecipacao">% Antecipação</label>
+                           <input type="text" class="form-control values" value="0,00%" id="pct-antecipacao" name="pct-antecipacao" />
+                        </div>
+                        <div class="col-md-6">
+                           <label for="vira-custo">Vira Custo</label>
+                           <select class="form-control" id="vira-custo" name="vira-custo">
+                              <option value="SIM">SIM</option>
+                              <option value="NÃO" selected>NÃO</option>
+                           </select>
+                        </div>
+                     </fieldset>
+                     <fieldset class="form-control d-flex row col-md-5">
+                        <div class="form-group col-md-4">
+                           <label for="pct-credito-presumido">% Créd. Presumido</label>
+                           <input type="text" class="form-control values" value="0,00%" id="pct-credito-presumido" name="pct-credito-presumido" />
+                        </div>
+                        <div class="form-group col-md-4">
+                           <label for="bc-credito-presumido-st-cliente">BC ST Cliente?</label>
+                           <select class="form-control" id="bc-credito-presumido-st-cliente" name="bc-credito-presumido-st-cliente">
+                              <option value="SIM">SIM</option>
+                              <option value="NÃO" selected>NÃO</option>
+                           </select>
+                        </div>
+                        <div class="form-group col-md-4">
+                           <label for="capturar-beneficio-fiscal-cliente">Capturar Benefício?</label>
+                           <select class="form-control" id="capturar-beneficio-fiscal-cliente" name="capturar-beneficio-fiscal-cliente">
+                              <option value="SIM">SIM</option>
+                              <option value="NÃO" selected>NÃO</option>
+                           </select>
+                        </div>
+                     </fieldset>
+                     <div class="form-group col-md-1-5">
+                        <label for="red-icms">Red. ICMS</label>
+                        <select class="form-control" id="red-icms" name="red-icms">
+                           <option value="SIM" selected>SIM</option>
+                           <option value="NÃO">NÃO</option>
+                        </select>
+                     </div>
+                  </div>
+
+                  <div class="group-line row mb-3 col-md-12 justify-content-between">
+                     <fieldset class="form-control d-flex row col-md-3">
+                        <div class="form-group col-md-6">
+                           <label for="credito-icms">Crédito ICMS?</label>
+                           <select class="form-control" id="credito-icms" name="credito-icms">
+                              <option value="SIM">SIM</option>
+                              <option value="NÃO" selected>NÃO</option>
+                           </select>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                           <label for="pct-limite-credito-icms">% Lim. Créd. ICMS</label>
+                           <input type="text" class="form-control values" value="0,00%" id="pct-limite-credito-icms" name="pct-limite-credito-icms" />
+                        </div>
+                     </fieldset>
+
+                     <div class="form-group col-md-1-5">
+                        <label for="substituto">Substituto</label>
+                        <select class="form-control" id="substituto" name="substituto">
+                           <option value="SIM">SIM</option>
+                           <option value="NÃO" selected>NÃO</option>
+                        </select>
+                     </div>
+                     <div class="form-group col-md-1-5">
+                        <label for="mva-receita-liquida">MVA Rec. Líquida?</label>
+                        <select class="form-control" id="mva-receita-liquida" name="mva-receita-liquida">
+                           <option value="SIM">SIM</option>
+                           <option value="NÃO" selected>NÃO</option>
+                        </select>
+                     </div>
+                     <fieldset class="form-control d-flex row col-md-4">
+                        <div class="form-group col-md-4">
+                           <label for="mva-estadual">MVA Estadual?</label>
+                           <select class="form-control" id="mva-estadual" name="mva-estadual">
+                              <option value="SIM">SIM</option>
+                              <option value="NÃO" selected>NÃO</option>
+                           </select>
+                        </div>
+                        <div class="form-group col-md-8">
+                           <label for="origem-destino-estadual">Origem Destino Estadual</label>
+                           <select class="form-control" id="origem-destino-estadual" name="origem-destino-estadual">
+                              <!-- Add options here -->
+                           </select>
+                        </div>
+                     </fieldset>
+                     <div class="form-group col-md-1-5">
+                        <label for="ajustar-mva">Ajustar MVA?</label>
+                        <select class="form-control" id="ajustar-mva" name="ajustar-mva">
+                           <option value="SIM">SIM</option>
+                           <option value="NÃO" selected>NÃO</option>
+                        </select>
+                     </div>
+                     <div class="form-group col-md-1-5">
+                        <label for="mva-exclusivo">MVA Exclusivo?</label>
+                        <select class="form-control" id="mva-exclusivo" name="mva-exclusivo">
+                           <option value="SIM">SIM</option>
+                           <option value="NÃO" selected>NÃO</option>
+                        </select>
+                     </div>
+                  </div>
+
+                  <div class="group-line row mb-3 col-md-12 justify-content-between">
+                     <div class="form-group col-md-1-7">
+                        <label for="reducao-icms-bc-pis-cofins">Red ICMS Pis/Cofins?</label>
+                        <select class="form-control" id="reducao-icms-bc-pis-cofins" name="reducao-icms-bc-pis-cofins">
+                           <option value="SIM">SIM</option>
+                           <option value="NÃO">NÃO</option>
+                        </select>
+                     </div>
+                     <div class="form-group col-md-1-5">
+                        <label for="reducao-icms-interno-va-at">Red. ICMS VA/AT?</label>
+                        <select class="form-control" id="reducao-icms-interno-va-at" name="reducao-icms-interno-va-at">
+                           <option value="SIM">SIM</option>
+                           <option value="NÃO" selected>NÃO</option>
+                        </select>
+                     </div>
+                     <div class="form-group col-md-1-7">
+                        <label for="reducao-icms-saida-va-at">Red. ICMS Saída VA/AT?</label>
+                        <select class="form-control" id="reducao-icms-saida-va-at" name="reducao-icms-saida-va-at">
+                           <option value="SIM">SIM</option>
+                           <option value="NÃO" selected>NÃO</option>
+                        </select>
+                     </div>
+                     <div class="form-group col-md-1-5">
+                        <label for="reducao-bc-st-cliente">Red. BC ST Cliente?</label>
+                        <select class="form-control" id="reducao-bc-st-cliente" name="reducao-bc-st-cliente">
+                           <option value="SIM">SIM</option>
+                           <option value="NÃO" selected>NÃO</option>
+                        </select>
+                     </div>
+                     <div class="form-group col-md-1-7">
+                        <label for="reducao-icms-st-cliente">Red. ICMS ST Cliente?</label>
+                        <select class="form-control" id="reducao-icms-st-cliente" name="reducao-icms-st-cliente">
+                           <option value="SIM">SIM</option>
+                           <option value="NÃO" selected>NÃO</option>
+                        </select>
+                     </div>
+                     <div class="form-group col-md-2">
+                        <label for="estorno-icms-va-at">Estorno ICMS VA/AT?</label>
+                        <select class="form-control" id="estorno-icms-va-at" name="estorno-icms-va-at">
+                           <option value="SIM - PERCENTUAL">SIM - PERCENTUAL</option>
+                           <option value="SIM - CALCULADO">SIM - CALCULADO</option>
+                           <option value="SIM - BASE IMPOSTOS">SIM - BASE IMPOSTOS</option>
+                           <option value="NÃO" selected>NÃO</option>
+                        </select>
+                     </div>
+
+                     <div class="form-group col-md-1-5">
+                        <label for="pct-estorno-icms-va-at">% Est. ICMS VA/AT</label>
+                        <input type="text" class="form-control values" value="0,00%" id="pct-estorno-icms-va-at" name="pct-estorno-icms-va-at" />
+                     </div>
+                     <div class="form-group col-md-1-5">
+                        <label for="calcular-icms-saida-pv">ICMS Saída PV?</label>
+                        <select class="form-control" id="calcular-icms-saida-pv" name="calcular-icms-saida-pv">
+                           <option value="SIM" selected>SIM</option>
+                           <option value="NÃO">NÃO</option>
+                        </select>
+                     </div>
+                  </div>
+
+                  <div class="group-line row mb-3 col-md-12">
+                     <div class="form-group col-md-1-7">
+                        <label for="pct-carga-efetiva-icms">% Carga Efetiva ICMS</label>
+                        <input type="text" class="form-control values" value="0,00%" id="pct-carga-efetiva-icms" name="pct-carga-efetiva-icms" />
+                     </div>
+                     <div class="form-group col-md-4">
+                        <label for="decreto-base-legal">Decreto Base Legal</label>
+                        <input type="text" class="form-control" id="decreto-base-legal" name="decreto-base-legal" />
+                     </div>
+                     <div class="form-group col-md-1-7">
+                        <label for="status">Status</label>
+                        <select class="form-control" id="status" name="status">
+                           <option value="ATIVO" selected>ATIVO</option>
+                           <option value="INATIVO">INATIVO</option>
+                        </select>
+                     </div>
+                  </div>
+                  <div class="group-line row col-md-12 justify-content-end">
+                     <div class="form-group">
+                        <button type="button" class="btn btn-success"><i class="fa fa-save"></i> Salvar</button>
+                        <button id="btn-voltar" type="button" class="btn btn-outline-danger"><i class="fa fa-close"></i> Voltar</button>
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </main>
+      </section>
+
+      <!-- Modal de Aviso -->
+      <div class="modal fade" id="modal-message" tabindex="-1" role="dialog" aria-labelledby="modal-message-label" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="modal-message-label">Aviso</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <p id="modal-message-text"></p>
+               </div>
+               <div class="modal-footer">
+                  <button id="btn-fechar" type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <!-- Modal Confirm -->
+      <div class="modal fade" id="modal-confirm" tabindex="-1" role="dialog" aria-labelledby="modal-confirm-label" aria-hidden="true">
+         <div class="modal-dialog" role="document">
+            <div class="modal-content">
+               <div class="modal-header">
+                  <h5 class="modal-title" id="modal-confirm-label">Sair do site?</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               <div class="modal-body">
+                  <p id="modal-confirm-message"></p>
+               </div>
+               <div class="modal-footer">
+                  <button id="cancel-confirm" type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                  <button id="confirm-confirm" type="button" class="btn btn-danger">Deixar</button>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+      <script src="./js/sidebar.js"></script>
+      <script src="./js/script.js"></script>
+      <script src="./js/regimes-especiais/regimes.js"></script>
+      <script src="https://unpkg.com/notie"></script>
+   </body>
+</html>

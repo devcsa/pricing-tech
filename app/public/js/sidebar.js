@@ -66,7 +66,7 @@ side_bar.innerHTML = `<div class="logo-details">
 <span class="link_name">Parametrizações</a></span>
 <li><a href="settings-prices.html">Preços</a></li>
 <li><a href="impostos.html">Impostos</a></li>
-<li><a href="regimes-especiais.html">Regimes Especiais</a></li>
+<li><a href="regimes-lista.html">Regimes Especiais</a></li>
 <li><a href="margens.html">Margens e Markups</a></li>
 <li><a href="#">Encargos Financeiros</a></li>
 <li><a href="#">Lista de Preços</a></li>
@@ -100,7 +100,10 @@ $(document).ready(function () {
       case "/impostos.html":
          menu_active = "menu-5";
          break;
-      case "/regimes-especiais.html":
+      case "/regimes-lista.html":
+         menu_active = "menu-5";
+         break;
+      case "/regimes.html":
          menu_active = "menu-5";
          break;
       case "/margens.html":

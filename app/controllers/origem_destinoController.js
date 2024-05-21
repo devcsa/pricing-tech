@@ -5,6 +5,8 @@ const getAll = async (req, res) => {
 
    const data = origem_destino.map((result) => ({
       id: result.id,
+      origem: result.origem,
+      destino: result.destino,
       origem_destino: result.origem + " / " + result.destino,
    }));
 

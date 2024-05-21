@@ -30,7 +30,8 @@ const fetchRegimes = async () => {
    }
 
    await initTable(result);
-   addFiltersTable();
+   await addFiltersTable();
+   createToolbar();
 };
 
 async function initTable(impostos) {
@@ -94,7 +95,7 @@ async function initTable(impostos) {
                   field: "operate",
                   title: "Ações",
                   align: "center",
-                  class: "btn-action-delete",
+                  class: "btn-actions-regimes",
                   // clickToSelect: false,
                   events: window.operateEvents,
                   formatter: operateFormatter,
@@ -419,7 +420,9 @@ async function initTable(impostos) {
 }
 
 function operateFormatter(value, row, index) {
-   return ['<a class="remove" href="javascript:void(0)" title="Excluir">', '<i class="fa fa-trash"></i>', "</a>"].join("");
+   let edit_data = [`<a class="edit" href="./regimes.html?regimeID=${Number(row.id)}" title="Alterar"><i class="fa fa-edit"></i></a>`].join("");
+   let delete_data = ['<a class="remove" href="javascript:void(0)" title="Excluir">', '<i class="fa fa-trash"></i>', "</a>"].join("");
+   return edit_data + delete_data;
 }
 
 window.operateEvents = {
@@ -521,7 +524,7 @@ $("#table-regimes").on("click", 'button[name="refresh"]', () => {
    fetchRegimes();
 });
 
-function addFiltersTable() {
+async function addFiltersTable() {
    const filterOrigemDestino = document.querySelector(".filtros-regimes");
 
    filterOrigemDestino.innerHTML = `
@@ -580,5 +583,28 @@ function filtrarOrigem() {
 
    $("#table").bootstrapTable("filterBy", {
       origem_destino: [select],
+   });
+}
+
+function createToolbar() {
+   var toolbar = document.querySelector(".fixed-table-toolbar");
+   var toolbar_actions = document.createElement("div");
+   toolbar_actions.classList.add("toolbar-actions");
+
+   toolbar.appendChild(toolbar_actions);
+
+   toolbar_actions.innerHTML = `
+   <button id="new-regime" class="add-regime" data-dismiss="modal"><i class="fa fa-plus" aria-hidden="true"></i>Adicionar</button>`;
+
+   // var actions_buttons = document.createElement("button");
+   // actions_buttons.classList.add("add-regime");
+   // actions_buttons.textContent = "Adicionar";
+
+   // toolbar_actions.appendChild(actions_buttons);
+
+   var addRegime = document.getElementById("new-regime");
+
+   addRegime.addEventListener("click", () => {
+      window.location.href = "./regimes.html";
    });
 }

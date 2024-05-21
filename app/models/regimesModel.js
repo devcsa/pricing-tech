@@ -108,4 +108,21 @@ const getOne = async (regimes_especiais) => {
    }
 };
 
-module.exports = { getAll, getOne };
+const findOne = async (id) => {
+   return new Promise((resolve, reject) => {
+      con.query(
+         `SELECT regimes_especiais.*, origem_destino.origem as origem, origem_destino.destino as destino, segmento.segmento AS segmento, micro_regiao.micro_regiao AS micro_regiao, micro_regiao.incentivized_area AS incentivized_area FROM regimes_especiais INNER JOIN origem_destino ON regimes_especiais.origem_destino_id = origem_destino.id INNER JOIN segmento ON regimes_especiais.segmento_id = segmento.id INNER JOIN micro_regiao ON regimes_especiais.micro_regiao_id = micro_regiao.id WHERE regimes_especiais.id = ${id}`,
+         (err, result) => {
+            if (err) {
+               reject(`Erro ao recuperar os dados: ${err}`);
+            } else {
+               resolve(result[0]);
+            }
+         }
+      );
+   }).catch((error) => {
+      throw new Error(`Erro ao localizar regime especial: ${error}`);
+   });
+};
+
+module.exports = { getAll, getOne, findOne };
