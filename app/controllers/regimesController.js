@@ -24,4 +24,16 @@ const findOne = async (req, res) => {
    return res.status(200).json(regimes);
 };
 
-module.exports = { getAll, getOne, findOne };
+const updateRegimes = async (req, res) => {
+   const { id } = req.params;
+
+   const regimes = await regimesModel.updateRegimes(id, req.body);
+
+   if (regimes == undefined) {
+      return res.status(404).json({ error: "erro ao atualizar regime!" });
+   } else {
+      return res.status(200).json(regimes);
+   }
+};
+
+module.exports = { getAll, getOne, findOne, updateRegimes };

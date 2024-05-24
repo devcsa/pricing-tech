@@ -192,7 +192,7 @@ const gePriceList = async (ncmRegime) => {
 
    result.forEach(function (row) {
       var option = document.createElement("option");
-      option.setAttribute("value", row.id);
+      option.setAttribute("value", row.ncm);
       option.textContent = row.ncm;
       ncm.appendChild(option);
 
@@ -230,6 +230,7 @@ const editRegime = async (id) => {
    let ncmRegime = result.ncm;
    let rotaEstadual = result.origem_destino_estadual;
 
+   document.getElementById("regimeID").value = result.id;
    document.getElementById("commodity").value = result.commodity;
    document.getElementById("tipo-produto").value = result.tipo_produto;
    document.getElementById("cesta-basica").value = result.cesta_basica;
@@ -243,8 +244,26 @@ const editRegime = async (id) => {
    document.getElementById("pct-limite-credito-icms").value = formatToLocaleString(result.pct_limite_credito_icms * 100) + "%";
    document.getElementById("substituto").value = result.substituto;
    document.getElementById("mva-receita-liquida").value = result.mva_receita_liquida;
-   document.getElementById("mva-estadual").value = result.mva_estadual;
-   document.getElementById("origem-destino-estadual").value = result.origem_destino_estadual;
+
+   const mvaEstadual = document.getElementById("mva-estadual");
+
+   mvaEstadual.addEventListener("change", () => {
+      if (mvaEstadual.value == "NÃO") {
+         origemDestinoEstadual.value = "";
+         origemDestinoEstadual.setAttribute("disabled", "disabled");
+      } else {
+         origemDestinoEstadual.removeAttribute("disabled");
+      }
+   });
+
+   const origemDestinoEstadual = document.getElementById("origem-destino-estadual");
+
+   mvaEstadual.value = result.mva_estadual;
+   if (mvaEstadual.value == "NÃO") {
+      origemDestinoEstadual.setAttribute("disabled", "disabled");
+   }
+
+   origemDestinoEstadual.value = result.origem_destino_estadual;
    document.getElementById("ajustar-mva").value = result.ajustar_mva;
    document.getElementById("mva-exclusivo").value = result.mva_exclusivo;
    document.getElementById("reducao-icms-bc-pis-cofins").value = result.reducao_icms_bc_pis_cofins;

@@ -33,10 +33,7 @@
                <img src="./img/logo_branco-azul.png" alt="logo-pt" />
             </div>
             <div class="header-notification">
-               <a href="#" class="notification">
-                  <i class="bx bxs-bell"></i>
-                  <span class="num">1</span>
-               </a>
+               <div id="notifications" class="notifications"></div>
                <a href="#" class="profile" title="Minha Conta" onclick="editProfile()">
                   <img id="fotoPerfil" src="./img/user.png" alt="" />
                </a>
@@ -195,10 +192,11 @@
       <!-- <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script> -->
 
       <script src="./js/sidebar.js"></script>
-      <script src="./js/script.js"></script>
       <script src="./js/users/editUser.js"></script>
       <script src="./js/users/uploadUserPhoto.js"></script>
+      <script src="./js/script.js"></script>
       <script src="https://unpkg.com/notie"></script>
+      <script src="./js/users/notifications.js"></script>
 
       <script>
          $(document).ready(function () {

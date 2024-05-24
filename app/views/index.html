@@ -33,13 +33,16 @@
                   <h1>Bem vindo!</h1>
                </div>
                <form class="form-login">
-                  <div class="form-group">
+                  <div class="form-group input_wrapper">
                      <label for="userEmail">E-mail</label>
                      <input type="email" name="email" placeholder="E-mail" id="userEmail" aria-label="Email address" required />
+                     <img alt="Email Icon" src="./img/icons/email.svg" class="email_icon" />
                   </div>
-                  <div class="form-group">
+                  <div class="form-group input_wrapper">
                      <label for="userPassword">Senha</label>
+                     <span class="popuptext" id="popup-caps">Caps Lock ligado!</span>
                      <input type="password" name="password" placeholder="Senha" id="userPassword" aria-label="Password" />
+                     <img alt="Eye Icon" title="Mostrar senha" src="./img/icons/eye.svg" id="show_password" class="input_icon" />
                   </div>
                   <div class="centralize">
                      <a href="#" class="forgot-password" id="recover-password">Esqueceu sua senha?</a>

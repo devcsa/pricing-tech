@@ -125,4 +125,67 @@ const findOne = async (id) => {
    });
 };
 
-module.exports = { getAll, getOne, findOne };
+const updateRegimes = async (id, regime) => {
+   const query =
+      "UPDATE regimes_especiais SET origem_destino_id = ?, micro_regiao_id = ?, segmento_id = ?, commodity = ?, ncm = ?, tipo_produto = ?,  cesta_basica = ?, pct_antecipacao = ?, vira_custo = ?, pct_credito_presumido = ?, bc_credito_presumido_st_cliente = ?,capturar_beneficio_fiscal_cliente = ?, red_icms = ?, credito_icms = ?, pct_limite_credito_icms = ?, substituto = ?, mva_receita_liquida = ?,  mva_estadual = ?, origem_destino_estadual_id = ?, origem_destino_estadual = ?, ajustar_mva = ?, mva_exclusivo = ?, reducao_icms_bc_pis_cofins = ?, reducao_icms_interno_va_at = ?, reducao_icms_saida_va_at = ?, reducao_bc_st_cliente = ?, reducao_icms_st_cliente = ?, estorno_icms_va_at = ?, pct_estorno_icms_va_at = ?, calcular_icms_saida_pv = ?, pct_carga_efetiva_icms = ?, decreto_base_legal = ?, status = ?, created_at = ?, updated_at = ? WHERE id = ?";
+
+   return new Promise((resolve, reject) => {
+      con.query(
+         query,
+         [
+            regime.origem_destino_id,
+            regime.micro_regiao_id,
+            regime.segmento_id,
+            regime.commodity,
+            regime.ncm_input,
+            regime.tipo_produto,
+            regime.cesta_basica,
+            regime.pct_antecipacao,
+            regime.vira_custo,
+            regime.pct_credito_presumido,
+            regime.bc_credito_presumido_st_cliente,
+            regime.capturar_beneficio_fiscal_cliente,
+            regime.red_icms,
+            regime.credito_icms,
+            regime.pct_limite_credito_icms,
+            regime.substituto,
+            regime.mva_receita_liquida,
+            regime.mva_estadual,
+            regime.origem_destino_estadual_id,
+            regime.origem_destino_estadual,
+            regime.ajustar_mva,
+            regime.mva_exclusivo,
+            regime.reducao_icms_bc_pis_cofins,
+            regime.reducao_icms_interno_va_at,
+            regime.reducao_icms_saida_va_at,
+            regime.reducao_bc_st_cliente,
+            regime.reducao_icms_st_cliente,
+            regime.estorno_icms_va_at,
+            regime.pct_estorno_icms_va_at,
+            regime.calcular_icms_saida_pv,
+            regime.pct_carga_efetiva_icms,
+            regime.decreto_base_legal,
+            regime.status,
+            regime.created_at,
+            regime.updated_at,
+            regime.regime_id,
+         ],
+         (err, result) => {
+            if (err) {
+               reject(`Erro ao alterar regime especial: ${err}`);
+            } else {
+               if (result.affectedRows === 0) {
+                  reject(`Nenhum registro foi atualizado. Verifique o ID: ${regime.regime_id}`);
+               } else {
+                  // console.log("Resultado da atualização:", result);
+                  resolve({ message: "Regime alterado com sucesso!" });
+               }
+            }
+         }
+      );
+   }).catch((error) => {
+      throw new Error(`Erro ao alterar regime: ${error}`);
+   });
+};
+
+module.exports = { getAll, getOne, findOne, updateRegimes };

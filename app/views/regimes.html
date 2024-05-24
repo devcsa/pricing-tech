@@ -32,10 +32,7 @@
                <img src="./img/logo_branco-azul.png" alt="logo-pt" />
             </div>
             <div class="header-notification">
-               <a href="#" class="notification">
-                  <i class="bx bxs-bell"></i>
-                  <span class="num">1</span>
-               </a>
+               <div id="notifications" class="notifications"></div>
                <a href="#" class="profile" title="Minha Conta" onclick="editProfile()">
                   <img id="fotoPerfil" src="./img/user.png" alt="" />
                </a>
@@ -50,6 +47,7 @@
          <main id="container" class="d-flex justify-content-center container-page">
             <div class="container-regimes">
                <form id="formRegimes" class="d-flex row formRegimes" action="" method="put">
+                  <input type="hidden" id="regimeID" />
                   <div class="group-line row mb-3 col-md-12 justify-content-between">
                      <div class="form-group col-md-2-5">
                         <label for="origem-destino">Origem Destino</label>
@@ -231,7 +229,7 @@
                         </select>
                      </div>
                      <div class="form-group col-md-1-5">
-                        <label for="reducao-bc-st-cliente">Red. BC ST Cliente?</label>
+                        <label for="reducao-bc-st-cliente">Red. BC ST?</label>
                         <select class="form-control" id="reducao-bc-st-cliente" name="reducao-bc-st-cliente">
                            <option value="SIM">SIM</option>
                            <option value="NÃO" selected>NÃO</option>
@@ -286,8 +284,8 @@
                   </div>
                   <div class="group-line row col-md-12 justify-content-end">
                      <div class="form-group">
-                        <button type="button" class="btn btn-success"><i class="fa fa-save"></i> Salvar</button>
-                        <button id="btn-voltar" type="button" class="btn btn-outline-danger"><i class="fa fa-close"></i> Voltar</button>
+                        <button id="btn-save-regime" type="button" class="btn btn-success"><i class="fa fa-save"></i> Salvar</button>
+                        <button id="btn-voltar" type="button" class="btn btn-outline-primary"><i class="fa fa-close"></i> Voltar</button>
                      </div>
                   </div>
                </form>
@@ -343,6 +341,8 @@
       <script src="./js/sidebar.js"></script>
       <script src="./js/script.js"></script>
       <script src="./js/regimes-especiais/regimes.js"></script>
+      <script src="./js/regimes-especiais/editRegimes.js"></script>
       <script src="https://unpkg.com/notie"></script>
+      <script src="./js/users/notifications.js"></script>
    </body>
 </html>

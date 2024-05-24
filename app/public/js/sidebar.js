@@ -97,6 +97,9 @@ $(document).ready(function () {
       case "/users.html":
          menu_active = "menu-4";
          break;
+      case "/profile.html":
+         menu_active = "menu-4";
+         break;
       case "/impostos.html":
          menu_active = "menu-5";
          break;

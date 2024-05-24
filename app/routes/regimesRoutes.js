@@ -12,5 +12,6 @@ regimesRoutes.use(authMiddleware);
 regimesRoutes.get("/regimes", regimesController.getOne);
 regimesRoutes.get("/regimes_All", regimesController.getAll);
 regimesRoutes.get("/regimes/:id", regimesController.findOne);
+regimesRoutes.put("/regimes/:id", regimesController.updateRegimes);
 
 module.exports = regimesRoutes;
