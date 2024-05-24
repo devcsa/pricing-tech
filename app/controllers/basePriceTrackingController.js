@@ -5,10 +5,14 @@ const basePriceTrackingModel = require("../models/basePriceTrackingModel");
 //    return res.status(200).json(basePriceTracking);
 // };
 
-const getOne = async (req, res) => {
-   const category = req.params.categoria;
-   const basePriceTracking = await basePriceTrackingModel.getOne(category);
-   return res.status(200).json(basePriceTracking);
+const getOne = async (req, res, next) => {
+   try {
+      const category = req.params.categoria;
+      const basePriceTracking = await basePriceTrackingModel.getOne(category);
+      return res.status(200).json(basePriceTracking);
+   } catch (error) {
+      next(error);
+   }
 };
 
 module.exports = { getOne };

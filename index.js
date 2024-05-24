@@ -47,6 +47,23 @@ routes.forEach((route) => {
    app.use(route);
 });
 
+// Middleware para capturar rotas inválidas
+app.use((req, res, next) => {
+   const error = new Error("Not Found");
+   error.status = 404;
+   next(error);
+});
+
+// Middleware de tratamento de erros
+app.use((error, req, res, next) => {
+   res.status(error.status || 500);
+   res.json({
+      error: {
+         message: error.message,
+      },
+   });
+});
+
 app.listen(PORT, () => {
    console.log(`Servidor rodando na porta ${PORT}`);
 });
