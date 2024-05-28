@@ -1,4 +1,5 @@
 const tokenUser = localStorage.getItem("tokenPT");
+var areaIncentivada;
 var ncmProduto;
 var origemProduto;
 var cestaBasica;
@@ -238,9 +239,13 @@ const fetchMargem_Markup = async (queryString, simulation) => {
    }
 
    markup = result.pct_markup * 100;
+   areaIncentivada = result.incentiveized_area;
 
    document.getElementById(`${simulation}-pct-margem-at`).value = result.pct_margem * 100;
    document.getElementById(`${simulation}-pct-markup-pv`).value = markup;
+
+   document.getElementById(`area-incentivada-${simulation}`).value = areaIncentivada;
+   document.getElementById("area-incentivada").value = areaIncentivada;
 
    segmento_id = result.segmento_id;
 

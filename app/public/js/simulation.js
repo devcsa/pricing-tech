@@ -7,6 +7,7 @@ const microRegiaoFilter = document.getElementById("micro-regiao-filter");
 const produtoFilter = document.getElementById("produto-filter");
 const segmentoFilter = document.getElementById("segmento-filter");
 const origemDestinoFilter = document.getElementById("origem-destino");
+const areaIncentivadaFilter = document.getElementById("area-incentivada");
 const ncmFilter = document.getElementById("ncm");
 const origemFilter = document.getElementById("origem");
 const cestaBasicaFilter = document.getElementById("cesta-basica");
@@ -98,7 +99,8 @@ async function addSimulation(simulation) {
       <input type="hidden" name="segmento-${simulation}" id="segmento-${simulation}"/ >
       <input type="hidden" name="produto-${simulation}" id="produto-${simulation}"/ >
       <input type="hidden" name="origem-destino-${simulation}" id="origem-destino-${simulation}" />
-      <input type="hidden" name="origem-destino-estadual-${simulation}" id="origem-destino-estadual${simulation}" />
+      <input type="hidden" name="origem-destino-estadual-${simulation}" id="origem-destino-estadual-${simulation}" />
+      <input type="hidden" name="area-incentivada-${simulation}" id="area-incentivada-${simulation}" />
       <input type="hidden" name="ncm-${simulation}" id="ncm-${simulation}" />
       <input type="hidden" name="origem-${simulation}" id="origem-${simulation}" />
       <input type="hidden" name="cesta-basica-${simulation}" id="cesta-basica-${simulation}" />
@@ -128,7 +130,7 @@ async function addSimulation(simulation) {
             </div>
             <div class="row div-form ms-0">
                <label for="${simulation}-pct-tmi-on" class="metric ms-1 col-form-label">% TMI ON</label>
-               <input type="text" onkeypress="return checkInput(event)" class="pct-metric mx-1 form-control input-value" id="${simulation}-pct-tmi-on" name="${simulation}-pct-tmi-on" value="40,296%" />
+               <input type="text" onkeypress="return checkInput(event)" class="pct-metric mx-1 form-control input-value" id="${simulation}-pct-tmi-on" name="${simulation}-pct-tmi-on" value="46,170%" />
                <input type="text" title="R$ TMI ON = GSV * % TMI ON" class="info-metric vl-metric form-control" id="${simulation}-vl-tmi-on" name="${simulation}-vl-tmi-on" value="0,00" disabled />
             </div>
             <div class="row div-form ms-0">
@@ -207,7 +209,7 @@ async function addSimulation(simulation) {
 
             <div class="row div-form ms-0">
                <label for="${simulation}-pct-tmi-off" class="metric ms-1 col-form-label">TMI OFF</label>
-               <input type="text" onkeypress="return checkInput(event)" class="pct-metric mx-1 form-control input-value" id="${simulation}-pct-tmi-off" name="${simulation}-pct-tmi-off" value="2,749%" />
+               <input type="text" onkeypress="return checkInput(event)" class="pct-metric mx-1 form-control input-value" id="${simulation}-pct-tmi-off" name="${simulation}-pct-tmi-off" value="9,770%" />
                <input type="text" class="vl-metric form-control" id="${simulation}-vl-tmi-off" name="${simulation}-vl-tmi-off" disabled value="0,00" />
             </div>
 
@@ -581,6 +583,7 @@ function selectRoute(filterNumber) {
    let segmento = document.getElementById(`segmento-${filterNumber}`);
    let produto = document.getElementById(`produto-${filterNumber}`);
    let origemDestino = document.getElementById(`origem-destino-${filterNumber}`);
+   let areaIncentivada = document.getElementById(`area-incentivada-${filterNumber}`);
    let ncm = document.getElementById(`ncm-${filterNumber}`);
    let origemProduto = document.getElementById(`origem-${filterNumber}`);
    let cestaBasica = document.getElementById(`cesta-basica-${filterNumber}`);
@@ -595,6 +598,7 @@ function selectRoute(filterNumber) {
    segmentoFilter.value = segmento.value;
    produtoFilter.value = produto.value;
    origemDestinoFilter.value = origemDestino.value;
+   areaIncentivadaFilter.value = areaIncentivada.value;
    ncmFilter.value = ncm.value;
    origemFilter.value = origemProduto.value;
    cestaBasicaFilter.value = cestaBasica.value;
