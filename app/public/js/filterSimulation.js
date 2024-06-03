@@ -1,13 +1,5 @@
 const tokenUser = localStorage.getItem("tokenPT");
-var areaIncentivada;
-var ncmProduto;
-var origemProduto;
-var cestaBasica;
-var segmento_id;
-var markup;
-var infosEstaduais;
-
-var origemDestinoId;
+var areaIncentivada, creditoPisCofins, ncmProduto, origemProduto, cestaBasica, segmento_id, markup, infosEstaduais, origemDestinoId;
 
 const fetchMicroRegiao = async () => {
    const response = await fetch("/microRegiao_All", {
@@ -246,6 +238,8 @@ const fetchMargem_Markup = async (queryString, simulation) => {
 
    document.getElementById(`area-incentivada-${simulation}`).value = areaIncentivada;
    document.getElementById("area-incentivada").value = areaIncentivada;
+
+   document.getElementById(`credito-pis-cofins-${simulation}`).value = creditoPisCofins;
 
    segmento_id = result.segmento_id;
 
