@@ -52,6 +52,10 @@ function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais) {
       credPresumido = 0,
       creditoTributario = 0,
       credIcms = 0,
+      basePisCofins = 0,
+      vlPisCofins = 0,
+      baseIcms = 0,
+      vlIcms = 0,
       vlPisCofinsPv = 0,
       vlIcmsSaidaPv = 0,
       t_Mercadoria = 0,
@@ -100,6 +104,7 @@ function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais) {
    const pct_icms_saida = document.getElementById(numberSimulation + "-pct-icms-saida");
    const vl_icms_saida = document.getElementById(numberSimulation + "-vl-icms-saida");
    const area_incentivada = document.getElementById(`area-incentivada-${numberSimulation}`);
+   const credito_pis_cofins = document.getElementById(`credito-pis-cofins-${numberSimulation}`);
 
    const pct_pis_cofins_at = document.getElementById(numberSimulation + "-pct-pis-cofins-at");
    const vl_pis_cofins_at = document.getElementById(numberSimulation + "-vl-pis-cofins-at");
@@ -262,39 +267,6 @@ function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais) {
             }
          }
       }
-      // if (infoRegimes == undefined) {
-      //    estorno.value = "0,00";
-      //    vlEstorno = 0;
-      // } else {
-      //    if (vlIcmsSaida == 0) {
-      //       estorno.value = "0,00";
-      //       vlEstorno = 0;
-      //    } else {
-      //       estorno.setAttribute("title", `Estorno ICMS?: ${infoRegimes.estorno_icms_va_at}`);
-      //       if (infoRegimes.estorno_icms_va_at == "SIM - CALCULADO" || infoRegimes.estorno_icms_va_at == "SIM - BASE IMPOSTOS") {
-      //          estorno.value = formatNumber.format(vlIcmsSaida - (receitaLiqAt / (1 - pctPisCofinsAt) / (1 - pctIcmsSaida)) * infoRegimes.pct_estorno_icms_va_at);
-      //          vlEstorno = vlIcmsSaida - (receitaLiqAt / (1 - pctPisCofinsAt) / (1 - pctIcmsSaida)) * infoRegimes.pct_estorno_icms_va_at;
-      //       } else {
-      //          if (infoRegimes.estorno_icms_va_at == "Sim - Percentual") {
-      //             estorno.value = formatNumber.format(vlIcmsSaida * infoRegimes.pct_estorno_icms_va_at);
-      //             vlEstorno = vlIcmsSaida * infoRegimes.pct_estorno_icms_va_at;
-      //          } else {
-      //             if (credPresumido == 0) {
-      //                estorno.value = "0,00";
-      //                vlEstorno = 0;
-      //             } else {
-      //                if (infoRegimes.substituto == "NÃO") {
-      //                   estorno.value = "0,00";
-      //                   vlEstorno = 0;
-      //                } else {
-      //                   estorno.value = formatNumber.format(totalCreditoIcms - vlIcmsSaida);
-      //                   vlEstorno = totalCreditoIcms - vlIcmsSaida;
-      //                }
-      //             }
-      //          }
-      //       }
-      //    }
-      // }
 
       // Preço Venda Atacado
       if (infoRegimes == undefined) {
@@ -334,19 +306,31 @@ function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais) {
    pct_PisCofins = parseFloat(pct_pis_cofins.value.replace(",", ".").replace("%", "")) / 100;
    b_pis_cofins.value = formatNumber.format(vlNiv / (1 - pct_PisCofins));
 
-   let basePisCofins = vlNiv / (1 - pct_PisCofins);
+   basePisCofins = vlNiv / (1 - pct_PisCofins);
 
-   vl_pis_cofins.value = formatNumber.format(basePisCofins * pct_PisCofins);
-   let vlPisCofins = basePisCofins * pct_PisCofins;
+   if (area_incentivada.value == "SIM" && credito_pis_cofins.value == "NÃO") {
+      vl_pis_cofins.value = "0,00";
+      vlPisCofins = 0;
+   } else {
+      vl_pis_cofins.value = formatNumber.format(basePisCofins * pct_PisCofins);
+      vlPisCofins = basePisCofins * pct_PisCofins;
+   }
 
    pctPisCofinsAt = parseFloat(pct_pis_cofins_at.value.replace(",", ".").replace("%", "")) / 100;
 
    // Calc ICMS NF Unilever
    let pct_ICMS = parseFloat(pct_icms.value.replace(",", ".").replace("%", "")) / 100;
-   b_icms.value = formatNumber.format(vlNiv / (1 - pct_PisCofins) / (1 - pct_ICMS));
-   let baseIcms = vlNiv / (1 - pct_PisCofins) / (1 - pct_ICMS);
+
+   if (area_incentivada.value == "SIM" && credito_pis_cofins.value == "NÃO") {
+      b_icms.value = formatNumber.format(vlNiv / (1 - pct_ICMS));
+      baseIcms = vlNiv / (1 - pct_ICMS);
+   } else {
+      b_icms.value = formatNumber.format(vlNiv / (1 - pct_PisCofins) / (1 - pct_ICMS));
+      baseIcms = basePisCofins / (1 - pct_ICMS);
+   }
+
    vl_icms.value = formatNumber.format(baseIcms * pct_ICMS);
-   let vlIcms = baseIcms * pct_ICMS;
+   vlIcms = baseIcms * pct_ICMS;
 
    let pct_IPI = parseFloat(pct_ipi.value.replace(",", ".").replace("%", "")) / 100;
 
@@ -360,7 +344,6 @@ function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais) {
    }
 
    // calcular IPI
-   // let pct_IPI = parseFloat(pct_ipi.value.replace(",", ".").replace("%", "")) / 100;
    vl_ipi.value = formatNumber.format(t_Mercadoria * pct_IPI);
    let vlIpi = t_Mercadoria * pct_IPI;
 

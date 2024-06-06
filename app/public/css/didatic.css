@@ -308,6 +308,7 @@ sup {
    flex-wrap: wrap;
    /* border: 1px red solid; */
    padding-bottom: 2rem;
+   justify-content: center;
 }
 
 .section-didatico {

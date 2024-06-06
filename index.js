@@ -18,13 +18,6 @@ app.use("/uploads/users", express.static("app/uploads/users"));
 
 // Array contendo as rotas a serem carregadas
 const routes = [
-   require("./app/routes/baseSimuladorRoutes"),
-   require("./app/routes/baseFormatoLojaRoutes"),
-   require("./app/routes/baseHierarquiaVendasRoutes"),
-   require("./app/routes/basePriceTrackingRoutes"),
-   require("./app/routes/lmcRoutes"),
-   require("./app/routes/baseRotasRoutes"),
-   require("./app/routes/baseProdutosRoutes"),
    require("./app/routes/userRoutes"),
    require("./app/routes/margem_markupRoutes"),
    require("./app/routes/produtoRoutes"),

@@ -230,8 +230,11 @@ const fetchMargem_Markup = async (queryString, simulation) => {
       }, 1000);
    }
 
+   // console.log(result);
+
    markup = result.pct_markup * 100;
    areaIncentivada = result.incentiveized_area;
+   creditoPisCofins = result.credito_pis_cofins;
 
    document.getElementById(`${simulation}-pct-margem-at`).value = result.pct_margem * 100;
    document.getElementById(`${simulation}-pct-markup-pv`).value = markup;
@@ -393,7 +396,7 @@ const fetchImpostos = async (origemDestinoId, simulation) => {
 
    const infoImpostos = result;
 
-   console.log(infoImpostos);
+   // console.log(infoImpostos);
 
    document.getElementById(`cesta-basica-${simulation}`).value = result.cesta_basica;
 
@@ -466,7 +469,7 @@ const fetchRegimesEspeciais = async (simulation, infoImpostos) => {
          console.log("Impostos estaduais não encontrados!");
       } else {
          infosEstaduais = req;
-         console.log(infosEstaduais);
+         // console.log(infosEstaduais);
       }
    }
 
@@ -482,7 +485,7 @@ const fetchRegimesEspeciais = async (simulation, infoImpostos) => {
    } else {
       const infoRegimes = result;
 
-      console.log(infoRegimes);
+      // console.log(infoRegimes);
 
       document.getElementById(`${simulation}-pct-regime`).value = result.pct_antecipacao * 100;
 
