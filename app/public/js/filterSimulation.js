@@ -237,43 +237,67 @@ const fetchDiscounts = async (queryString, simulation) => {
    var cva_cliente = document.getElementById("cva-" + simulation);
 
    cva_cliente.innerHTML = "";
-
-   // result.forEach(function (tmiRow) {
-   //    var option = document.createElement("option");
-   //    if (tmiRow.discount_type == "OFF") {
-   //       option.setAttribute("value", tmiRow.cva);
-   //       option.textContent = tmiRow.cva;
-   //       pctTmiOff.value = tmiRow.pct_total * 100;
-   //    } else {
-   //       option.setAttribute("value", tmiRow.cva);
-   //       option.textContent = tmiRow.cva;
-   //       pctTmiOn.value = tmiRow.pct_total * 100;
-   //    }
-   //    cva_cliente.appendChild(option);
-   //    cva_cliente.removeAttribute("disabled");
-   // });
+   var cvaOptions = {}; // Objeto para armazenar as opções de cva
 
    result.forEach(function (tmiRow) {
-      if (![...cva_cliente.options].some((option) => option.value === tmiRow.cva)) {
-         var option = document.createElement("option");
-         option.setAttribute("value", tmiRow.cva);
-         option.textContent = tmiRow.cva;
+      if (!cvaOptions.hasOwnProperty(tmiRow.cva)) {
+         cvaOptions[tmiRow.cva] = {
+            discountType: [],
+            pctTmi: [],
+         };
+      }
 
-         cva_cliente.appendChild(option);
-      }
-      if (tmiRow.discount_type == "OFF") {
-         pctTmiOff.value = tmiRow.pct_total * 100;
-      } else {
-         pctTmiOn.value = tmiRow.pct_total * 100;
-      }
+      cvaOptions[tmiRow.cva].discountType.push(tmiRow.discount_type);
+      cvaOptions[tmiRow.cva].pctTmi.push(tmiRow.pct_total * 100);
    });
 
+   console.log(cvaOptions);
+
+   for (let cva in cvaOptions) {
+      var option = document.createElement("option");
+      option.setAttribute("value", cva);
+      option.textContent = cva;
+      cva_cliente.appendChild(option);
+   }
+
+   // Seleção automática do primeiro cva
+   var firstCva = Object.keys(cvaOptions)[0];
+   console.log(firstCva);
+   cva_cliente.value = firstCva;
+   updatePctValues(cvaOptions[firstCva]);
+
    cva_cliente.removeAttribute("disabled");
+
+   cva_cliente.addEventListener("change", function () {
+      var selectedCva = cva_cliente.value;
+      updatePctValues(cvaOptions[selectedCva]);
+   });
 
    let data = { status: response.status };
    return data;
 
-   // calcForm(simulation);
+   function updatePctValues(cvaData) {
+      // Limpar os valores atuais
+      pctTmiOn.value = "";
+      pctTmiOff.value = "";
+
+      // Verificar cada discountType e pctTmi
+      for (let i = 0; i < cvaData.discountType.length; i++) {
+         let discountType = cvaData.discountType[i];
+         let pctTmi = cvaData.pctTmi[i];
+
+         // Adicionar os valores ao campo correspondente
+         if (discountType === "OFF") {
+            pctTmiOff.value += pctTmi + ", ";
+         } else {
+            pctTmiOn.value += pctTmi + ", ";
+         }
+      }
+
+      // Remover a vírgula extra no final
+      pctTmiOff.value = pctTmiOff.value.slice(0, -2);
+      pctTmiOn.value = pctTmiOn.value.slice(0, -2);
+   }
 };
 
 const fetchMargem_Markup = async (queryString, simulation) => {
