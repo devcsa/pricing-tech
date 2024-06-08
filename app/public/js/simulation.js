@@ -85,18 +85,37 @@ async function addSimulation(simulation) {
 
    // <i value="${simulation}" onclick="getNumberSimulation(this)" title="Filtrar Rota" class="showFilter bx bx-filter-alt"></i>;
 
+   // <input type="hidden" name="micro-regiao-${simulation}" id="micro-regiao-${simulation}" />
+   // <input type="hidden" name="segmento-${simulation}" id="segmento-${simulation}"/ >
+
    newSection.innerHTML = `
       <div class="num-simulacao">
          <h6>Simulação ${simulation}</h6>
          <div class="short-cut">
-         <i value="${simulation}" onclick="getNumberSimulation(${Number(simulation)})" title="Filtrar Rota" class="showFilter bx bx-filter-alt"></i>
+            <i value="${simulation}" onclick="getNumberSimulation(${Number(simulation)})" title="Filtrar Rota" class="showFilter bx bx-filter-alt"></i>
             <i id="export-pdf-${simulation}" title="Exportar PDF Rota" class="bx bxs-file-export"></i>
             <i id="del-simulation-${simulation}" title="Remover Simulação" class="bx bx-list-minus"></i>
          </div>
       </div>
 
-      <input type="hidden" name="micro-regiao-${simulation}" id="micro-regiao-${simulation}" />
-      <input type="hidden" name="segmento-${simulation}" id="segmento-${simulation}"/ >
+      <div class="detail-simulation">
+         <div class="col-md-3 me-2">
+            <label for="micro-regiao-${simulation}">Micro Região</label>
+            <input type="text" disabled id="micro-regiao-${simulation}" name="micro-regiao-${simulation}" />
+         </div>
+
+         <div class="me-2" style="width: 180px">
+            <label for="segmento-${simulation}">Segmento</label>
+            <input type="text" disabled id="segmento-${simulation}" name="segmento-${simulation}" />
+         </div>
+
+         <div class="col-md-3">
+            <label for="cva-${simulation}">CVA</label>
+            <select id="cva-${simulation}" disabled name="cva-${simulation}"></select>
+         </div>
+      </div>
+
+
       <input type="hidden" name="produto-${simulation}" id="produto-${simulation}"/ >
       <input type="hidden" name="origem-destino-${simulation}" id="origem-destino-${simulation}" />
       <input type="hidden" name="origem-destino-estadual-${simulation}" id="origem-destino-estadual-${simulation}" />
@@ -131,7 +150,7 @@ async function addSimulation(simulation) {
             </div>
             <div class="row div-form ms-0">
                <label for="${simulation}-pct-tmi-on" class="metric ms-1 col-form-label">% TMI ON</label>
-               <input type="text" onkeypress="return checkInput(event)" class="pct-metric mx-1 form-control input-value" id="${simulation}-pct-tmi-on" name="${simulation}-pct-tmi-on" value="30,123%" />
+               <input type="text" onkeypress="return checkInput(event)" class="pct-metric mx-1 form-control input-value" id="${simulation}-pct-tmi-on" name="${simulation}-pct-tmi-on" value="0,000%" />
                <input type="text" title="R$ TMI ON = GSV * % TMI ON" class="info-metric vl-metric form-control" id="${simulation}-vl-tmi-on" name="${simulation}-vl-tmi-on" value="0,00" disabled />
             </div>
             <div class="row div-form ms-0">
@@ -210,7 +229,7 @@ async function addSimulation(simulation) {
 
             <div class="row div-form ms-0">
                <label for="${simulation}-pct-tmi-off" class="metric ms-1 col-form-label">TMI OFF</label>
-               <input type="text" onkeypress="return checkInput(event)" class="pct-metric mx-1 form-control input-value" id="${simulation}-pct-tmi-off" name="${simulation}-pct-tmi-off" value="2,749%" />
+               <input type="text" onkeypress="return checkInput(event)" class="pct-metric mx-1 form-control input-value" id="${simulation}-pct-tmi-off" name="${simulation}-pct-tmi-off" value="0,000%" />
                <input type="text" class="vl-metric form-control" id="${simulation}-vl-tmi-off" name="${simulation}-vl-tmi-off" disabled value="0,00" />
             </div>
 
@@ -503,6 +522,7 @@ async function addSimulation(simulation) {
          produto_id: Number(produto.value),
          product_group: productGroup,
          category: category,
+         price_name: "MÉDIO", // Criar campo para o usuário escolher
       };
 
       // console.log(filter);
@@ -529,34 +549,50 @@ async function addSimulation(simulation) {
             return;
          }
          try {
-            const margens = await fetchMargem_Markup(queryString, simulationFilter.value);
+            const discounts = await fetchDiscounts(queryString, simulationFilter.value);
             // console.log(margens);
 
-            if (margens.status == 404) {
+            if (discounts.status == 404) {
                $("#filterRotaModal").modal("hide");
-               notie.alert({ type: "error", text: "Não há margen/markup cadastrado para essa rota!" });
+               notie.alert({ type: "error", text: "Não há descontos para essa rota!" });
                setTimeout(() => {
                   $("#filterRotaModal").modal("show");
                }, 2000);
-               return;
+               // return;
             }
             try {
-               const price = await fetchPriceList(Number(produto.value), simulationFilter.value);
-               if (price.status == 404) {
-                  await resetForm(simulationFilter.value);
+               const margens = await fetchMargem_Markup(queryString, simulationFilter.value);
+               // console.log(margens);
+
+               if (margens.status == 404) {
                   $("#filterRotaModal").modal("hide");
-                  notie.alert({ type: "error", text: "Não há preço de lista para esse produto!" });
+                  notie.alert({ type: "error", text: "Não há margen/markup cadastrado para essa rota!" });
                   setTimeout(() => {
                      $("#filterRotaModal").modal("show");
                   }, 2000);
                   return;
                }
+               try {
+                  const price = await fetchPriceList(Number(produto.value), simulationFilter.value);
+                  if (price.status == 404) {
+                     await resetForm(simulationFilter.value);
+                     $("#filterRotaModal").modal("hide");
+                     notie.alert({ type: "error", text: "Não há preço de lista para esse produto!" });
+                     setTimeout(() => {
+                        $("#filterRotaModal").modal("show");
+                     }, 2000);
+                     return;
+                  }
 
-               await fetchEncargoFinanceiro(queryString, simulationFilter.value);
-               await getOrigemDestino(data.rota, data.simulation);
+                  await fetchEncargoFinanceiro(queryString, simulationFilter.value);
+                  await getOrigemDestino(data.rota, data.simulation);
 
-               $("#filterRotaModal").modal("hide");
-               notie.alert({ type: "success", text: `Simulação ${data.simulation} atualizada com sucesso!` });
+                  $("#filterRotaModal").modal("hide");
+                  notie.alert({ type: "success", text: `Simulação ${data.simulation} atualizada com sucesso!` });
+               } catch (error) {
+                  console.error("Erro ao atualizar dados: " + error);
+                  return;
+               }
             } catch (error) {
                console.error("Erro ao atualizar dados: " + error);
                return;

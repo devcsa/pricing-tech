@@ -208,6 +208,74 @@ const fetchPriceList = async (id, simulation) => {
    // calcForm(simulation);
 };
 
+const fetchDiscounts = async (queryString, simulation) => {
+   const response = await fetch(`/investiments?${queryString}`, {
+      method: "GET",
+      headers: {
+         "content-type": "application/json",
+         Authorization: `Bearer ${tokenUser}`,
+      },
+   });
+
+   const result = await response.json();
+
+   if (response.status == 404) {
+      return { status: response.status };
+   }
+
+   if (!response.ok) {
+      notie.alert({ type: "error", text: "Realize login para continuar!" });
+      setTimeout(() => {
+         window.location.href = "index.html";
+      }, 1000);
+   }
+
+   // console.log(result);
+
+   var pctTmiOn = document.getElementById(simulation + "-pct-tmi-on");
+   var pctTmiOff = document.getElementById(simulation + "-pct-tmi-off");
+   var cva_cliente = document.getElementById("cva-" + simulation);
+
+   cva_cliente.innerHTML = "";
+
+   // result.forEach(function (tmiRow) {
+   //    var option = document.createElement("option");
+   //    if (tmiRow.discount_type == "OFF") {
+   //       option.setAttribute("value", tmiRow.cva);
+   //       option.textContent = tmiRow.cva;
+   //       pctTmiOff.value = tmiRow.pct_total * 100;
+   //    } else {
+   //       option.setAttribute("value", tmiRow.cva);
+   //       option.textContent = tmiRow.cva;
+   //       pctTmiOn.value = tmiRow.pct_total * 100;
+   //    }
+   //    cva_cliente.appendChild(option);
+   //    cva_cliente.removeAttribute("disabled");
+   // });
+
+   result.forEach(function (tmiRow) {
+      if (![...cva_cliente.options].some((option) => option.value === tmiRow.cva)) {
+         var option = document.createElement("option");
+         option.setAttribute("value", tmiRow.cva);
+         option.textContent = tmiRow.cva;
+
+         cva_cliente.appendChild(option);
+      }
+      if (tmiRow.discount_type == "OFF") {
+         pctTmiOff.value = tmiRow.pct_total * 100;
+      } else {
+         pctTmiOn.value = tmiRow.pct_total * 100;
+      }
+   });
+
+   cva_cliente.removeAttribute("disabled");
+
+   let data = { status: response.status };
+   return data;
+
+   // calcForm(simulation);
+};
+
 const fetchMargem_Markup = async (queryString, simulation) => {
    const response = await fetch(`/margem_markup?${queryString}`, {
       method: "GET",

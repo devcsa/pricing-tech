@@ -1,13 +1,20 @@
-const con = require("../config/connection");
+const { getConnection } = require("../config/connection");
 
 const getAll = async () => {
    return new Promise((resolve, reject) => {
-      con.query("SELECT * FROM type_user", (err, result) => {
+      getConnection((err, connection) => {
          if (err) {
-            reject(`Erro ao recuperar os dados: ${err}`);
-         } else {
-            resolve(result);
+            reject(`Erro ao obter conexão: ${err}`);
+            return;
          }
+         connection.query("SELECT * FROM type_user", (err, result) => {
+            connection.release(); // Libera a conexão de volta para o pool
+            if (err) {
+               reject(`Erro ao recuperar os dados: ${err}`);
+            } else {
+               resolve(result);
+            }
+         });
       });
    });
 };

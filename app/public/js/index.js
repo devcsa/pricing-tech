@@ -19,15 +19,6 @@ showPassword.addEventListener("click", (e) => {
    showPassword.setAttribute("title", showPassword.getAttribute("title") === "Mostrar senha" ? "Ocultar senha" : "Mostrar senha");
 });
 
-// userPassword.addEventListener("keyup", function (event) {
-//    var capsLockWarning = document.getElementById("capslock-warning");
-//    if (event.getModifierState("CapsLock")) {
-//       capsLockWarning.style.display = "block";
-//    } else {
-//       capsLockWarning.style.display = "none";
-//    }
-// });
-
 function showPopUp() {
    var popup = document.getElementById("popup-caps");
    popup.classList.toggle("show");
@@ -45,7 +36,7 @@ userPassword.addEventListener("blur", () => {
 
 function checkCapsLock(event) {
    var isCapsLockOn = event.getModifierState && event.getModifierState("CapsLock");
-   console.log(isCapsLockOn);
+   // console.log(isCapsLockOn);
    if (isCapsLockOn) {
       statusCaps = "on";
       if (inputFocus != statusCaps) {

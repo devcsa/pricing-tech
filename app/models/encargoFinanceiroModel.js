@@ -1,53 +1,68 @@
-const con = require("../config/connection");
+const { getConnection } = require("../config/connection");
 
 const getAll = async () => {
    return new Promise((resolve, reject) => {
-      con.query("SELECT encargos_financeiros.*, segmento.segmento AS segmento FROM encargos_financeiros INNER JOIN segmento ON encargos_financeiros.segmento_id = segmento.id", (err, result) => {
+      getConnection((err, con) => {
          if (err) {
-            reject(`Erro ao recuperar os dados: ${err}`);
-         } else {
-            resolve(result);
+            reject(`Erro ao obter conexão: ${err}`);
+            return;
          }
+         con.query("SELECT encargos_financeiros.*, segmento.segmento AS segmento FROM encargos_financeiros INNER JOIN segmento ON encargos_financeiros.segmento_id = segmento.id", (err, result) => {
+            con.release();
+            if (err) {
+               reject(`Erro ao recuperar os dados: ${err}`);
+            } else {
+               resolve(result);
+            }
+         });
       });
    });
 };
 
 const getOne = async (filter) => {
    try {
-      let query = `
-         SELECT encargos_financeiros.*, segmento.segmento AS segmento
-         FROM encargos_financeiros
-         INNER JOIN segmento ON encargos_financeiros.segmento_id = segmento.id
-         WHERE encargos_financeiros.type = 'EXCECAO'
-         AND encargos_financeiros.segmento_id = ${filter.segmento_id}
-         AND encargos_financeiros.product_group = '${filter.product_group}'
-      `;
+      const query = `
+      SELECT encargos_financeiros.*, segmento.segmento AS segmento
+      FROM encargos_financeiros
+      INNER JOIN segmento ON encargos_financeiros.segmento_id = segmento.id
+      WHERE encargos_financeiros.type = 'EXCECAO'
+      AND encargos_financeiros.segmento_id = ?
+      AND encargos_financeiros.product_group = ?
+    `;
 
-      let queryResult = await new Promise((resolve, reject) => {
-         con.query(query, (err, result) => {
+      return new Promise((resolve, reject) => {
+         getConnection((err, con) => {
             if (err) {
-               reject(err);
-            } else {
-               resolve(result);
+               reject(`Erro ao obter conexão: ${err}`);
+               return;
             }
-         });
-      });
-
-      if (queryResult.length === 0) {
-         query = `SELECT * FROM encargos_financeiros WHERE type = 'PADRAO' AND product_group = '${filter.product_group}'`;
-
-         queryResult = await new Promise((resolve, reject) => {
-            con.query(query, (err, result) => {
+            con.query(query, [filter.segmento_id, filter.product_group], (err, result) => {
+               con.release();
                if (err) {
                   reject(err);
                } else {
-                  resolve(result);
+                  if (result.length === 0) {
+                     // Se não houver resultados, faça outra consulta
+                     const defaultQuery = `
+                SELECT * FROM encargos_financeiros
+                WHERE type = 'PADRAO'
+                AND product_group = ?
+              `;
+                     con.query(defaultQuery, [filter.product_group], (err, defaultResult) => {
+                        con.release();
+                        if (err) {
+                           reject(err);
+                        } else {
+                           resolve(defaultResult[0]);
+                        }
+                     });
+                  } else {
+                     resolve(result[0]);
+                  }
                }
             });
          });
-      }
-
-      return queryResult[0];
+      });
    } catch (error) {
       throw new Error(`Erro ao localizar encargo financeiro: ${error}`);
    }

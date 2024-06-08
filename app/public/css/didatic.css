@@ -170,8 +170,54 @@ span span input[type="search"].select2-search__field {
    display: flex;
    justify-content: space-between;
    max-width: 388px;
+   height: 60px;
+   padding: 5px 15px;
    align-items: center;
-   /* margin-bottom: 0.2rem; */
+   border-radius: 10px;
+   background: linear-gradient(145deg, #e6e6e6, #ffffff);
+   box-shadow: 6px 6px 24px #dedede, -6px -6px 24px #ffffff;
+   color: #000;
+}
+
+.num-simulacao h6 {
+   font-size: 16px !important;
+}
+
+.detail-simulation span {
+   height: 27.2px !important;
+}
+
+.detail-simulation li {
+   background: #ffffff;
+}
+
+.produto-simulador {
+   border: none;
+   color: #000;
+   text-align: left;
+   font-weight: bold;
+}
+
+.detail-simulation input {
+   width: 100%;
+   text-align: left;
+   border-radius: 4px;
+}
+
+.detail-simulation label {
+   margin: 0;
+   padding: 0 !important;
+   height: 14px;
+   font-weight: 600;
+}
+
+.detail-simulation {
+   display: flex;
+   max-width: 388px;
+   align-items: center;
+   margin-bottom: 8px;
+   font-size: 0.7rem;
+   margin-top: 20px;
 }
 
 .simulacao h1,

@@ -1,13 +1,20 @@
-const con = require("../config/connection");
+const { getConnection } = require("../config/connection");
 
 const getAll = async () => {
    return new Promise((resolve, reject) => {
-      con.query("SELECT * FROM origem_destino WHERE status = 'ATIVO' ORDER BY origem, destino ASC", (err, result) => {
+      getConnection((err, connection) => {
          if (err) {
-            reject(`Erro ao recuperar os dados: ${err}`);
-         } else {
-            resolve(result);
+            reject(`Erro ao obter conexão: ${err}`);
+            return;
          }
+         connection.query("SELECT * FROM origem_destino WHERE status = 'ATIVO' ORDER BY origem, destino ASC", (err, result) => {
+            connection.release(); // Libera a conexão de volta para o pool
+            if (err) {
+               reject(`Erro ao recuperar os dados: ${err}`);
+            } else {
+               resolve(result);
+            }
+         });
       });
    });
 };

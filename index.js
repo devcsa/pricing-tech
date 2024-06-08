@@ -33,6 +33,7 @@ const routes = [
    require("./app/routes/uploadUserPhotoRoutes"),
    require("./app/routes/settingPriceRoutes"),
    require("./app/routes/regimesRoutes"),
+   require("./app/routes/investimentsRoutes"),
 ];
 
 // Loop para registrar as rotas
