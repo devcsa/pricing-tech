@@ -111,7 +111,7 @@ async function addSimulation(simulation) {
 
          <div class="col-md-3">
             <label for="cva-${simulation}">CVA</label>
-            <select id="cva-${simulation}" disabled name="cva-${simulation}"></select>
+            <select id="cva-${simulation}" disabled name="cva-${simulation}" onchange="uptdateDiscounts(${Number(simulation)})" ></select>
          </div>
       </div>
 
@@ -641,4 +641,25 @@ function selectRoute(filterNumber) {
    cestaBasicaFilter.value = cestaBasica.value;
 
    $("#filterRotaModal").modal("show");
+}
+
+function uptdateDiscounts(simulation) {
+   const microRegiao = document.getElementById(`micro-regiao-${simulation}`);
+   const segmento = document.getElementById(`segmento-${simulation}`);
+   const produto = document.getElementById(`produto-${simulation}`);
+   const cvaCliente = document.getElementById(`cva-${simulation}`);
+
+   const filter = {
+      micro_regiao: microRegiao.value,
+      segmento: segmento.value,
+      produto: produto.value.split("-")[0],
+      cva: cvaCliente.value,
+      price_name: "MÉDIO", // Criar campo para o usuário escolher
+   };
+
+   console.log(filter);
+
+   const queryString = new URLSearchParams(filter).toString();
+
+   fetchDiscountsCva(queryString, simulation);
 }

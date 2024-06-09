@@ -10,6 +10,7 @@ const investimentsController = require("../controllers/investimentsController.js
 investimentsRoutes.use(authMiddleware);
 
 investimentsRoutes.get("/investiments", investimentsController.getOne);
+investimentsRoutes.get("/investiments_cva", investimentsController.getCva);
 investimentsRoutes.get("/investiments_All", investimentsController.getAll);
 
 module.exports = investimentsRoutes;

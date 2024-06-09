@@ -17,4 +17,15 @@ const getOne = async (req, res) => {
    }
 };
 
-module.exports = { getAll, getOne };
+const getCva = async (req, res) => {
+   const filter = req.query;
+   const investiments = await investimentsModel.getCva(filter);
+
+   if (investiments == undefined) {
+      return res.status(404).json({ error: "Descontos não encontrados!" });
+   } else {
+      return res.status(200).json(investiments);
+   }
+};
+
+module.exports = { getAll, getOne, getCva };

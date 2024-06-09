@@ -461,23 +461,23 @@ function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais) {
          if (infoRegimes.substituto == "SIM" || infoImpostos.st_nf == "CLIENTE") {
             if (infoRegimes.ajustar_mva == "SIM") {
                pct_mva_at.value = infoImpostos.pct_mva_original * 100;
-               pctMvaAt = infoImpostos.pct_mva_original;
+               pctMvaAt = Number(infoImpostos.pct_mva_original);
             } else if (infoRegimes.mva_exclusivo == "SIM") {
                pct_mva_at.value = infoImpostos.pct_mva_exclusivo * 100;
-               pctMvaAt = infoImpostos.pct_mva_exclusivo;
+               pctMvaAt = Number(infoImpostos.pct_mva_exclusivo);
             } else {
                if (infoRegimes.mva_estadual == "SIM") {
                   pct_mva_at.value = infosEstaduais.pct_mva * 100;
-                  pctMvaAt = infosEstaduais.pct_mva;
+                  pctMvaAt = Number(infosEstaduais.pct_mva);
                } else {
                   pct_mva_at.value = infoImpostos.pct_mva * 100;
-                  pctMvaAt = infoImpostos.pct_mva;
+                  pctMvaAt = Number(infoImpostos.pct_mva);
                }
             }
          }
       } else {
          pct_mva_at.value = infoImpostos.pct_mva * 100;
-         pctMvaAt = infoImpostos.pct_mva;
+         pctMvaAt = Number(infoImpostos.pct_mva);
       }
    }
 
@@ -547,7 +547,7 @@ function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais) {
    // bsRed2
    if (infoImpostos.st_nf == "CLIENTE") {
       if (pauta == 0) {
-         bsRed2 = infoImpostos.pct_bs_red;
+         bsRed2 = Number(infoImpostos.pct_bs_red);
       } else {
          bsRed2 = 0;
       }
@@ -560,7 +560,7 @@ function calcForm(numberSimulation, infoRegimes, infoImpostos, infosEstaduais) {
    // pctRedIcms
    if (infoImpostos.st_nf == "CLIENTE") {
       if (pauta == 0) {
-         pctRedIcms = infoImpostos.pct_red_icms;
+         pctRedIcms = Number(infoImpostos.pct_red_icms);
       } else {
          pctRedIcms = 0;
       }

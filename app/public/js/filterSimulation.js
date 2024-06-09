@@ -251,8 +251,6 @@ const fetchDiscounts = async (queryString, simulation) => {
       cvaOptions[tmiRow.cva].pctTmi.push(tmiRow.pct_total * 100);
    });
 
-   console.log(cvaOptions);
-
    for (let cva in cvaOptions) {
       var option = document.createElement("option");
       option.setAttribute("value", cva);
@@ -262,31 +260,22 @@ const fetchDiscounts = async (queryString, simulation) => {
 
    // Seleção automática do primeiro cva
    var firstCva = Object.keys(cvaOptions)[0];
-   console.log(firstCva);
    cva_cliente.value = firstCva;
    updatePctValues(cvaOptions[firstCva]);
 
    cva_cliente.removeAttribute("disabled");
 
-   cva_cliente.addEventListener("change", function () {
-      var selectedCva = cva_cliente.value;
-      updatePctValues(cvaOptions[selectedCva]);
-   });
-
    let data = { status: response.status };
    return data;
 
    function updatePctValues(cvaData) {
-      // Limpar os valores atuais
       pctTmiOn.value = "";
       pctTmiOff.value = "";
 
-      // Verificar cada discountType e pctTmi
       for (let i = 0; i < cvaData.discountType.length; i++) {
          let discountType = cvaData.discountType[i];
          let pctTmi = cvaData.pctTmi[i];
 
-         // Adicionar os valores ao campo correspondente
          if (discountType === "OFF") {
             pctTmiOff.value += pctTmi + ", ";
          } else {
@@ -298,6 +287,45 @@ const fetchDiscounts = async (queryString, simulation) => {
       pctTmiOff.value = pctTmiOff.value.slice(0, -2);
       pctTmiOn.value = pctTmiOn.value.slice(0, -2);
    }
+};
+
+const fetchDiscountsCva = async (queryString, simulation) => {
+   const response = await fetch(`/investiments_cva?${queryString}`, {
+      method: "GET",
+      headers: {
+         "content-type": "application/json",
+         Authorization: `Bearer ${tokenUser}`,
+      },
+   });
+
+   const result = await response.json();
+
+   if (response.status == 404) {
+      return { status: response.status };
+   }
+
+   if (!response.ok) {
+      notie.alert({ type: "error", text: "Realize login para continuar!" });
+      setTimeout(() => {
+         window.location.href = "index.html";
+      }, 1000);
+   }
+
+   console.log(result);
+
+   var pctTmiOn = document.getElementById(simulation + "-pct-tmi-on");
+   var pctTmiOff = document.getElementById(simulation + "-pct-tmi-off");
+
+   pctTmiOff.value = "0,000%";
+   pctTmiOn.value = "0,000%";
+
+   result.forEach(function (tmiRow) {
+      if (tmiRow.discount_type == "OFF") {
+         pctTmiOff.value = tmiRow.pct_total * 100;
+      } else {
+         pctTmiOn.value = tmiRow.pct_total * 100;
+      }
+   });
 };
 
 const fetchMargem_Markup = async (queryString, simulation) => {
@@ -325,7 +353,7 @@ const fetchMargem_Markup = async (queryString, simulation) => {
    // console.log(result);
 
    markup = result.pct_markup * 100;
-   areaIncentivada = result.incentiveized_area;
+   areaIncentivada = result.incentivized_area;
    creditoPisCofins = result.credito_pis_cofins;
 
    document.getElementById(`${simulation}-pct-margem-at`).value = result.pct_margem * 100;
@@ -382,15 +410,6 @@ const fetchRota = async (queryString, simulation) => {
    });
 
    const result = await response.json();
-
-   // if (response.status == 404) {
-   //    $("#filterRotaModal").modal("hide");
-   //    notie.alert({ type: "error", text: "Origem Destino não encontrada!" });
-   //    setTimeout(() => {
-   //       $("#filterRotaModal").modal("show");
-   //    }, 1000);
-   //    return;
-   // }
 
    if (response.status == 404) {
       return { status: response.status };
@@ -487,8 +506,6 @@ const fetchImpostos = async (origemDestinoId, simulation) => {
    }
 
    const infoImpostos = result;
-
-   // console.log(infoImpostos);
 
    document.getElementById(`cesta-basica-${simulation}`).value = result.cesta_basica;
 
